@@ -1,0 +1,1 @@
+php artisan create:api-scaffold  User --table-exists --force

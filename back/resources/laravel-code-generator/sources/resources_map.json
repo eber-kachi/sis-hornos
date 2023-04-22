@@ -1,0 +1,12 @@
+[
+    {
+        "model-name": "Rol",
+        "resource-file": "rols.json",
+        "table-name": "rols"
+    },
+    {
+        "model-name": "User",
+        "resource-file": "users.json",
+        "table-name": "users"
+    }
+]
