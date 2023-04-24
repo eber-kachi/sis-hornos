@@ -27,7 +27,7 @@ class AuthController extends Controller
     return response()->json([
       'ok' => true,
       'user' => $user,
-      'token' => $token
+      'accessToken' => $token
     ]);
   }
 
@@ -58,7 +58,7 @@ class AuthController extends Controller
         //   $q->with('parcels');
         // }])->get(),
         // 'setting' => Settings::first(),
-        'token' => $token
+        'accessToken' => $token
       ]);
     } else {
       return response()->json([
@@ -76,9 +76,11 @@ class AuthController extends Controller
 
   public function me()
   {
+
     return response()->json([
       'ok' => true,
-      'user' => Auth::user()
+      'user' => Auth::user(),
+    //   'accessToken' => Auth::user()->token()->
     ]);
   }
 
