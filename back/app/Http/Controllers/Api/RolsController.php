@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Controller;
 use App\Models\Rol;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 

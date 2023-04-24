@@ -61,8 +61,8 @@ Route::group([
          ->name('api.rols.rol.destroy');
 });
   
-Route::resource('/tipoGrupo', TipoGrupoController::class, ['update','destroy','show','index'.'store']);
-Route::resource('/gruposTrabajo', GruposTrabajoController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/tipo_grupos', TipoGrupoController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/grupos_trabajo', GruposTrabajoController::class, ['update','destroy','show','index'.'store']);
 
 
 
