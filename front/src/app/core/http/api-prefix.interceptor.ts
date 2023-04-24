@@ -20,7 +20,7 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         if (request.url.indexOf('web') !== -1) {
-            console.log('existe web');
+            // console.log('existe web');
             request = request.clone({
                 url: request.url,
             });
