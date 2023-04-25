@@ -135,7 +135,7 @@ class PersonalController extends Controller
             'fecha_nacimiento' => 'date_format:j/n/Y g:i A',
             'direccion' => 'required|string|min:1|max:255',
             'fecha_registro' => 'required|date_format:j/n/Y g:i A',
-            'id_grupoTrabajo' => "required",
+            'id_grupo_trabajo' => "required",
             'user_id' => "required",
             'enabled' => 'boolean',
         ];
@@ -160,7 +160,7 @@ class PersonalController extends Controller
             'fecha_nacimiento' => 'required|date_format:j/n/Y g:i A',
             'direccion' => 'required|string|min:1|max:255',
             'fecha_registro' => 'required|date_format:j/n/Y g:i A',
-            'id_grupoTrabajo' => "required",
+            'id_grupo_trabajo' => "nullable",
             'user_id' => "required",
         ];
 
@@ -192,8 +192,11 @@ class PersonalController extends Controller
             'fecha_nacimiento' => $personal->fecha_nacimiento,
             'direccion' => $personal->direccion,
             'fecha_registro' => $personal->fecha_registro,
-            'id_grupoTrabajo' => $personal->id_grupoTrabajo,
-            'user_id' => $personal->user_id
+            'id_grupo_trabajo' => $personal->id_grupo_trabajo,
+            'user_id' => $personal->user_id,
+            'grupo_trabajo_nombre'=> optional($personal->GruposTrabajo)->nombre
+
+
 
 
         ];

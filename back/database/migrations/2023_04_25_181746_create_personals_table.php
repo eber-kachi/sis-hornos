@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('direccion');
 
             $table->date('fecha_registro') ;
-            $table->foreignId('id_grupoTrabajo')
+            $table->foreignId('id_grupo_trabajo')
                 ->nullable()
                 ->constrained('grupos_trabajos')
                 ->cascadeOnDelete()
