@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+nombrespace App\Http\Controllers\Api;
 use Exception;
 use App\Models\TipoGrupo;
 use Illuminate\Http\Request;
@@ -137,8 +137,8 @@ class TipoGrupoController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            'name' => 'required|string|min:1|max:255',
-            "cantidadProduccionDiaria" => "required|numeric|min:0",
+            'nombre' => 'required|string|min:1|max:255',
+            "cantidad_produccion_diaria" => "required|numeric|min:0",
             'enabled' => 'boolean', 
         ];
 
@@ -148,8 +148,8 @@ class TipoGrupoController extends Controller
 protected function getData(Request $request)
     {
         $rules = [
-            'name' => 'required|string|min:1|max:255',
-            "cantidadProduccionDiaria" => "required|numeric|min:0",
+            'nombre' => 'required|string|min:1|max:255',
+            "cantidad_produccion_diaria" => "required|numeric|min:0",
             'enabled' => 'boolean', 
         ];
 
@@ -168,8 +168,8 @@ protected function getData(Request $request)
     {
         return [
             'id' => $TipoGrupo->id,
-            'name' => $TipoGrupo->name,
-            'cantidadProduccionDiaria' => $TipoGrupo->cantidadProduccionDiaria,
+            'nombre' => $TipoGrupo->nombre,
+            'cantidad_produccion_diaria' => $TipoGrupo->cantidad_produccion_diaria,
         ];
     } 
 

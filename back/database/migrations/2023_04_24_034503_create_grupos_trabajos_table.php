@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('grupos_trabajos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->integer('cantidadIntegrantes');
+            $table->integer('cantidad_integrantes');
             $table->foreignId('tipo_grupo_id')
                   ->nullable()
                   ->constrained('tipo_grupos')

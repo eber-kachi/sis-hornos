@@ -147,7 +147,7 @@ class GruposTrabajoController extends Controller
     {
         $rules = [
             "nombre" => "required|string",
-            "cantidadIntegrantes" => "required|numeric|min:0",
+            "cantidad_integrantes" => "required|numeric|min:0",
             "TipoGrupo_id" => "required",
             'enabled' => 'boolean',
         ];
@@ -166,7 +166,7 @@ class GruposTrabajoController extends Controller
     {
         $rules = [
             "nombre" => 'required|string|min:1|max:255',
-            "cantidadIntegrantes" => "required|numeric|min:0",
+            "cantidad_integrantes" => "required|numeric|min:0",
             "TipoGrupo_id" => "required",
             'enabled' => 'boolean', 
         ];
@@ -192,8 +192,8 @@ class GruposTrabajoController extends Controller
     {
         return [
             'id' => $gruposTrabajos->id,
-            'name' => $gruposTrabajos->name,
-            'cantidadIntegrantes' => $gruposTrabajos->cantidadIntegrantes,
+            'nombre' => $gruposTrabajos->nombre,
+            'cantidad_integrantes' => $gruposTrabajos->cantidad_integrantes,
             'TipoGrupo_id' => $gruposTrabajos->TipoGrupo_id,
             
         ];

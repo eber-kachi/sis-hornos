@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tipo_grupos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->integer('cantidadProduccionDiaria');
+            $table->integer('cantidad_produccion_diaria');
             $table->timestamps();
         });
     }
