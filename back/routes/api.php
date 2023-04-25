@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UsersController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Api\RolsController;
 use App\Http\Controllers\Api\TipoGrupoController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GruposTrabajoController;
+use App\Http\Controllers\Api\PersonalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,9 +62,10 @@ Route::group([
     Route::delete('/rol/{rol}',[RolsController::class, 'destroy'])
          ->name('api.rols.rol.destroy');
 });
-  
+
 Route::resource('/tipo_grupos', TipoGrupoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/grupos_trabajo', GruposTrabajoController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/personal', PersonalController::class, ['update','destroy','show','index'.'store']);
 
 
 

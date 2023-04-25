@@ -13,5 +13,9 @@ class GruposTrabajo extends Model
     public function TipoGrupos(){
         return $this->belongsTo(TipoGrupo::class,'tipo_grupo_id','id');
     }
-    
+
+//    public function Personal(){
+//return $this->hasMany(Personal::class);
+  //  }
+
 }
