@@ -18,7 +18,8 @@ class Personal extends Seeder
                 'nombres' => 'Juan Sebastian',
                 'apellidos'=>'Calle Vidal',
                 'carnet_identidad'=> '12344-21',
-               'fecha_nacimiento'=> '16-34-1985',
+                'fecha_nacimiento'=> '16-34-1985',
+               'fecha_registro'=> '16-34-1985',
                'direccion'=> 'San Martin 123',
                'user_id'=>1
 
