@@ -19,7 +19,8 @@ return new class extends Migration
             $table->date('fecha_nacimiento');
             $table->string('direccion');
 
-            $table->date('fecha_registro') ;
+            $table->date('fecha_registro');
+
             $table->foreignId('id_grupo_trabajo')
                 ->nullable()
                 ->constrained('grupos_trabajos')

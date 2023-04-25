@@ -130,11 +130,11 @@ class MaterialesController extends Controller
     {
         $rules = [
             "nombre" => "required|string",
-            "kg" => "nullable|float|min:0",
-            "largo" => "nullable|float|min:0",
-            "ancho" => "nullable|float|min:0",
-            "cm" => "nullable|float|min:0",
-            "cm2" => "nullable|float|min:0",
+            "kg" => "nullable",
+            "largo" => "nullable",
+            "ancho" => "nullable",
+            "cm" => "nullable",
+            "cm2" => "nullable",
             'enabled' => 'boolean',
         ];
 
@@ -152,11 +152,11 @@ class MaterialesController extends Controller
     {
         $rules = [
             "nombre" => "required|string",
-            "kg" => "nullable|float|min:0",
-            "largo" => "nullable|float|min:0",
-            "ancho" => "nullable|float|min:0",
-            "cm" => "nullable|float|min:0",
-            "cm2" => "nullable|float|min:0",
+            "kg" => "nullable",
+            "largo" => "nullable",
+            "ancho" => "nullable",
+            "cm" => "nullable",
+            "cm2" => "nullable",
             'enabled' => 'boolean',
 
         ];
