@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->integer('Kg');
-            $table->integer('largo');
-            $table->integer('ancho');
-            $table->integer('cm');
-            $table->integer('cm2');
+            $table->float('kg');
+            $table->float('largo');
+            $table->float('ancho');
+            $table->float('cm');
+            $table->float('cm2');
             $table->timestamps();
         });
     }

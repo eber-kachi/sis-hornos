@@ -67,7 +67,7 @@ Route::group([
 Route::resource('/tipo_grupos', TipoGrupoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/grupos_trabajo', GruposTrabajoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/personal', PersonalController::class, ['update','destroy','show','index'.'store']);
-Route::resource('/material', MaterialesController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/materiales', MaterialesController::class, ['update','destroy','show','index'.'store']);
 
 
 
