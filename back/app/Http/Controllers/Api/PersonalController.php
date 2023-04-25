@@ -111,7 +111,7 @@ class PersonalController extends Controller
             $personal->delete();
 
             return $this->successResponse(
-                'Grupos de Trabajos was successfully deleted.',
+                'Personal was successfully deleted.',
                 $this->transform($personal)
             );
         } catch (Exception $exception) {
@@ -129,9 +129,14 @@ class PersonalController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            "nombre" => "required|string",
-            "cantidad_integrantes" => "required|numeric|min:0",
-            "tipo_grupo_id" => "required",
+            'nombres' => 'required|string|min:1|max:255',
+            'apellidos' => 'required|string|min:1|max:255',
+            'carnet_identidad' => 'string|min:1|max:255',
+            'fecha_nacimiento' => 'date_format:j/n/Y g:i A',
+            'direccion' => 'required|string|min:1|max:255',
+            'fecha_registro' => 'required|date_format:j/n/Y g:i A',
+            'id_grupoTrabajo' => "required",
+            'user_id' => "required",
             'enabled' => 'boolean',
         ];
 
@@ -148,10 +153,15 @@ class PersonalController extends Controller
     protected function getData(Request $request)
     {
         $rules = [
-            "nombre" => 'required|string|min:1|max:255',
-            "cantidad_integrantes" => "required|numeric|min:0",
-            "tipo_grupo_id" => "required",
-            'enabled' => 'boolean',
+
+            'nombres' => 'required|string|min:1|max:255',
+            'apellidos' => 'required|string|min:1|max:255',
+            'carnet_identidad' => 'required|string|min:1|max:255',
+            'fecha_nacimiento' => 'required|date_format:j/n/Y g:i A',
+            'direccion' => 'required|string|min:1|max:255',
+            'fecha_registro' => 'required|date_format:j/n/Y g:i A',
+            'id_grupoTrabajo' => "required",
+            'user_id' => "required",
         ];
 
 
