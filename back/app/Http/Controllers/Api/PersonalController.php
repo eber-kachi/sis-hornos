@@ -176,10 +176,14 @@ class PersonalController extends Controller
 
         return [
             'id' => $personal->id,
-            'nombre' => $personal->nombre,
-            'cantidad_integrantes' => $personal->cantidad_integrantes,
-            'tipo_grupo_id' => $personal->tipo_grupo_id,
-            'tipo_grupo_nombre'=> optional($personal->tipoGrupos)->nombre
+            'nombres' => $personal->nombres,
+            'apellidos' => $personal->apellidos,
+            'carnet_identidad' => $personal->carnet_identidad,
+            'fecha_nacimiento' => $personal->fecha_nacimiento,
+            'direccion' => $personal->direccion,
+            'fecha_registro' => $personal->fecha_registro,
+            'id_grupoTrabajo' => $personal->id_grupoTrabajo,
+            'user_id' => $personal->user_id
 
 
         ];
