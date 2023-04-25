@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombres');
             $table->string('apellidos');
-            $table->integer('carnet_identidad');
+            $table->string('carnet_identidad');
             $table->date('fecha_nacimiento');
             $table->string('direccion');
 

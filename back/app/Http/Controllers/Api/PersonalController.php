@@ -132,11 +132,11 @@ class PersonalController extends Controller
             'nombres' => 'required|string|min:1|max:255',
             'apellidos' => 'required|string|min:1|max:255',
             'carnet_identidad' => 'string|min:1|max:255',
-            'fecha_nacimiento' => 'date_format:j/n/Y g:i A',
+            'fecha_nacimiento' => 'nullable',
             'direccion' => 'required|string|min:1|max:255',
-            'fecha_registro' => 'required|date_format:j/n/Y g:i A',
-            'id_grupo_trabajo' => "required",
-            'user_id' => "required",
+            'fecha_registro' => 'nullable',
+            'id_grupo_trabajo' => "nullable",
+            'user_id' => "nullable",
             'enabled' => 'boolean',
         ];
 
@@ -156,12 +156,14 @@ class PersonalController extends Controller
 
             'nombres' => 'required|string|min:1|max:255',
             'apellidos' => 'required|string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'fecha_nacimiento' => 'required|date_format:j/n/Y g:i A',
+            'carnet_identidad' => 'string|min:1|max:255',
+            'fecha_nacimiento' => 'nullable',
             'direccion' => 'required|string|min:1|max:255',
-            'fecha_registro' => 'required|date_format:j/n/Y g:i A',
+            'fecha_registro' => 'nullable',
             'id_grupo_trabajo' => "nullable",
-            'user_id' => "required",
+            'user_id' => "nullable",
+
+
         ];
 
 
