@@ -12,7 +12,7 @@ class GruposTrabajoController extends Controller
 {
     public function index()
     {
-        $gruposTrabajos = GruposTrabajo::with("TipoGrupo")->get();
+        $gruposTrabajos = GruposTrabajo::with("tipoGrupos")->get();
 
         $data = $gruposTrabajos->transform(function ($gruposTrabajos) {
             return $this->transform($gruposTrabajos);
@@ -179,7 +179,7 @@ class GruposTrabajoController extends Controller
             'nombre' => $gruposTrabajos->nombre,
             'cantidad_integrantes' => $gruposTrabajos->cantidad_integrantes,
             'tipo_grupo_id' => $gruposTrabajos->tipo_grupo_id,
-            'tipo_grupo_nombre'=> optional($gruposTrabajos->TipoGrupo)->nombre
+            'tipo_grupo_nombre'=> optional($gruposTrabajos->tipoGrupos)->nombre
 
 
         ];
