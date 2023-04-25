@@ -23,8 +23,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-
-            $rol = new Rol();
+        $rol = new Rol();
     $rol->name = 'admin';
     $rol->display_name = 'Admin';
     $rol->enabled = 1;

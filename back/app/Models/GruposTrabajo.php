@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class GruposTrabajo extends Model
 {
     use HasFactory;
-    protected $fillable = ['nombre', 'cantidad_integrantes'];
+    protected $fillable = ['nombre', 'cantidad_integrantes','tipo_grupo_id'];
 
     public function TipoGrupos(){
-        return $this->belongsTo(TipoGrupo::class);
+        return $this->belongsTo(TipoGrupo::class,'tipo_grupo_id','id');
     }
+    
 }

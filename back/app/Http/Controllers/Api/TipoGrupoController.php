@@ -1,6 +1,6 @@
 <?php
 
-nombrespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 use Exception;
 use App\Models\TipoGrupo;
 use Illuminate\Http\Request;
@@ -9,15 +9,15 @@ use App\Http\Controllers\Api\Controller;
 
 class TipoGrupoController extends Controller
 {
-    
+
     public function index()
     {
-        
+
         $TipoGrupos = TipoGrupo::paginate(25);
         $data =$TipoGrupos->transform(function ($TipoGrupo) {
             return $this->transform($TipoGrupo);
         });
-        
+
         return $this->successResponse(
             'Rols were successfully retrieved.',
             $data,
@@ -41,9 +41,9 @@ class TipoGrupoController extends Controller
             ]
         );
 
-        
+
     }
-    
+
     /**
      * Store a new user in the storage.
      *
@@ -63,17 +63,17 @@ class TipoGrupoController extends Controller
             }
 
             $data = $this->getData($request);
-            
+
             $user = TipoGrupo::create($data);
 
             return $this->successResponse(
-			    'User was successfully added.',
+			    'Tipo Grupo was successfully added.',
 			    $this->transform($user)
 			);
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
-       
+
     }
 
      /**
@@ -94,7 +94,7 @@ class TipoGrupoController extends Controller
     }
     public function update(Request $request, $id)
     {
-        
+
         try {
             $validator = $this->getValidator($request);
 
@@ -103,7 +103,7 @@ class TipoGrupoController extends Controller
             }
 
             $data = $this->getData($request);
-            
+
             $tipoGrupo = TipoGrupo::findOrFail($id);
             $tipoGrupo->update($data);
 
@@ -114,7 +114,7 @@ class TipoGrupoController extends Controller
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
-    
+
     }
 
     public function destroy($id)
@@ -130,7 +130,7 @@ class TipoGrupoController extends Controller
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
-        
+
     }
 
 
@@ -139,7 +139,7 @@ class TipoGrupoController extends Controller
         $rules = [
             'nombre' => 'required|string|min:1|max:255',
             "cantidad_produccion_diaria" => "required|numeric|min:0",
-            'enabled' => 'boolean', 
+            'enabled' => 'boolean',
         ];
 
         return Validator::make($request->all(), $rules);
@@ -150,10 +150,10 @@ protected function getData(Request $request)
         $rules = [
             'nombre' => 'required|string|min:1|max:255',
             "cantidad_produccion_diaria" => "required|numeric|min:0",
-            'enabled' => 'boolean', 
+            'enabled' => 'boolean',
         ];
 
-        
+
         $data = $request->validate($rules);
 
 
@@ -163,7 +163,7 @@ protected function getData(Request $request)
         return $data;
     }
 
-    
+
     protected function transform(TipoGrupo $TipoGrupo)
     {
         return [
@@ -171,6 +171,6 @@ protected function getData(Request $request)
             'nombre' => $TipoGrupo->nombre,
             'cantidad_produccion_diaria' => $TipoGrupo->cantidad_produccion_diaria,
         ];
-    } 
+    }
 
 }

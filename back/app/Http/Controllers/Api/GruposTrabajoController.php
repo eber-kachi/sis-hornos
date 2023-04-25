@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
+use App\Models\TipoGrupo;
 use Illuminate\Http\Request;
 use App\Models\GruposTrabajo;
-use App\Http\Controllers\Api\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class GruposTrabajoController extends Controller
 {
     public function index()
     {
-        $gruposTrabajos = GruposTrabajo::paginate(25);
+        $gruposTrabajos = GruposTrabajo::with("TipoGrupo")->get();
 
         $data = $gruposTrabajos->transform(function ($gruposTrabajos) {
             return $this->transform($gruposTrabajos);
@@ -19,28 +20,10 @@ class GruposTrabajoController extends Controller
 
         return $this->successResponse(
             'gruposTrabajoss were successfully retrieved.',
-            $data,
-            [
-                'links' => [
-                    'first' => $gruposTrabajos->url(1),
-                    'last' => $gruposTrabajos->url($gruposTrabajos->lastPage()),
-                    'prev' => $gruposTrabajos->previousPageUrl(),
-                    'next' => $gruposTrabajos->nextPageUrl(),
-                ],
-                'meta' =>
-                [
-                    'current_page' => $gruposTrabajos->currentPage(),
-                    'from' => $gruposTrabajos->firstItem(),
-                    'last_page' => $gruposTrabajos->lastPage(),
-                    'path' => $gruposTrabajos->resolveCurrentPath(),
-                    'per_page' => $gruposTrabajos->perPage(),
-                    'to' => $gruposTrabajos->lastItem(),
-                    'total' => $gruposTrabajos->total(),
-                ],
-            ]
+            $data
         );
 
-    }    
+    }
 
 
 
@@ -54,7 +37,7 @@ class GruposTrabajoController extends Controller
             }
 
             $data = $this->getData($request);
-            
+
             $gruposTrabajos = GruposTrabajo::create($data);
 
             return $this->successResponse(
@@ -101,7 +84,7 @@ class GruposTrabajoController extends Controller
             }
 
             $data = $this->getData($request);
-            
+
             $gruposTrabajos = GruposTrabajo::findOrFail($id);
             $gruposTrabajos->update($data);
 
@@ -135,7 +118,7 @@ class GruposTrabajoController extends Controller
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }
-    
+
     /**
      * Gets a new validator instance with the defined rules.
      *
@@ -148,18 +131,18 @@ class GruposTrabajoController extends Controller
         $rules = [
             "nombre" => "required|string",
             "cantidad_integrantes" => "required|numeric|min:0",
-            "TipoGrupo_id" => "required",
+            "tipo_grupo_id" => "required",
             'enabled' => 'boolean',
         ];
 
         return Validator::make($request->all(), $rules);
     }
 
-    
+
     /**
      * Get the request's data from the request.
      *
-     * @param Illuminate\Http\Request\Request $request 
+     * @param Illuminate\Http\Request\Request $request
      * @return array
      */
     protected function getData(Request $request)
@@ -167,11 +150,11 @@ class GruposTrabajoController extends Controller
         $rules = [
             "nombre" => 'required|string|min:1|max:255',
             "cantidad_integrantes" => "required|numeric|min:0",
-            "TipoGrupo_id" => "required",
-            'enabled' => 'boolean', 
+            "tipo_grupo_id" => "required",
+            'enabled' => 'boolean',
         ];
 
-        
+
         $data = $request->validate($rules);
 
 
@@ -190,12 +173,15 @@ class GruposTrabajoController extends Controller
      */
     protected function transform(GruposTrabajo $gruposTrabajos)
     {
+
         return [
             'id' => $gruposTrabajos->id,
             'nombre' => $gruposTrabajos->nombre,
             'cantidad_integrantes' => $gruposTrabajos->cantidad_integrantes,
-            'TipoGrupo_id' => $gruposTrabajos->TipoGrupo_id,
-            
+            'tipo_grupo_id' => $gruposTrabajos->tipo_grupo_id,
+            'tipo_grupo_nombre'=> optional($gruposTrabajos->TipoGrupo)->nombre
+
+
         ];
     }
 
