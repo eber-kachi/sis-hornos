@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
-use App\Models\TipoGrupo;
 use Illuminate\Http\Request;
 use App\Models\GruposTrabajo;
 use Illuminate\Support\Facades\Validator;

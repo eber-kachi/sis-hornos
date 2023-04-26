@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Api\ProductosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UsersController;
@@ -68,6 +69,7 @@ Route::resource('/tipo_grupos', TipoGrupoController::class, ['update','destroy',
 Route::resource('/grupos_trabajo', GruposTrabajoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/personal', PersonalController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/materiales', MaterialesController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/productos', ProductosController::class, ['update','destroy','show','index'.'store']);
 
 
 
