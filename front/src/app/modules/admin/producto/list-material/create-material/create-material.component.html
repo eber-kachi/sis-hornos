@@ -1,0 +1,124 @@
+<h1 mat-dialog-title>Crear Material</h1>
+<div mat-dialog-content>
+    <form [formGroup]="formGroup" (change)="formChanged()">
+        <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+            <div class="">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Nombre</mat-label>
+                    <input
+                        matInput
+                        placeholder="Nombre"
+                        formControlName="nombre"
+                    />
+                    <mat-error
+                        *ngIf="formGroup.controls.nombre.hasError('required')"
+                    >
+                        nombre es requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Kg</mat-label>
+                    <input
+                        type="number"
+                        matInput
+                        placeholder=""
+                        formControlName="kg"
+                    />
+                    <mat-error
+                        *ngIf="formGroup.controls.kg.hasError('required')"
+                    >
+                        Kg es requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+            <div class="">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Largo</mat-label>
+                    <input
+                        type="number"
+                        matInput
+                        placeholder=""
+                        formControlName="largo"
+                    />
+                    <mat-error
+                        *ngIf="formGroup.controls.largo.hasError('required')"
+                    >
+                        Largo es requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Ancho</mat-label>
+                    <input
+                        type="number"
+                        matInput
+                        placeholder=""
+                        formControlName="ancho"
+                    />
+                    <mat-error
+                        *ngIf="formGroup.controls.cm.hasError('required')"
+                    >
+                        Ancho es requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Cm</mat-label>
+                    <input
+                        type="number"
+                        matInput
+                        placeholder=""
+                        formControlName="cm"
+                    />
+                    <mat-error
+                        *ngIf="formGroup.controls.cm.hasError('required')"
+                    >
+                        Cm es requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Cm2</mat-label>
+                    <input
+                        type="number"
+                        matInput
+                        placeholder=""
+                        formControlName="cm2"
+                    />
+                    <mat-error
+                        *ngIf="formGroup.controls.cm2.hasError('required')"
+                    >
+                        Cm2 es requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button
+        mat-raised-button
+        type="submit"
+        color="primary"
+        class="Update-btn"
+        (click)="onSave()"
+    >
+        Guardar
+    </button>
+    <button
+        mat-raised-button
+        type="button"
+        class="Discard-btn"
+        (click)="closeDialog()"
+    >
+        Cancelar
+    </button>
+</div>

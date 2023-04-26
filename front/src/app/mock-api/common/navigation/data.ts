@@ -8,6 +8,34 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/example'
+    },
+    {
+        id   : 'list-grupo-personal',
+        title: 'Grupo Personal',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/lista-grupo'
+    },
+    {
+        id   : 'lista-personal',
+        title: 'Personal',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/lista-personal'
+    },
+    {
+        id   : 'lista-material',
+        title: 'Material',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/lista-material'
+    },
+    {
+        id   : 'lista-pruducto',
+        title: 'Producto',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/lista-producto'
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [

@@ -73,6 +73,8 @@ export const appRoutes: Route[] = [
         children: [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             {path: '', loadChildren: () => import('app/modules/admin/grupo/grupo.module').then(m => m.GrupoModule)},
+            {path: '', loadChildren: () => import('app/modules/admin/user/user.module').then(m => m.UserModule)},
+            {path: '', loadChildren: () => import('app/modules/admin/producto/producto.module').then(m => m.ProductoModule)},
             // {path: 'tipo-grupo', component: },
         ]
     }

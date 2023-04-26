@@ -7,9 +7,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./alert-dialog.component.scss']
 })
 export class AlertDialogComponent {
-    message: string = "Are you sure?"
-    confirmButtonText = "Yes"
-    cancelButtonText = "Cancel"
+    message: string = "Are you sure?";
+    confirmButtonText = "Yes";
+    cancelButtonText = "Cancel";
     constructor(
         @Inject(MAT_DIALOG_DATA) private data: any,
         private dialogRef: MatDialogRef<AlertDialogComponent>) {

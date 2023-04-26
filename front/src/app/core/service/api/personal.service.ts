@@ -8,6 +8,6 @@ import { HttpClient } from '@angular/common/http';
 export class PersonalService extends BaseAPIClass {
     constructor(protected httpClient: HttpClient) {
         super(httpClient);
-        this.baseUrl = '/personales';
+        this.baseUrl = '/personal';
     }
 }
