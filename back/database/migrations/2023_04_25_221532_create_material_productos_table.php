@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('material_productos', function (Blueprint $table) {
             $table->id();
+            $table->integer('cantidad');
+            $table->string('descripcion');
+            $table->integer('largo');
+
+            $table->integer('ancho');
+            $table->integer('cm');
+
+            $table->integer('cm2');
             $table->timestamps();
         });
     }
