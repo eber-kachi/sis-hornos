@@ -5,11 +5,11 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class RolService extends BaseAPIClass {
+export class DepartamentoService extends BaseAPIClass {
   public showLoader = false;
 
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
-    this.baseUrl = '/rols';
+    this.baseUrl = '/departamentos';
   }
 }
