@@ -36,7 +36,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/lista-producto'
+    },    {
+        id   : 'lista-departamento',
+        title: 'Departamento',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/lista-departamento'
     }
+
 ];
 export const compactNavigation: FuseNavigationItem[] = [
     {
