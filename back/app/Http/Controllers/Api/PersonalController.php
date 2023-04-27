@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Controllers\Api\Exception;
 use App\Models\Personal;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,8 +38,30 @@ class PersonalController extends Controller
             }
 
             $data = $this->getData($request);
+            $user = new User([
+                'email' => $request->username."@gmail.com",
+                'name' => $request->nombres,
+                'username' => $request->username,
+                'enabled' => 1,
+                'password' => bcrypt($request->password),
+              ]);
 
-            $personal = Personal::create($data);
+              $user->save();
+
+
+            // $personal = Personal::create($data);
+
+
+            $personal = new Personal();
+            $personal->nombres= $request->nombres;
+            $personal->apellidos= $request->apellidos;
+            $personal->carnet_identidad= $request->carnet_identidad;
+            $personal->fecha_nacimiento= $request->fecha_nacimiento;
+            $personal->fecha_registro = null; // now()->toDateTimeString('Y-m-d'); //2023-04-26
+            $personal->direccion= $request->direccion;
+            $personal->id_grupo_trabajo= NULL;
+            $personal->user_id= $user->id;
+            $personal->save();
 
             return $this->successResponse(
                 'Personal was successfully added.',
