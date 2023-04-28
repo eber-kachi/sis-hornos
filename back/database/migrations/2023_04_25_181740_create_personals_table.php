@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('direccion');
 
             $table->date('fecha_registro')->nullable() ;
-            $table->integer ('id_grupo_trabajo')->unsigned ()->nullable ();
-            $table->foreign ('id_grupo_trabajo')->references ('id')->on ('grupo_trabajo')->onDelete ('set null');
+            $table->foreignId('id_grupos_trabajos')
+                ->nullable()
+                ->constrained('grupos_trabajos')
+               ->onDelete ('set null');
 
             $table->foreignId('user_id')
                 ->nullable()

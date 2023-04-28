@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer('celular');
             $table->foreignId('departamento_id')
                 ->nullable()
-                ->constrained('departamentos');
+                ->constrained('departamentos')
+                ->onDelete ('set null');
 
             $table->timestamps();
         });
