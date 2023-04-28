@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
 use Illuminate\Http\Request;
 use App\Models\GruposTrabajo;
+use App\Models\Personal;
 use Illuminate\Support\Facades\Validator;
 
 class GruposTrabajoController extends Controller
@@ -35,9 +36,28 @@ class GruposTrabajoController extends Controller
                 return $this->errorResponse($validator->errors()->all());
             }
 
-            $data = $this->getData($request);
+            // $data = $this->getData($request);
 
-            $gruposTrabajos = GruposTrabajo::create($data);
+            // $gruposTrabajos = GruposTrabajo::create($data);
+
+
+            $gruposTrabajos = GruposTrabajo::create([
+                "nombre"=> $request->nombre,
+                "tipo_grupo_id"=> $request->tipo_grupo_id,
+                "cantidad_integrantes"=> 0,
+            ]);
+
+            $count=0;
+            foreach ($request->personales as $key => $value) {
+                // abort(500,$value );
+                $personal= Personal::findOrFail($value);
+                $personal->id_grupo_trabajo=$gruposTrabajos->id;
+                $personal->save();
+                $count++;
+            }
+
+            $gruposTrabajos->cantidad_integrantes =  $count;
+            $gruposTrabajos->save();
 
             return $this->successResponse(
 			    'Grupos Trabajos was successfully added.',
@@ -129,7 +149,7 @@ class GruposTrabajoController extends Controller
     {
         $rules = [
             "nombre" => "required|string",
-            "cantidad_integrantes" => "required|numeric|min:0",
+            "cantidad_integrantes" => "null|numeric|min:0",
             "tipo_grupo_id" => "required",
             'enabled' => 'boolean',
         ];
