@@ -2,36 +2,40 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MaterialService} from "@core/service/api/material.service";
-import {DepartamentoService} from "@core/service/api/departamento.service";
+import {ProductoService} from "@core/service/api/producto.service";
 
 @Component({
-  selector: 'app-create-departamento',
-  templateUrl: './create-departamento.component.html',
-  styleUrls: ['./create-departamento.component.scss']
+  selector: 'app-create-producto',
+  templateUrl: './create-producto.component.html',
+  styleUrls: ['./create-producto.component.scss']
 })
-export class CreateDepartamentoComponent {
+export class CreateProductoComponent {
     public formGroup: FormGroup;
     editing;
     constructor(
         private fb: FormBuilder,
-        public dialog: MatDialogRef<CreateDepartamentoComponent>,
+        public dialog: MatDialogRef<CreateProductoComponent>,
         @Inject(MAT_DIALOG_DATA) private dataEdit: any,
-        private materialService: DepartamentoService,
+        private materialService: ProductoService,
     ) {
         this.editing = dataEdit;
+        console.log('data editing', this.editing);
         if (dataEdit != null) {
             this.materialService.getById(dataEdit.id).subscribe((res) => {
+                console.log(res.data);
                 this.formGroup.patchValue(res.data);
             });
         }
     }
-
+    // 'caracteristicas',
+    // 'precio_unitario',
+    // 'costo',
     public ngOnInit(): void {
         this.formGroup = this.fb.group({
             nombre: ['', [Validators.required]],
-
-            // username: [{value: '', disabled: true}, [Validators.required]],
-            // password: ['megahornoroja', [Validators.required]],
+            caracteristicas: ['', []],
+            precio_unitario: ['', [Validators.required]],
+            costo: ['', [Validators.required]],
         });
     }
 

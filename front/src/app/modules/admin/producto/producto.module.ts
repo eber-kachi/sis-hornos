@@ -17,6 +17,10 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatInputModule} from "@angular/material/input";
+import { ListDepartamentoComponent } from './list-departamento/list-departamento.component';
+import { CreateDepartamentoComponent } from './list-departamento/create-departamento/create-departamento.component';
+import { ListClienteComponent } from './list-cliente/list-cliente.component';
+import { CreateClienteComponent } from './list-cliente/create-cliente/create-cliente.component';
 
 
 @NgModule({
@@ -24,7 +28,11 @@ import {MatInputModule} from "@angular/material/input";
         ListProductoComponent,
         ListMaterialComponent,
         CreateMaterialComponent,
-        CreateProductoComponent
+        CreateProductoComponent,
+        ListDepartamentoComponent,
+        CreateDepartamentoComponent,
+        ListClienteComponent,
+        CreateClienteComponent
     ],
     imports: [
         CommonModule,

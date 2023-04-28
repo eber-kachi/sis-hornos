@@ -7,7 +7,7 @@ import {
 } from '@angular/material/dialog';
 import { TipoGrupoService } from '@core/service/api/tipo-grupo.service';
 import { PersonalService } from '@core/service/api/personal.service';
-import { RolService } from '@core/service/rol.service';
+import { DepartamentoService } from '@core/service/departamento.service';
 import { MaterialService } from '@core/service/api/material.service';
 
 @Component({

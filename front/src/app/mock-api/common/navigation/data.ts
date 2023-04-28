@@ -42,6 +42,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/lista-departamento'
+    },
+    {
+        id   : 'lista-cliente',
+        title: 'Cliente',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/lista-cliente'
     }
 
 ];

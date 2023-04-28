@@ -1,37 +1,40 @@
-import { Component, Inject } from '@angular/core';
-import { TipoGrupoService } from '@core/service/api/tipo-grupo.service';
-import { GrupoTrabajoService } from '@core/service/api/grupo-trabajo.service';
-import { CreateGrupoComponent } from '@app/modules/admin/grupo/list-grupo/create-grupo/create-grupo.component';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { AlertSwallService } from '@core/service/alert-swall.service';
-import { AlertDialogComponent } from '@app/shared/alert-dialog/alert-dialog.component';
+import {Component, OnInit} from '@angular/core';
+import {PersonalService} from "@core/service/api/personal.service";
+import {CreateGrupoComponent} from "@app/modules/admin/grupo/list-grupo/create-grupo/create-grupo.component";
+import {AlertDialogComponent} from "@app/shared/alert-dialog/alert-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {CreatePersonalComponent} from "@app/modules/admin/user/list-personal/create-personal/create-personal.component";
 
 @Component({
-    selector: 'app-list-grupo',
-    templateUrl: './list-grupo.component.html',
-    styleUrls: ['./list-grupo.component.scss'],
+  selector: 'app-list-personal',
+  templateUrl: './list-personal.component.html',
+  styleUrls: ['./list-personal.component.scss']
 })
-export class ListGrupoComponent {
+export class ListPersonalComponent implements OnInit{
     displayedColumns: string[] = [
         'id',
-        'nombre',
-        'cantidad_integrantes',
+        'nombres',
+        'carnet_identidad',
+        'grupo_trabajo_nombre',
         'personales',
+        // 'grupo',
         'actions',
     ];
     dataSource = [];
-
     constructor(
-        private grupoTrabajoService: GrupoTrabajoService,
+        private personalService: PersonalService,
         public dialog: MatDialog
-    ) {}
+    ){
 
+    }
     ngOnInit(): void {
+        // this.usuario$ = this.usuarioService.getAll();
+
         this.list();
     }
 
-    list() {
-        this.grupoTrabajoService.getAll().subscribe((res) => {
+    list(){
+        this.personalService.getAll().subscribe((res) => {
             console.log(res);
             this.dataSource = res.data;
         });
@@ -39,7 +42,7 @@ export class ListGrupoComponent {
 
     edit(id: string | number | ArrayBufferView | ArrayBuffer) {
         console.log(id);
-        const dialogRef = this.dialog.open(CreateGrupoComponent, {
+        const dialogRef = this.dialog.open(CreatePersonalComponent, {
             width: '640px',
             disableClose: true,
             data: { id: id },
@@ -65,7 +68,7 @@ export class ListGrupoComponent {
         dialogRef.afterClosed().subscribe((confirmed: boolean) => {
             if (confirmed) {
                 console.log('borrando');
-                this.grupoTrabajoService
+                this.personalService
                     .delete(id as string)
                     .subscribe((res) => {
                         console.log(res);
@@ -78,11 +81,10 @@ export class ListGrupoComponent {
     }
 
     createNew() {
-        const dialogRef = this.dialog.open(CreateGrupoComponent, {
+        const dialogRef = this.dialog.open(CreatePersonalComponent, {
             width: '640px',
             disableClose: true,
         });
-
         dialogRef.afterClosed().subscribe((res) => {
             console.log('edit list', res);
             if (res) {

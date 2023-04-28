@@ -8,7 +8,7 @@
             <div
                 class="m-4 flex flex-row flex-wrap justify-between items-center content-center"
             >
-                <h3 class="float-left h-4 font-bold">Lista de grupos</h3>
+                <h3 class="float-left h-4 font-bold">Lista de Personal</h3>
                 <button mat-raised-button color="primary" (click)="createNew()">
                     Nuevo
                 </button>
@@ -23,37 +23,34 @@
                 </ng-container>
 
                 <!-- Name Column -->
-                <ng-container matColumnDef="nombre">
-                    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <ng-container matColumnDef="nombres">
+                    <th mat-header-cell *matHeaderCellDef>Nombres</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.nombre }}
+                        {{ element.nombres }}  {{ element.apellidos }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="carnet_identidad">
+                    <th mat-header-cell *matHeaderCellDef>C.I</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.carnet_identidad }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="grupo_trabajo_nombre">
+                    <th mat-header-cell *matHeaderCellDef>Grupo Nombre</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.grupo_trabajo_nombre ? element.grupo_trabajo_nombre : 'Sin Grupo' }}
                     </td>
                 </ng-container>
 
                 <!-- Weight Column -->
-                <ng-container matColumnDef="cantidad_integrantes">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Cantidad integrantes
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.cantidad_integrantes }}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="personales">
-                    <th mat-header-cell *matHeaderCellDef>Personal</th>
-                    <td mat-cell *matCellDef="let element">
-                        <!--                        {{ element.personales }}-->
-                        <span class="" *ngIf="element.personales.length == 0"
-                            >Sin personal</span
-                        >
-                        <ul *ngFor="let p of element.personales">
-                            {{
-                                p.nombres
-                            }}
-                        </ul>
-                    </td>
-                </ng-container>
+<!--                                <ng-container matColumnDef="personales">-->
+<!--                                    <th mat-header-cell *matHeaderCellDef>-->
+<!--                                       Personales-->
+<!--                                    </th>-->
+<!--                                    <td mat-cell *matCellDef="let element">-->
+<!--                                        {{ element.personales }}-->
+<!--                                    </td>-->
+<!--                                </ng-container>-->
 
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef>Acciones</th>

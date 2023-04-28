@@ -1,37 +1,38 @@
-import { Component, Inject } from '@angular/core';
-import { TipoGrupoService } from '@core/service/api/tipo-grupo.service';
-import { GrupoTrabajoService } from '@core/service/api/grupo-trabajo.service';
-import { CreateGrupoComponent } from '@app/modules/admin/grupo/list-grupo/create-grupo/create-grupo.component';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { AlertSwallService } from '@core/service/alert-swall.service';
-import { AlertDialogComponent } from '@app/shared/alert-dialog/alert-dialog.component';
+import {Component, OnInit} from '@angular/core';
+import {MaterialService} from "@core/service/api/material.service";
+import {MatDialog} from "@angular/material/dialog";
+import {CreateMaterialComponent} from "@app/modules/admin/producto/list-material/create-material/create-material.component";
+import {AlertDialogComponent} from "@app/shared/alert-dialog/alert-dialog.component";
+import {CreateProductoComponent} from "@app/modules/admin/producto/list-producto/create-producto/create-producto.component";
+import {ProductoService} from "@core/service/api/producto.service";
 
 @Component({
-    selector: 'app-list-grupo',
-    templateUrl: './list-grupo.component.html',
-    styleUrls: ['./list-grupo.component.scss'],
+  selector: 'app-list-producto',
+  templateUrl: './list-producto.component.html',
+  styleUrls: ['./list-producto.component.scss']
 })
-export class ListGrupoComponent {
+export class ListProductoComponent implements OnInit {
     displayedColumns: string[] = [
         'id',
         'nombre',
-        'cantidad_integrantes',
-        'personales',
+        'caracteristicas',
+        'precio_unitario',
+        'costo',
         'actions',
     ];
     dataSource = [];
-
     constructor(
-        private grupoTrabajoService: GrupoTrabajoService,
+        private materialService: ProductoService,
         public dialog: MatDialog
     ) {}
-
     ngOnInit(): void {
+        // this.usuario$ = this.usuarioService.getAll();
+
         this.list();
     }
 
     list() {
-        this.grupoTrabajoService.getAll().subscribe((res) => {
+        this.materialService.getAll().subscribe((res) => {
             console.log(res);
             this.dataSource = res.data;
         });
@@ -39,7 +40,7 @@ export class ListGrupoComponent {
 
     edit(id: string | number | ArrayBufferView | ArrayBuffer) {
         console.log(id);
-        const dialogRef = this.dialog.open(CreateGrupoComponent, {
+        const dialogRef = this.dialog.open(CreateProductoComponent, {
             width: '640px',
             disableClose: true,
             data: { id: id },
@@ -58,19 +59,17 @@ export class ListGrupoComponent {
                 message: 'Estas seguro que seas eliminar?',
                 buttonText: {
                     ok: 'Si',
-                    cancel: 'Canselar',
+                    cancel: 'Cancelar',
                 },
             },
         });
         dialogRef.afterClosed().subscribe((confirmed: boolean) => {
             if (confirmed) {
                 console.log('borrando');
-                this.grupoTrabajoService
-                    .delete(id as string)
-                    .subscribe((res) => {
-                        console.log(res);
-                        this.list();
-                    });
+                this.materialService.delete(id as string).subscribe((res) => {
+                    console.log(res);
+                    this.list();
+                });
             }
         });
 
@@ -78,11 +77,10 @@ export class ListGrupoComponent {
     }
 
     createNew() {
-        const dialogRef = this.dialog.open(CreateGrupoComponent, {
+        const dialogRef = this.dialog.open(CreateProductoComponent, {
             width: '640px',
             disableClose: true,
         });
-
         dialogRef.afterClosed().subscribe((res) => {
             console.log('edit list', res);
             if (res) {
@@ -90,4 +88,5 @@ export class ListGrupoComponent {
             }
         });
     }
+
 }

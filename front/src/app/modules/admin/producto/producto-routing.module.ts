@@ -4,6 +4,8 @@ import {ListTipoGrupoComponent} from "@app/modules/admin/grupo/list-tipo-grupo/l
 import {ListGrupoComponent} from "@app/modules/admin/grupo/list-grupo/list-grupo.component";
 import {ListMaterialComponent} from "@app/modules/admin/producto/list-material/list-material.component";
 import {ListProductoComponent} from "@app/modules/admin/producto/list-producto/list-producto.component";
+import {ListDepartamentoComponent} from "@app/modules/admin/producto/list-departamento/list-departamento.component";
+import {ListClienteComponent} from "@app/modules/admin/producto/list-cliente/list-cliente.component";
 
 const routes: Routes = [
     {
@@ -13,6 +15,14 @@ const routes: Routes = [
     {
         path: 'lista-producto',
         component: ListProductoComponent,
+    },
+    {
+        path: 'lista-departamento',
+        component: ListDepartamentoComponent,
+    },
+    {
+        path: 'lista-cliente',
+        component: ListClienteComponent,
     },
 ];
 
