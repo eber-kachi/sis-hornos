@@ -26,6 +26,23 @@ class PersonalController extends Controller
 
     }
 
+    public function singrupo()
+    {
+    // Obtener los personales que no tienen grupo de trabajo asignado
+    $personales = Personal::whereNull('id_grupo_trabajo')->get();
+
+    // Devolver los personales
+        $data = $personales->transform(function ($personal) {
+            return $this->transform($personal);
+        });
+
+        return $this->successResponse(
+            'Personalss were successfully retrieved.',
+            $data
+        );
+    
+    }
+
 
 
     public function store(Request $request)

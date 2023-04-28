@@ -28,6 +28,7 @@ class GruposTrabajoController extends Controller
 
 
 
+
     public function store(Request $request)
     {
         try {
@@ -127,6 +128,7 @@ class GruposTrabajoController extends Controller
     public function destroy($id)
     {
         try {
+            updatePersonal($id);
             $gruposTrabajos = GruposTrabajo::findOrFail($id);
             $gruposTrabajos->delete();
 
@@ -203,6 +205,12 @@ class GruposTrabajoController extends Controller
 
 
         ];
+    }
+
+
+   function updatePersonal($id_eliminado):void{
+
+        Personal::where ('id_grupo_trabajo', '=', $id_eliminado)->update ( ['id_grupo_trabajo' => null]);
     }
 
 
