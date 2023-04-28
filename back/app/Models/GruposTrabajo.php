@@ -14,8 +14,8 @@ class GruposTrabajo extends Model
         return $this->belongsTo(TipoGrupo::class,'tipo_grupo_id','id');
     }
 
-//    public function Personal(){
-//return $this->hasMany(Personal::class);
-  //  }
+   public function personales(){
+        return $this->hasMany(Personal::class,'id_grupo_trabajo');
+   }
 
 }

@@ -12,15 +12,16 @@ class GruposTrabajoController extends Controller
 {
     public function index()
     {
-        $gruposTrabajos = GruposTrabajo::with("tipoGrupos")->get();
+        $gruposTrabajos = GruposTrabajo::with(["tipoGrupos","personales"])->get();
 
-        $data = $gruposTrabajos->transform(function ($gruposTrabajos) {
-            return $this->transform($gruposTrabajos);
-        });
+        // $data = $gruposTrabajos->transform(function ($gruposTrabajos) {
+        //     return $this->transform($gruposTrabajos);
+        // });
+        // dd( $gruposTrabajos);
 
         return $this->successResponse(
             'gruposTrabajoss were successfully retrieved.',
-            $data
+            $gruposTrabajos
         );
 
     }
