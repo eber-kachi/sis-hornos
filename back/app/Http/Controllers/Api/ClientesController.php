@@ -1,65 +1,194 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Exception;
+use App\Http\Controllers\Api\Controller;
 use Illuminate\Http\Request;
+use App\Models\Cliente;
+use Illuminate\Support\Facades\Validator;
 
 class ClientesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $clientes = Cliente::with("tipoGrupos")->get();
+
+        $data = $clientes->transform(function ($clientes) {
+            return $this->transform($clientes);
+        });
+
+        return $this->successResponse(
+            'Clientess were successfully retrieved.',
+            $data
+        );
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        try {
+            $validator = $this->getValidator($request);
+
+            if ($validator->fails()) {
+                return $this->errorResponse($validator->errors()->all());
+            }
+
+            $data = $this->getData($request);
+
+            $clientes = Cliente::create($data);
+
+            return $this->successResponse(
+                'Clientes  was successfully added.',
+                $this->transform($clientes)
+            );
+        } catch (Exception $exception) {
+            return $this->errorResponse('Unexpected error occurred while trying to process your request.');
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified Clientes.
+     *
+     * @param int $id
+     *
+     * @return Illuminate\Http\Response
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $clientes = Cliente::findOrFail($id);
+
+        return $this->successResponse(
+            'Cliente  was successfully retrieved.',
+            $this->transform($clientes)
+        );
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified Clientes in the storage.
+     *
+     * @param int $id
+     * @param Illuminate\Http\Request $request
+     *
+     * @return Illuminate\Http\Response
      */
-    public function edit(string $id)
+    public function update($id, Request $request)
     {
-        //
+        try {
+            $validator = $this->getValidator($request);
+
+            if ($validator->fails()) {
+                return $this->errorResponse($validator->errors()->all());
+            }
+
+            $data = $this->getData($request);
+
+            $clientes = Cliente::findOrFail($id);
+            $clientes->update($data);
+
+            return $this->successResponse(
+                'Clientes  was successfully updated.',
+                $this->transform($clientes)
+            );
+        } catch (Exception $exception) {
+            return $this->errorResponse('Unexpected error occurred while trying to process your request.');
+        }
     }
 
     /**
-     * Update the specified resource in storage.
+     * Remove the specified Clientes from the storage.
+     *
+     * @param int $id
+     *
+     * @return Illuminate\Http\Response
      */
-    public function update(Request $request, string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            $clientes = Cliente::findOrFail($id);
+            $clientes->delete();
+
+            return $this->successResponse(
+                'Grupos de Trabajos was successfully deleted.',
+                $this->transform($clientes)
+            );
+        } catch (Exception $exception) {
+            return $this->errorResponse('Unexpected error occurred while trying to process your request.');
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Gets a new validator instance with the defined rules.
+     *
+     * @param Illuminate\Http\Request $request
+     *
+     * @return Illuminate\Support\Facades\Validator
      */
-    public function destroy(string $id)
+    protected function getValidator(Request $request)
     {
-        //
+        $rules = [
+            "nombre" => "required|string",
+            "cantidad_integrantes" => "required|numeric|min:0",
+            "tipo_grupo_id" => "required",
+            'enabled' => 'boolean',
+        ];
+
+        return Validator::make($request->all(), $rules);
     }
+
+
+    /**
+     * Get the request's data from the request.
+     *
+     * @param Illuminate\Http\Request\Request $request
+     * @return array
+     */
+    protected function getData(Request $request)
+    {
+        $rules = [
+
+            'nombres' =>'required|string|min:1|max:255',
+            'apellidos' => 'string|min:1|max:255',
+            'carnet_identidad' => 'required|string|min:1|max:255',
+            'provincia' => 'required|string|min:1|max:255',
+            'celular' =>'required|numeric|min:0',
+            'enabled' => 'boolean',
+        ];
+
+
+        $data = $request->validate($rules);
+
+
+        $data['enabled'] = $request->has('enabled');
+
+
+        return $data;
+    }
+
+    /**
+     * Transform the giving Clientes to public friendly array
+     *
+     * @param App\Models\Clientes $clientes
+     *
+     * @return array
+     */
+    protected function transform(Cliente $clientes)
+    {
+
+        return [
+            'id' => $clientes->id,
+            'nombres' => $clientes->nombres,
+            'apellidos' => $clientes->apellidos,
+            'carnet_identidad' => $clientes->carnet_identidad,
+            'fechaNacimiento' => $clientes->fechaNacimiento,
+            'provincia' => $clientes->provincia,
+            'celular' => $clientes->celular,
+            'departamento_id' => $clientes->departamento_id,
+            'depatamento_nombre'=> optional($clientes->departamentos)->nombre
+
+        ];
+    }
+
+
 }

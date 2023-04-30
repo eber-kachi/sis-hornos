@@ -20,11 +20,11 @@ return new class extends Migration
             $table->string('direccion');
 
             $table->date('fecha_registro')->nullable() ;
-            $table->foreignId('id_grupo_trabajo')
+            $table->foreignId('id_grupos_trabajos')
                 ->nullable()
                 ->constrained('grupos_trabajos')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+               ->onDelete ('set null');
+
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('users')
@@ -41,4 +41,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('personals');
     }
+
+
 };

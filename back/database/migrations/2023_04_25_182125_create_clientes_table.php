@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
+            $table->string('nombres');
+            $table->string('apellidos');
+            $table->string('carnet_identidad');
+            $table->date('fechaNacimiento');
+            $table->string('provincia');
+            $table->integer('celular');
+            $table->foreignId('departamento_id')
+                ->nullable()
+                ->constrained('departamentos')
+                ->onDelete ('set null');
+
             $table->timestamps();
         });
     }

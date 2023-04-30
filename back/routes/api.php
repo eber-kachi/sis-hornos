@@ -66,6 +66,7 @@ Route::group([
          ->name('api.rols.rol.destroy');
 });
 
+Route::get('/personal/sin-grupo', [PersonalController::class,'singrupo']);
 Route::resource('/tipo_grupos', TipoGrupoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/grupos_trabajo', GruposTrabajoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/personal', PersonalController::class, ['update','destroy','show','index'.'store']);
