@@ -1,30 +1,34 @@
-import {Component, Inject} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {TipoGrupoService} from "@core/service/api/tipo-grupo.service";
-import {PersonalService} from "@core/service/api/personal.service";
-import {DepartamentoService} from "@core/service/departamento.service";
-import {RolService} from "@core/service/rol.service";
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    MAT_DIALOG_DATA,
+    MatDialog,
+    MatDialogRef,
+} from '@angular/material/dialog';
+import { TipoGrupoService } from '@core/service/api/tipo-grupo.service';
+import { PersonalService } from '@core/service/api/personal.service';
+import { DepartamentoService } from '@core/service/departamento.service';
+import { RolService } from '@core/service/rol.service';
 
 @Component({
     selector: 'app-create-personal',
     templateUrl: './create-personal.component.html',
-    styleUrls: ['./create-personal.component.scss']
+    styleUrls: ['./create-personal.component.scss'],
 })
 export class CreatePersonalComponent {
     public formGroup: FormGroup;
 
     personales: any[] = [
-        {id: '1', nombre: 'ItSolutionStuff.com'},
-        {id: '2', nombre: 'HDTuto.com'},
-        {id: '3', nombre: 'Nicesnippets.com'},
-        {id: '4', nombre: 'laravel.com'},
-        {id: '5', nombre: 'npm.com'},
-        {id: '6', nombre: 'google.com'},
+        { id: '1', nombre: 'ItSolutionStuff.com' },
+        { id: '2', nombre: 'HDTuto.com' },
+        { id: '3', nombre: 'Nicesnippets.com' },
+        { id: '4', nombre: 'laravel.com' },
+        { id: '5', nombre: 'npm.com' },
+        { id: '6', nombre: 'google.com' },
     ];
     tipoGrupos: any[] = [];
 
-    roles:any[]=[];
+    roles: any[] = [];
     editing;
     constructor(
         private fb: FormBuilder,
@@ -32,7 +36,7 @@ export class CreatePersonalComponent {
         @Inject(MAT_DIALOG_DATA) dataEdit: any,
         private tipoGrupoService: TipoGrupoService,
         private personalService: PersonalService,
-        private rolService: RolService,
+        private rolService: RolService
     ) {
         console.log('data editing', dataEdit);
         this.editing = dataEdit;
@@ -52,7 +56,7 @@ export class CreatePersonalComponent {
             fecha_nacimiento: ['', [Validators.required]],
             direccion: ['', [Validators.required]],
             rol_id: ['', [Validators.required]],
-            username: [{value: '', disabled: true}, [Validators.required]],
+            username: [{ value: '', disabled: true }, [Validators.required]],
             password: ['megahornoroja', [Validators.required]],
         });
 
@@ -65,9 +69,11 @@ export class CreatePersonalComponent {
         this.listTipoGrupos();
         this.listRols();
 
-        this.formGroup.get('carnet_identidad').valueChanges.subscribe(username => {
-            this.formGroup.get('username').patchValue(username);
-        })
+        this.formGroup
+            .get('carnet_identidad')
+            .valueChanges.subscribe((username) => {
+                this.formGroup.get('username').patchValue(username);
+            });
     }
 
     closeDialog() {
@@ -79,7 +85,7 @@ export class CreatePersonalComponent {
             return;
         }
         this.formGroup.disable();
-        console.log(this.formGroup.getRawValue())
+        console.log(this.formGroup.getRawValue());
 
         if (this.editing != null) {
             this.personalService
@@ -108,15 +114,14 @@ export class CreatePersonalComponent {
         }
     }
 
-    formChanged() {
-    }
+    formChanged() {}
 
-    // listPersonals() {
-    //     this.personalService.getAll().subscribe((res) => {
-    //         console.log(res);
-    //         this.personales = [];
-    //     });
-    // }
+    listPersonals() {
+        this.personalService.getAll().subscribe((res) => {
+            console.log(res);
+            this.personales = res.data;
+        });
+    }
 
     listTipoGrupos() {
         this.tipoGrupoService.getAll().subscribe((res) => {
@@ -127,14 +132,14 @@ export class CreatePersonalComponent {
     }
 
     setDate(value: any) {
-        console.log(value)
+        console.log(value);
     }
 
-    listRols(){
-        this.rolService.getAll().subscribe(res=>{
-            console.log(res)
+    listRols() {
+        this.rolService.getAll().subscribe((res) => {
+            console.log(res);
 
-            this.roles=res.data;
-        })
+            this.roles = res.data;
+        });
     }
 }

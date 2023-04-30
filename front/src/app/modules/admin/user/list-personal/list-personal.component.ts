@@ -1,22 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {PersonalService} from "@core/service/api/personal.service";
-import {CreateGrupoComponent} from "@app/modules/admin/grupo/list-grupo/create-grupo/create-grupo.component";
-import {AlertDialogComponent} from "@app/shared/alert-dialog/alert-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {CreatePersonalComponent} from "@app/modules/admin/user/list-personal/create-personal/create-personal.component";
+import { Component, OnInit } from '@angular/core';
+import { PersonalService } from '@core/service/api/personal.service';
+import { CreateGrupoComponent } from '@app/modules/admin/grupo/list-grupo/create-grupo/create-grupo.component';
+import { AlertDialogComponent } from '@app/shared/alert-dialog/alert-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CreatePersonalComponent } from '@app/modules/admin/user/list-personal/create-personal/create-personal.component';
 
 @Component({
-  selector: 'app-list-personal',
-  templateUrl: './list-personal.component.html',
-  styleUrls: ['./list-personal.component.scss']
+    selector: 'app-list-personal',
+    templateUrl: './list-personal.component.html',
+    styleUrls: ['./list-personal.component.scss'],
 })
-export class ListPersonalComponent implements OnInit{
+export class ListPersonalComponent implements OnInit {
     displayedColumns: string[] = [
         'id',
         'nombres',
         'carnet_identidad',
         'grupo_trabajo_nombre',
-        'personales',
+        // 'personales',
         // 'grupo',
         'actions',
     ];
@@ -24,16 +24,14 @@ export class ListPersonalComponent implements OnInit{
     constructor(
         private personalService: PersonalService,
         public dialog: MatDialog
-    ){
-
-    }
+    ) {}
     ngOnInit(): void {
         // this.usuario$ = this.usuarioService.getAll();
 
         this.list();
     }
 
-    list(){
+    list() {
         this.personalService.getAll().subscribe((res) => {
             console.log(res);
             this.dataSource = res.data;
@@ -68,12 +66,10 @@ export class ListPersonalComponent implements OnInit{
         dialogRef.afterClosed().subscribe((confirmed: boolean) => {
             if (confirmed) {
                 console.log('borrando');
-                this.personalService
-                    .delete(id as string)
-                    .subscribe((res) => {
-                        console.log(res);
-                        this.list();
-                    });
+                this.personalService.delete(id as string).subscribe((res) => {
+                    console.log(res);
+                    this.list();
+                });
             }
         });
 
