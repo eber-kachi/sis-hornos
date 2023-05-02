@@ -27,7 +27,7 @@ class User  extends Authenticatable
     */
     protected $primaryKey = 'id';
     protected $keyType = 'string';
-    public $incrementing = false;
+    // public $incrementing = false;
 
 
     /**
@@ -69,23 +69,27 @@ class User  extends Authenticatable
      *
      * @return App\Models\UserRol
      */
-    public function userRol()
-    {
-        return $this->hasOne('App\Models\UserRol','user_id','id');
-    }
+    // public function userRol()
+    // {
+    //     return $this->hasOne('App\Models\UserRol','user_id','id');
+    // }
 
-    public function rols()
-    {
-        // return $this->belongsTo('App\Models\Rol');
-        return $this->belongsToMany('App\Models\Rol', 'user_rols', 'user_id','rol_id');
-//        return $this->belongsToMany('App\Models\Rol', 'user_rols', 'rol_id','user_id');
-    }
+//     public function rols()
+//     {
+//         // return $this->belongsTo('App\Models\Rol');
+//         return $this->belongsToMany('App\Models\Rol', 'user_rols', 'user_id','rol_id');
+// //        return $this->belongsToMany('App\Models\Rol', 'user_rols', 'rol_id','user_id');
+//     }
 
     public function personales(){
         return $this->hasMany(Personal::class,'user_id');
    }
 
-
+   public function rol()
+   {
+       return $this->belongsTo('App\Models\Rol','rol_id');
+       //Or: return $this->belongsTo(Profile::class, 'foreign_key');
+   }
 
 
 

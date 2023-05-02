@@ -40,7 +40,7 @@ class PersonalController extends Controller
             'Personalss were successfully retrieved.',
             $data
         );
-    
+
     }
 
 
@@ -98,11 +98,12 @@ class PersonalController extends Controller
      */
     public function show($id)
     {
-        $personal = Personal::findOrFail($id);
+        $personal = Personal::with('user','user.rols')->findOrFail($id);
 
         return $this->successResponse(
             'Personal was successfully retrieved.',
-            $this->transform($personal)
+            $personal
+            // $this->transform($personal)
         );
     }
 

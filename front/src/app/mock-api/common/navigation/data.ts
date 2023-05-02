@@ -10,6 +10,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/example'
     },
     {
+        id   : 'lista-rol',
+        title: 'Roles',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/lista-rol'
+    },
+    {
         id   : 'list-grupo-personal',
         title: 'Grupo Personal',
         type : 'basic',

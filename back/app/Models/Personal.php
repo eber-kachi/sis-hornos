@@ -18,7 +18,7 @@ class Personal extends Model
     }
 
    public function User(){
-        return $this->belongsTo('App\Models\UserRol','user_id','id');
+        return $this->belongsTo('App\Models\User','user_id','id');
     }
 
 
