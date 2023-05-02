@@ -38,12 +38,22 @@ export class CreatePersonalComponent {
         private personalService: PersonalService,
         private rolService: RolService
     ) {
+        this.listRols();
         console.log('data editing', dataEdit);
         this.editing = dataEdit;
         if (dataEdit != null) {
             this.personalService.getById(dataEdit.id).subscribe((res) => {
-                console.log(res.data);
-                this.formGroup.patchValue(res.data);
+                console.log('editando =>',res.data);
+                this.formGroup.patchValue({
+                    'nombres': res.data.nombres,
+                    'apellidos': res.data.apellidos,
+                    'carnet_identidad': res.data.carnet_identidad,
+                    'fecha_nacimiento': res.data.fecha_nacimiento,
+                    'direccion': res.data.direccion,
+                    'username': res.data.user.username,
+                    'password': res.data?.password,
+                    'rol_id': ''+res.data?.user.rol_id,
+                });
             });
         }
     }
@@ -57,17 +67,17 @@ export class CreatePersonalComponent {
             direccion: ['', [Validators.required]],
             rol_id: ['', [Validators.required]],
             username: [{ value: '', disabled: true }, [Validators.required]],
-            password: ['megahornoroja', [Validators.required]],
+            password: ['megahornoroja'],
         });
 
-        this.formGroup.valueChanges.subscribe((res) => {
-            console.log(res);
-        });
+        // this.formGroup.valueChanges.subscribe((res) => {
+        //     console.log(res);
+        // });
 
         // this.listPersonals();
 
         this.listTipoGrupos();
-        this.listRols();
+
 
         this.formGroup
             .get('carnet_identidad')
@@ -118,27 +128,26 @@ export class CreatePersonalComponent {
 
     listPersonals() {
         this.personalService.getAll().subscribe((res) => {
-            console.log(res);
+            // console.log(res);
             this.personales = res.data;
         });
     }
 
     listTipoGrupos() {
         this.tipoGrupoService.getAll().subscribe((res) => {
-            console.log(res);
+            // console.log(res);
             this.tipoGrupos = res.data;
             // this.personales=[];
         });
     }
 
     setDate(value: any) {
-        console.log(value);
+        // console.log(value);
     }
 
     listRols() {
         this.rolService.getAll().subscribe((res) => {
-            console.log(res);
-
+            // console.log(res);
             this.roles = res.data;
         });
     }

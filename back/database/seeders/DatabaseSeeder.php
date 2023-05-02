@@ -32,13 +32,13 @@ class DatabaseSeeder extends Seeder
         $user->enabled = 1;
         $user->password = Hash::make('123456789');
         $user->remember_token = Str::random(10);
-        // $user->rol_id = 1;
+        $user->rol_id = 1;
         $user->save();
 
-        UserRol::create([
-            "rol_id" => 1,
-            "user_id" => 1
-        ]);
+        // UserRol::create([
+        //     "rol_id" => 1,
+        //     "user_id" => 1
+        // ]);
 
 
 

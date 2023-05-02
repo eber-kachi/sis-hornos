@@ -61,9 +61,11 @@ class PersonalController extends Controller
                 'username' => $request->username,
                 'enabled' => 1,
                 'password' => bcrypt($request->password),
+                'rol_id' => $request->rol_id,
               ]);
 
               $user->save();
+
 
 
             // $personal = Personal::create($data);
@@ -98,7 +100,7 @@ class PersonalController extends Controller
      */
     public function show($id)
     {
-        $personal = Personal::with('user','user.rols')->findOrFail($id);
+        $personal = Personal::with('user','user.rol')->findOrFail($id);
 
         return $this->successResponse(
             'Personal was successfully retrieved.',

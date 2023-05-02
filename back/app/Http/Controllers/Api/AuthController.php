@@ -51,7 +51,7 @@ class AuthController extends Controller
         'ok' => true,
         'user' => Auth::user(),
         // 'roles' => User::find(Auth::user()->id)->rols()->get(),
-        'roles' => Auth::user()->rols()->get(),
+        'roles' => Auth::user()->rol()->get(),
         // 'member' => Auth::user()->member()->get(),
         // 'member' => Auth::user()->member()->with('parcels')->get(),
         // 'member' => Auth::user()->with(['member' => function($q) {
