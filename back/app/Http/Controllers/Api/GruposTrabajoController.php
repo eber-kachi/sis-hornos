@@ -128,7 +128,7 @@ class GruposTrabajoController extends Controller
     public function destroy($id)
     {
         try {
-            updatePersonal($id);
+            $this->updatePersonal($id);
             $gruposTrabajos = GruposTrabajo::findOrFail($id);
             $gruposTrabajos->delete();
 
