@@ -58,7 +58,7 @@ export class ListGrupoComponent {
                 message: 'Estas seguro que seas eliminar?',
                 buttonText: {
                     ok: 'Si',
-                    cancel: 'Canselar',
+                    cancel: 'Cancelar',
                 },
             },
         });

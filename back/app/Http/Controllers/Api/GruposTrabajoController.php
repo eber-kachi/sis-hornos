@@ -57,9 +57,11 @@ class GruposTrabajoController extends Controller
                 $personal->save();
                 $count++;
             }
+            $gruposTrabajos = GruposTrabajo::findOrFail($gruposTrabajos->id);
 
-            $gruposTrabajos->cantidad_integrantes =  $count;
-            $gruposTrabajos->save();
+            $gruposTrabajos->update([
+                "cantidad_integrantes" =>  $count
+            ]);
 
             return $this->successResponse(
 			    'Grupos Trabajos was successfully added.',
@@ -81,9 +83,14 @@ class GruposTrabajoController extends Controller
     {
         $gruposTrabajos = GruposTrabajo::findOrFail($id);
 
+        $personales= Personal::where('id_grupo_trabajo','=',$gruposTrabajos->id)->get();
+
         return $this->successResponse(
 		    'Grupos Trabajos was successfully retrieved.',
-		    $this->transform($gruposTrabajos)
+		    [
+                "grupo_trabajo"=> $gruposTrabajos,
+                "personales"=> $personales,
+            ]
 		);
     }
 
@@ -98,16 +105,40 @@ class GruposTrabajoController extends Controller
     public function update($id, Request $request)
     {
         try {
-            $validator = $this->getValidator($request);
+            // $validator = $this->getValidator($request);
 
-            if ($validator->fails()) {
-                return $this->errorResponse($validator->errors()->all());
-            }
+            // if ($validator->fails()) {
+            //     return $this->errorResponse($validator->errors()->all());
+            // }
 
-            $data = $this->getData($request);
+            // $data = $this->getData($request);
 
             $gruposTrabajos = GruposTrabajo::findOrFail($id);
-            $gruposTrabajos->update($data);
+            // $gruposTrabajos->update($data);
+
+            $personales= Personal::where('id_grupo_trabajo','=',$gruposTrabajos->id)->get();
+            foreach ($personales as $per) {
+                $personal= Personal::findOrFail($per->id);
+                $personal->id_grupo_trabajo = null;
+                $personal->save();
+            }
+
+            $count=0;
+            foreach ($request->personales as $key => $value) {
+
+                $personal= Personal::findOrFail($value);
+                $personal->id_grupo_trabajo = $gruposTrabajos->id;
+                $personal->save();
+                $count++;
+            }
+
+            $gruposTrabajos = GruposTrabajo::findOrFail($gruposTrabajos->id);
+
+            $gruposTrabajos->update([
+                "nombre"=> $request->nombre,
+                "tipo_grupo_id"=> $request->tipo_grupo_id,
+                "cantidad_integrantes" =>  $count
+            ]);
 
             return $this->successResponse(
 			    'Grupos Trabajos was successfully updated.',
