@@ -126,6 +126,8 @@ class PersonalController extends Controller
             $data = $this->getData($request);
 
             $personal = Personal::findOrFail($id);
+            $this->transform($personal);
+
             $personal->update($data);
 
             return $this->successResponse(
@@ -236,6 +238,7 @@ class PersonalController extends Controller
             'fecha_registro' => $personal->fecha_registro,
             'id_grupo_trabajo' => $personal->id_grupo_trabajo,
             'user_id' => $personal->user_id,
+            'rol_id'=>optional($personal->user)->rol_id,
             'grupo_trabajo_nombre'=> optional($personal->GruposTrabajo)->nombre
 
 

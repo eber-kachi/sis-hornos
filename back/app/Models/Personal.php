@@ -16,9 +16,10 @@ class Personal extends Model
     public function GruposTrabajo(){
         return $this->belongsTo(GruposTrabajo::class,'id_grupo_trabajo','id');
     }
-   // public function User(){
-     //   return $this->hasOne(User::class,'user_id','id');
-    //}
+
+   public function User(){
+        return $this->belongsTo('App\Models\UserRol','user_id','id');
+    }
 
 
 
