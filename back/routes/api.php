@@ -56,13 +56,13 @@ Route::group([
 ], function () {
     Route::get('/', [RolsController::class, 'index'])
          ->name('api.rols.rol.index');
-    Route::get('/show/{rol}',[RolsController::class, 'show'])
+    Route::get('/{rol}',[RolsController::class, 'show'])
          ->name('api.rols.rol.show');
     Route::post('/', [RolsController::class, 'store'])
          ->name('api.rols.rol.store');
-    Route::put('rol/{rol}', [RolsController::class, 'update'])
+    Route::put('/{rol}', [RolsController::class, 'update'])
          ->name('api.rols.rol.update');
-    Route::delete('/rol/{rol}',[RolsController::class, 'destroy'])
+    Route::delete('/{rol}',[RolsController::class, 'destroy'])
          ->name('api.rols.rol.destroy');
 });
 

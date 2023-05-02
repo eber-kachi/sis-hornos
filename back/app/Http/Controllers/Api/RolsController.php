@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Controller;
 use App\Models\Rol;
-use App\Http\Controllers\Api\Illuminate\Http\Request;
+use Illuminate\Http\Request;
+// use App\Http\Controllers\Api\Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 
@@ -60,13 +61,17 @@ class RolsController extends Controller
         try {
             $validator = $this->getValidator($request);
 
-            if ($validator->fails()) {
-                return $this->errorResponse($validator->errors()->all());
-            }
+            // if ($validator->fails()) {
+            //     return $this->errorResponse($validator->errors()->all());
+            // }
 
-            $data = $this->getData($request);
-            
-            $rol = Rol::create($data);
+            // $data = $this->getData($request);
+
+            $rol = Rol::create([
+                "name"=> strtolower(trim($request->display_name)) ,
+                "display_name"=> mb_convert_case($request->display_name, MB_CASE_TITLE, "UTF-8") ,
+                "enabled"=> 1,
+            ]);
 
             return $this->successResponse(
 			    'Rol was successfully added.',
@@ -105,16 +110,20 @@ class RolsController extends Controller
     public function update($id, Request $request)
     {
         try {
-            $validator = $this->getValidator($request);
+            // $validator = $this->getValidator($request);
 
-            if ($validator->fails()) {
-                return $this->errorResponse($validator->errors()->all());
-            }
+            // if ($validator->fails()) {
+            //     return $this->errorResponse($validator->errors()->all());
+            // }
 
-            $data = $this->getData($request);
-            
+            // $data = $this->getData($request);
+
             $rol = Rol::findOrFail($id);
-            $rol->update($data);
+            $rol->update([
+                "name"=> strtolower(trim($request->display_name)) ,
+                "display_name"=> mb_convert_case($request->display_name, MB_CASE_TITLE, "UTF-8") ,
+                "enabled"=> 1,
+            ]);
 
             return $this->successResponse(
 			    'Rol was successfully updated.',
@@ -146,7 +155,7 @@ class RolsController extends Controller
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }
-    
+
     /**
      * Gets a new validator instance with the defined rules.
      *
@@ -159,17 +168,17 @@ class RolsController extends Controller
         $rules = [
             'name' => 'required|string|min:1|max:255',
             'display_name' => 'required|string|min:1|max:255',
-            'enabled' => 'boolean', 
+            'enabled' => 'boolean',
         ];
 
         return Validator::make($request->all(), $rules);
     }
 
-    
+
     /**
      * Get the request's data from the request.
      *
-     * @param Illuminate\Http\Request\Request $request 
+     * @param Illuminate\Http\Request\Request $request
      * @return array
      */
     protected function getData(Request $request)
@@ -177,10 +186,10 @@ class RolsController extends Controller
         $rules = [
                 'name' => 'required|string|min:1|max:255',
             'display_name' => 'required|string|min:1|max:255',
-            'enabled' => 'boolean', 
+            'enabled' => 'boolean',
         ];
 
-        
+
         $data = $request->validate($rules);
 
 
@@ -203,7 +212,7 @@ class RolsController extends Controller
             'id' => $rol->id,
             'name' => $rol->name,
             'display_name' => $rol->display_name,
-            'enabled' => ($rol->enabled) ? 'Yes' : 'No',
+            'enabled' => ($rol->enabled) ? 'Si' : 'No',
         ];
     }
 

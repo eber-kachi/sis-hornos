@@ -19,6 +19,8 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
+import { ListRolComponent } from './list-rol/list-rol.component';
+import { CreateRolComponent } from './list-rol/create-rol/create-rol.component';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import {MatNativeDateModule} from "@angular/material/core";
     ListUserComponent,
     CreateUserComponent,
     ListPersonalComponent,
-    CreatePersonalComponent
+    CreatePersonalComponent,
+    ListRolComponent,
+    CreateRolComponent
   ],
   imports: [
     CommonModule,

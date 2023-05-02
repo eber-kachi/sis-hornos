@@ -1,0 +1,44 @@
+
+<h1 mat-dialog-title>Crear rol</h1>
+<div mat-dialog-content>
+    <form [formGroup]="formGroup" (change)="formChanged()">
+        <div class="grid grid-cols-1 gap-2 md:grid-cols-1">
+            <div class="">
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Nombre</mat-label>
+                    <input
+                        matInput
+                        placeholder="Nombre"
+                        formControlName="display_name"
+                    />
+                    <mat-error
+                        *ngIf="formGroup.controls.display_name.hasError('required')"
+                    >
+                        nombre es requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button
+        mat-raised-button
+        type="submit"
+        color="primary"
+        class="Update-btn"
+        (click)="onSave()"
+    >
+        Guardar
+    </button>
+    <button
+        mat-raised-button
+        type="button"
+        class="Discard-btn"
+        (click)="closeDialog()"
+    >
+        Cancelar
+    </button>
+</div>
