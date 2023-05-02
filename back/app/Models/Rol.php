@@ -60,11 +60,13 @@ class Rol extends Model
         return $this->hasOne('App\Models\UserRol','rol_id','id');
     }
 
-    public function user()
+    public function users()
     {
         // return $this->hasMany('App\Models\User');
-        return $this->belongsToMany('App\Models\User', 'user_rols');
+        return $this->hasMany('App\Models\User');
+        // return $this->belongsToMany('App\Models\User', 'user_rols');
     }
+
 
 
 }
