@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Exception;
+use App\Http\Controllers\Api\Controller;
 use App\Models\MaterialProductos;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class MaterialProductosController extends Controller
 {
@@ -17,7 +20,7 @@ class MaterialProductosController extends Controller
         });
 
         return $this->successResponse(
-            'Materials were successfully retrieved.',
+            'MaterialProductos were successfully retrieved.',
             $data
            // $material_producto
         );
@@ -96,7 +99,7 @@ class MaterialProductosController extends Controller
         }
     }
 
-    /**
+    /**successResponse 
      * Remove the specified MaterialProductoss from the storage.
      *
      * @param int $id
@@ -110,7 +113,7 @@ class MaterialProductosController extends Controller
             $material_producto->delete();
 
             return $this->successResponse(
-                'Materiles was successfully deleted.',
+                'MaterialProductos was successfully deleted.',
                 $this->transform($material_producto)
             );
         } catch (Exception $exception) {
@@ -128,7 +131,10 @@ class MaterialProductosController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            "nombre" => "required|string",
+            "producto_id" => "required",
+            "material_id" => "required",
+            "cantidad" => "nullable",
+            "descripcion" => "nullable",
             "kg" => "nullable",
             "largo_cm" => "nullable",
             "ancho_cm" => "nullable",
@@ -149,13 +155,17 @@ class MaterialProductosController extends Controller
     protected function getData(Request $request)
     {
         $rules = [
-            "nombre" => "required|string",
+            "producto_id" => "required",
+            "material_id" => "required",
+            "cantidad" => "nullable",
+            "descripcion" => "nullable",
             "kg" => "nullable",
             "largo_cm" => "nullable",
             "ancho_cm" => "nullable",
             "cm2" => "nullable",
             'enabled' => 'boolean',
 
+        
         ];
 
 
@@ -171,7 +181,7 @@ class MaterialProductosController extends Controller
     /**
      * Transform the giving MaterialProductoss to public friendly array
      *
-     * @param App\Models\Materials $material_producto
+     * @param App\Models\MaterialProductos $material_producto
      *
      * @return array
      */
@@ -180,10 +190,13 @@ class MaterialProductosController extends Controller
 
         return [
             'id' => $material_producto->id,
-            'nombre' => $material_producto->nombre,
+            'cantidad' => $material_producto->cantidad,
+            'descripcion' => $material_producto->descripcion,
             'kg' => $material_producto->kg,
-            'ancho_cm' => $material_producto->ancho_cm,
             'largo_cm' => $material_producto->largo_cm,
+            'ancho_cm' => $material_producto->ancho_cm,
+            'producto_id' => $material_producto->producto_id,
+            'material_id' => $material_producto->material_id,
             'cm2' => $material_producto->cm2,
 
 

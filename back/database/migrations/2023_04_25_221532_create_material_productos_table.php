@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('material_productos', function (Blueprint $table) {
             $table->id();
-            $table->integer('cantidad');
-            $table->string('descripcion');
+            $table->integer('cantidad')->nullable();
+            $table->string('descripcion')->nullable();
             $table->float('kg')->nullable();
             $table->float('largo_cm')->nullable();
             $table->float('ancho_cm')->nullable();
