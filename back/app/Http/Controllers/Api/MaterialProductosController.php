@@ -2,26 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Exception;
-use App\Http\Controllers\Api\Controller;
-use App\Models\Material;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Models\MaterialProductos;
 
-class MaterialesController extends Controller
+class MaterialProductosController extends Controller
 {
     public function index()
     {
-        $materiales = Material::paginate(25);
+        $material_producto = MaterialProductos::paginate(25);
 
-        $data = $materiales->transform(function ($materiales) {
-            return $this->transform($materiales);
+        $data = $material_producto->transform(function ($material_producto) {
+            return $this->transform($material_producto);
         });
 
         return $this->successResponse(
             'Materials were successfully retrieved.',
             $data
-           // $materiales
+           // $material_producto
         );
 
     }
@@ -39,11 +37,11 @@ class MaterialesController extends Controller
 
             $data = $this->getData($request);
 
-            $materiales = Material::create($data);
+            $material_producto = MaterialProductos::create($data);
 
             return $this->successResponse(
                 'Grupos Trabajos was successfully added.',
-                $this->transform($materiales)
+                $this->transform($material_producto)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -51,7 +49,7 @@ class MaterialesController extends Controller
     }
 
     /**
-     * Display the specified Materials.
+     * Display the specified MaterialProductoss.
      *
      * @param int $id
      *
@@ -59,16 +57,16 @@ class MaterialesController extends Controller
      */
     public function show($id)
     {
-        $materiales = Material::findOrFail($id);
+        $material_producto = MaterialProductos::findOrFail($id);
 
         return $this->successResponse(
             'Grupos Trabajos was successfully retrieved.',
-            $this->transform($materiales)
+            $this->transform($material_producto)
         );
     }
 
     /**
-     * Update the specified Materials in the storage.
+     * Update the specified MaterialProductoss in the storage.
      *
      * @param int $id
      * @param Illuminate\Http\Request $request
@@ -86,12 +84,12 @@ class MaterialesController extends Controller
 
             $data = $this->getData($request);
 
-            $materiales = Material::findOrFail($id);
-            $materiales->update($data);
+            $material_producto = MaterialProductos::findOrFail($id);
+            $material_producto->update($data);
 
             return $this->successResponse(
                 'Grupos Trabajos was successfully updated.',
-                $this->transform($materiales)
+                $this->transform($material_producto)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -99,7 +97,7 @@ class MaterialesController extends Controller
     }
 
     /**
-     * Remove the specified Materials from the storage.
+     * Remove the specified MaterialProductoss from the storage.
      *
      * @param int $id
      *
@@ -108,12 +106,12 @@ class MaterialesController extends Controller
     public function destroy($id)
     {
         try {
-            $materiales = Material::findOrFail($id);
-            $materiales->delete();
+            $material_producto = MaterialProductos::findOrFail($id);
+            $material_producto->delete();
 
             return $this->successResponse(
                 'Materiles was successfully deleted.',
-                $this->transform($materiales)
+                $this->transform($material_producto)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -171,24 +169,27 @@ class MaterialesController extends Controller
     }
 
     /**
-     * Transform the giving Materials to public friendly array
+     * Transform the giving MaterialProductoss to public friendly array
      *
-     * @param App\Models\Materials $materiales
+     * @param App\Models\Materials $material_producto
      *
      * @return array
      */
-    protected function transform(Material $materiales)
+    protected function transform(MaterialProductos $material_producto)
     {
 
         return [
-            'id' => $materiales->id,
-            'nombre' => $materiales->nombre,
-            'kg' => $materiales->kg,
-            'ancho_cm' => $materiales->ancho_cm,
-            'largo_cm' => $materiales->largo_cm,
-            'cm2' => $materiales->cm2,
+            'id' => $material_producto->id,
+            'nombre' => $material_producto->nombre,
+            'kg' => $material_producto->kg,
+            'ancho_cm' => $material_producto->ancho_cm,
+            'largo_cm' => $material_producto->largo_cm,
+            'cm2' => $material_producto->cm2,
 
 
         ];
     }
+
+
+
 }

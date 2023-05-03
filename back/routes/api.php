@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\TipoGrupoController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GruposTrabajoController;
 use App\Http\Controllers\Api\MaterialesController;
+use App\Http\Controllers\Api\MaterialProductosController;
 use App\Http\Controllers\Api\PersonalController;
 
 /*
@@ -72,6 +73,8 @@ Route::resource('/grupos_trabajo', GruposTrabajoController::class, ['update','de
 Route::resource('/personal', PersonalController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/materiales', MaterialesController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/productos', ProductosController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/materiales_productos', MaterialProductosController::class, ['update','destroy','show','index'.'store']);
+
 Route::resource('/departamentos', DepartamentosController::class, ['update','destroy','show','index'.'store']);
 
 

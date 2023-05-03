@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->integer('cantidad');
             $table->string('descripcion');
-            $table->integer('largo');
-
-            $table->integer('ancho');
-            $table->integer('cm');
-
-            $table->integer('cm2');
+            $table->float('kg')->nullable();
+            $table->float('largo_cm')->nullable();
+            $table->float('ancho_cm')->nullable();
+            $table->float('cm2')->nullable()->change();
+            $table->foreignId('producto_id')->constrained('productos');
+            $table->foreignId('material_id')->constrained('materials');
             $table->timestamps();
         });
     }

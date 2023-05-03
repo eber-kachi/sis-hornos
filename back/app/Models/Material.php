@@ -5,8 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 class Material extends Model
 {
-    protected $fillable = ['nombre', 'kg','largo','ancho','cm','cm2'];
+    protected $fillable = ['nombre', 'kg','largo_cm','ancho_cm','cm2'];
     use HasFactory;
+
+    public function productos(): BelongsToMany
+    {
+        return $this->belongsToMany(Producto::class, 'material_productos')
+                    ->withPivot('cantidad', 'descripcion')
+                    ->withTimestamps();
+    }
+
 }
