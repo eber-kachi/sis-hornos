@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
 use App\Models\MaterialProductos;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,6 +27,18 @@ class MaterialProductosController extends Controller
         );
 
     }
+
+    public function indexProductoMaterial()
+{
+    $data= Producto::with('materials')->get();
+    
+
+    return $this->successResponse(
+        'MaterialProductos were successfully retrieved.',
+        $data
+       // $material_producto
+    );
+}
 
 
 
@@ -99,7 +112,7 @@ class MaterialProductosController extends Controller
         }
     }
 
-    /**successResponse 
+    /**successResponse
      * Remove the specified MaterialProductoss from the storage.
      *
      * @param int $id
@@ -165,7 +178,7 @@ class MaterialProductosController extends Controller
             "cm2" => "nullable",
             'enabled' => 'boolean',
 
-        
+
         ];
 
 

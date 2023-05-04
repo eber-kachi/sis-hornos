@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Api\ClientesController;
 use App\Http\Controllers\Api\DepartamentosController;
 use App\Http\Controllers\Api\ProductosController;
 use Illuminate\Http\Request;
@@ -74,8 +75,12 @@ Route::resource('/personal', PersonalController::class, ['update','destroy','sho
 Route::resource('/materiales', MaterialesController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/productos', ProductosController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/materiales_productos', MaterialProductosController::class, ['update','destroy','show','index'.'store']);
+Route::get('/indexProductoMaterial',[MaterialProductosController::class,'indexProductoMaterial']);
+Route::resource('/cliente', ClientesController::class, ['update','destroy','show','index'.'store']);
 
 Route::resource('/departamentos', DepartamentosController::class, ['update','destroy','show','index'.'store']);
+
+
 
 
 

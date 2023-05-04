@@ -16,13 +16,12 @@ return new class extends Migration
             $table->string('nombres');
             $table->string('apellidos');
             $table->string('carnet_identidad');
-            $table->date('fechaNacimiento');
+            $table->date('fechaNacimiento')->nullable();
             $table->string('provincia');
             $table->integer('celular');
             $table->foreignId('departamento_id')
                 ->nullable()
-                ->constrained('departamentos')
-                ->onDelete ('set null');
+                ->constrained('departamentos');
 
             $table->timestamps();
         });

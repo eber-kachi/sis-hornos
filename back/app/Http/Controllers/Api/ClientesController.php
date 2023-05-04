@@ -11,8 +11,8 @@ class ClientesController extends Controller
 {
     public function index()
     {
-        $clientes = Cliente::with("tipoGrupos")->get();
 
+        $clientes = Cliente::paginate(25);
         $data = $clientes->transform(function ($clientes) {
             return $this->transform($clientes);
         });
@@ -42,6 +42,7 @@ class ClientesController extends Controller
             return $this->successResponse(
                 'Clientes  was successfully added.',
                 $this->transform($clientes)
+        
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -110,7 +111,7 @@ class ClientesController extends Controller
             $clientes->delete();
 
             return $this->successResponse(
-                'Grupos de Trabajos was successfully deleted.',
+                'Clientes was successfully deleted.',
                 $this->transform($clientes)
             );
         } catch (Exception $exception) {
@@ -128,9 +129,12 @@ class ClientesController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            "nombre" => "required|string",
-            "cantidad_integrantes" => "required|numeric|min:0",
-            "tipo_grupo_id" => "required",
+            'nombres' =>'required|string|min:1|max:255',
+            'apellidos' => 'string|min:1|max:255',
+            'carnet_identidad' => 'required|string|min:1|max:255',
+            'provincia' => 'required|string|min:1|max:255',
+            'departamento_id' => 'required',
+            'celular' =>'required|numeric|min:0',
             'enabled' => 'boolean',
         ];
 
@@ -152,6 +156,7 @@ class ClientesController extends Controller
             'apellidos' => 'string|min:1|max:255',
             'carnet_identidad' => 'required|string|min:1|max:255',
             'provincia' => 'required|string|min:1|max:255',
+            'departamento_id' => 'required',
             'celular' =>'required|numeric|min:0',
             'enabled' => 'boolean',
         ];
@@ -185,7 +190,7 @@ class ClientesController extends Controller
             'provincia' => $clientes->provincia,
             'celular' => $clientes->celular,
             'departamento_id' => $clientes->departamento_id,
-            'depatamento_nombre'=> optional($clientes->departamentos)->nombre
+            'depatarmento_nombre'=> optional($clientes->departamento)->nombre
 
         ];
     }

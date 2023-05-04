@@ -9,4 +9,8 @@ class Departamento extends Model
 {
     protected $fillable = ['nombre'];
     use HasFactory;
+
+    public function Clientes(){
+        return $this->hasMany(Cliente::class);
+    }
 }
