@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombres');
             $table->string('apellidos');
             $table->string('carnet_identidad');
-            $table->date('fechaNacimiento')->nullable();
+            $table->date('fecha_nacimiento')->nullable();
             $table->string('provincia');
             $table->integer('celular');
             $table->foreignId('departamento_id')

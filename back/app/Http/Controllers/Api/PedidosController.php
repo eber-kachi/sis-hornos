@@ -1,25 +1,25 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
+use App\Models\Pedido;
 use Illuminate\Http\Request;
-use App\Models\Cliente;
 use Illuminate\Support\Facades\Validator;
-
-class ClientesController extends Controller
+class PedidosController extends Controller
 {
+    
     public function index()
     {
+        $pedidos = Pedido::paginate(25);
 
-
-        $clientes = Cliente::paginate(25);
-        $data = $clientes->transform(function ($clientes) {
-            return $this->transform($clientes);
+        $data = $pedidos->transform(function ($pedidos) {
+            return $this->transform($pedidos);
         });
 
         return $this->successResponse(
-            'Clientess were successfully retrieved.',
+            'Productoss were successfully retrieved.',
             $data
         );
 
@@ -38,12 +38,11 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::create($data);
+            $pedidos = Pedido::create($data);
 
             return $this->successResponse(
-                'Clientes  was successfully added.',
-                $this->transform($clientes)
-
+                'Grupos Trabajos was successfully added.',
+                $this->transform($pedidos)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -51,7 +50,7 @@ class ClientesController extends Controller
     }
 
     /**
-     * Display the specified Clientes.
+     * Display the specified Productos.
      *
      * @param int $id
      *
@@ -59,16 +58,16 @@ class ClientesController extends Controller
      */
     public function show($id)
     {
-        $clientes = Cliente::findOrFail($id);
+        $pedidos = Pedido::findOrFail($id);
 
         return $this->successResponse(
-            'Cliente  was successfully retrieved.',
-            $this->transform($clientes)
+            'Grupos Trabajos was successfully retrieved.',
+            $this->transform($pedidos)
         );
     }
 
     /**
-     * Update the specified Clientes in the storage.
+     * Update the specified Productos in the storage.
      *
      * @param int $id
      * @param Illuminate\Http\Request $request
@@ -86,12 +85,12 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::findOrFail($id);
-            $clientes->update($data);
+            $pedidos = Pedido::findOrFail($id);
+            $pedidos->update($data);
 
             return $this->successResponse(
-                'Clientes  was successfully updated.',
-                $this->transform($clientes)
+                'Grupos Trabajos was successfully updated.',
+                $this->transform($pedidos)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -99,7 +98,7 @@ class ClientesController extends Controller
     }
 
     /**
-     * Remove the specified Clientes from the storage.
+     * Remove the specified Productos from the storage.
      *
      * @param int $id
      *
@@ -108,12 +107,12 @@ class ClientesController extends Controller
     public function destroy($id)
     {
         try {
-            $clientes = Cliente::findOrFail($id);
-            $clientes->delete();
+            $pedidos = Pedido::findOrFail($id);
+            $pedidos->delete();
 
             return $this->successResponse(
-                'Clientes was successfully deleted.',
-                $this->transform($clientes)
+                'Materiles was successfully deleted.',
+                $this->transform($pedidos)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -130,12 +129,10 @@ class ClientesController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
+            "nombre" => "required|string",
+            "caracteristicas" => "nullable|string",
+            "precio_unitario" => "nullable|numeric|min:0",
+            "costo" => "nullable|numeric|min:0",
             'enabled' => 'boolean',
         ];
 
@@ -153,13 +150,12 @@ class ClientesController extends Controller
     {
         $rules = [
 
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
+            "nombre" => "required|string",
+            "caracteristicas" => "nullable|string",
+            "precio_unitario" => "nullable|numeric|min:0",
+            "costo" => "nullable|numeric|min:0",
             'enabled' => 'boolean',
+
         ];
 
 
@@ -173,28 +169,23 @@ class ClientesController extends Controller
     }
 
     /**
-     * Transform the giving Clientes to public friendly array
+     * Transform the giving Productos to public friendly array
      *
-     * @param App\Models\Clientes $clientes
+     * @param App\Models\Productos $pedidos
      *
      * @return array
      */
-    protected function transform(Cliente $clientes)
+    protected function transform(Pedido $pedidos)
     {
 
         return [
-            'id' => $clientes->id,
-            'nombres' => $clientes->nombres,
-            'apellidos' => $clientes->apellidos,
-            'carnet_identidad' => $clientes->carnet_identidad,
-            'fecha_nacimiento' => $clientes->fecha_nacimiento,
-            'provincia' => $clientes->provincia,
-            'celular' => $clientes->celular,
-            'departamento_id' => $clientes->departamento_id,
-            'depatarmento_nombre'=> optional($clientes->departamento)->nombre
+            'id' => $pedidos->id,
+            'nombre' => $pedidos->nombre,
+            'caracteristicas' => $pedidos->caracteristicas,
+            'precio_unitario' => $pedidos->precio_unitario,
+            'costo' => $pedidos->costo,
+
 
         ];
     }
-
-
 }

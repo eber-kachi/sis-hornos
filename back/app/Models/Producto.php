@@ -20,4 +20,12 @@ class Producto extends Model
                     ->withTimestamps();
     }
 
+    public function pedidos(): BelongsToMany
+    {
+        return $this->belongsToMany(Pedido::class, 'concepto_pedidos')
+                    ->withPivot('cantidad', 'precio')
+                    ->withTimestamps();
+    }
+
+
 }

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 class GruposTrabajo extends Model
 {
     use HasFactory;
@@ -16,6 +18,13 @@ class GruposTrabajo extends Model
 
    public function personales(){
         return $this->hasMany(Personal::class,'id_grupo_trabajo');
+   }
+
+   public function LotesProduccion(): BelongsToMany
+   {
+       return $this->belongsToMany(LoteProduccion::class, 'asignacion_lotes')
+                   ->withPivot('cantidad_asignada')
+                   ->withTimestamps();
    }
 
 }

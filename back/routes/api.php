@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GruposTrabajoController;
 use App\Http\Controllers\Api\MaterialesController;
 use App\Http\Controllers\Api\MaterialProductosController;
+use App\Http\Controllers\Api\MedidasController;
 use App\Http\Controllers\Api\PersonalController;
 
 /*
@@ -75,10 +76,14 @@ Route::resource('/personal', PersonalController::class, ['update','destroy','sho
 Route::resource('/materiales', MaterialesController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/productos', ProductosController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/materiales_productos', MaterialProductosController::class, ['update','destroy','show','index'.'store']);
-Route::get('/indexProductoMaterial',[MaterialProductosController::class,'indexProductoMaterial']);
+Route::get('/index_producto_material',[MaterialProductosController::class,'indexProductoMaterial']);
 Route::resource('/cliente', ClientesController::class, ['update','destroy','show','index'.'store']);
-
 Route::resource('/departamentos', DepartamentosController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/asignacion_lotes', AsignacionLotesController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/concepto_pedidos', ConceptoPedidoController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/lotes_produccion', LoteProduccionController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/pedidos', PedidosController::class, ['update','destroy','show','index'.'store']);
+Route::resource('/medidas', MedidasController::class, ['update','destroy','show','index'.'store']);
 
 
 

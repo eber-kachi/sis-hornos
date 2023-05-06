@@ -131,10 +131,9 @@ class MaterialesController extends Controller
     {
         $rules = [
             "nombre" => "required|string",
-            "kg" => "nullable",
-            "largo_cm" => "nullable",
-            "ancho_cm" => "nullable",
-            "cm2" => "nullable",
+            "medidas_id" => "required",
+            "cantidad" => "required",
+            "caracteristica" => "nullable",
             'enabled' => 'boolean',
         ];
 
@@ -152,10 +151,9 @@ class MaterialesController extends Controller
     {
         $rules = [
             "nombre" => "required|string",
-            "kg" => "nullable",
-            "largo_cm" => "nullable",
-            "ancho_cm" => "nullable",
-            "cm2" => "nullable",
+            "medidas_id" => "required",
+            "cantidad" => "required",
+            "caracteristica" => "nullable",
             'enabled' => 'boolean',
 
         ];
@@ -183,10 +181,10 @@ class MaterialesController extends Controller
         return [
             'id' => $materiales->id,
             'nombre' => $materiales->nombre,
-            'kg' => $materiales->kg,
-            'ancho_cm' => $materiales->ancho_cm,
-            'largo_cm' => $materiales->largo_cm,
-            'cm2' => $materiales->cm2,
+            'cantidad' => $materiales->cantidad,
+            'caracteristica' => $materiales->caracteristica,
+            'medidas_id' => $materiales->medidas_id,
+         
 
 
         ];

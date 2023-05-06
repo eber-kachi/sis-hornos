@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Material extends Model
 {
-    protected $fillable = ['nombre', 'kg','largo_cm','ancho_cm','cm2'];
+    protected $fillable = ['nombre', 'medidas_id','caracteristica','cantidad'];
     use HasFactory;
 
     public function productos(): BelongsToMany

@@ -56,7 +56,7 @@ class MaterialProductosController extends Controller
             $material_producto = MaterialProductos::create($data);
 
             return $this->successResponse(
-                'Grupos Trabajos was successfully added.',
+                'Material Produccion was successfully added.',
                 $this->transform($material_producto)
             );
         } catch (Exception $exception) {
@@ -76,7 +76,7 @@ class MaterialProductosController extends Controller
         $material_producto = MaterialProductos::findOrFail($id);
 
         return $this->successResponse(
-            'Grupos Trabajos was successfully retrieved.',
+            'Material Produccion was successfully retrieved.',
             $this->transform($material_producto)
         );
     }
@@ -104,7 +104,7 @@ class MaterialProductosController extends Controller
             $material_producto->update($data);
 
             return $this->successResponse(
-                'Grupos Trabajos was successfully updated.',
+                'Material Produccion was successfully updated.',
                 $this->transform($material_producto)
             );
         } catch (Exception $exception) {

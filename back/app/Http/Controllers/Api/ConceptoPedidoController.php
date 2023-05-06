@@ -1,29 +1,43 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
+use App\Models\ConceptoPedido;
+use App\Models\Pedido;
 use Illuminate\Http\Request;
-use App\Models\Cliente;
 use Illuminate\Support\Facades\Validator;
 
-class ClientesController extends Controller
+class ConceptoPedidoController extends Controller
 {
     public function index()
     {
+        $concepto_pedido = ConceptoPedido::paginate(25);
 
-
-        $clientes = Cliente::paginate(25);
-        $data = $clientes->transform(function ($clientes) {
-            return $this->transform($clientes);
+        $data = $concepto_pedido->transform(function ($concepto_pedido) {
+            return $this->transform($concepto_pedido);
         });
 
         return $this->successResponse(
-            'Clientess were successfully retrieved.',
+            'ConceptoPedido were successfully retrieved.',
             $data
+           // $concepto_pedido
         );
 
     }
+
+    public function indexProductoMaterial()
+{
+    $data= Pedido::with('productos')->get();
+
+
+    return $this->successResponse(
+        'ConceptoPedido were successfully retrieved.',
+        $data
+       // $concepto_pedido
+    );
+}
 
 
 
@@ -38,12 +52,11 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::create($data);
+            $concepto_pedido = ConceptoPedido::create($data);
 
             return $this->successResponse(
-                'Clientes  was successfully added.',
-                $this->transform($clientes)
-
+                'Asignacion Lotes was successfully added.',
+                $this->transform($concepto_pedido)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -51,7 +64,7 @@ class ClientesController extends Controller
     }
 
     /**
-     * Display the specified Clientes.
+     * Display the specified ConceptoPedidos.
      *
      * @param int $id
      *
@@ -59,16 +72,16 @@ class ClientesController extends Controller
      */
     public function show($id)
     {
-        $clientes = Cliente::findOrFail($id);
+        $concepto_pedido = ConceptoPedido::findOrFail($id);
 
         return $this->successResponse(
-            'Cliente  was successfully retrieved.',
-            $this->transform($clientes)
+            'Asignacion Lotes was successfully retrieved.',
+            $this->transform($concepto_pedido)
         );
     }
 
     /**
-     * Update the specified Clientes in the storage.
+     * Update the specified ConceptoPedidos in the storage.
      *
      * @param int $id
      * @param Illuminate\Http\Request $request
@@ -86,20 +99,20 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::findOrFail($id);
-            $clientes->update($data);
+            $concepto_pedido = ConceptoPedido::findOrFail($id);
+            $concepto_pedido->update($data);
 
             return $this->successResponse(
-                'Clientes  was successfully updated.',
-                $this->transform($clientes)
+                'Asignacion Lotes was successfully updated.',
+                $this->transform($concepto_pedido)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }
 
-    /**
-     * Remove the specified Clientes from the storage.
+    /**successResponse
+     * Remove the specified ConceptoPedidos from the storage.
      *
      * @param int $id
      *
@@ -108,12 +121,12 @@ class ClientesController extends Controller
     public function destroy($id)
     {
         try {
-            $clientes = Cliente::findOrFail($id);
-            $clientes->delete();
+            $concepto_pedido = ConceptoPedido::findOrFail($id);
+            $concepto_pedido->delete();
 
             return $this->successResponse(
-                'Clientes was successfully deleted.',
-                $this->transform($clientes)
+                'ConceptoPedido was successfully deleted.',
+                $this->transform($concepto_pedido)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -130,12 +143,11 @@ class ClientesController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
+            "pedido_id" => "required",
+            "producto_id" => "required",
+            "cantidad" => "required|numeric|min:0",
+            "precio" => "required|numeric|min:0",
+            
             'enabled' => 'boolean',
         ];
 
@@ -152,13 +164,11 @@ class ClientesController extends Controller
     protected function getData(Request $request)
     {
         $rules = [
-
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
+            "pedido_id" => "required",
+            "producto_id" => "required",
+            "cantidad" => "required|numeric|min:0",
+            "precio" => "required|numeric|min:0",
+            
             'enabled' => 'boolean',
         ];
 
@@ -173,28 +183,22 @@ class ClientesController extends Controller
     }
 
     /**
-     * Transform the giving Clientes to public friendly array
+     * Transform the giving ConceptoPedidos to public friendly array
      *
-     * @param App\Models\Clientes $clientes
+     * @param App\Models\ConceptoPedido $concepto_pedido
      *
      * @return array
      */
-    protected function transform(Cliente $clientes)
+    protected function transform(ConceptoPedido $concepto_pedido)
     {
 
         return [
-            'id' => $clientes->id,
-            'nombres' => $clientes->nombres,
-            'apellidos' => $clientes->apellidos,
-            'carnet_identidad' => $clientes->carnet_identidad,
-            'fecha_nacimiento' => $clientes->fecha_nacimiento,
-            'provincia' => $clientes->provincia,
-            'celular' => $clientes->celular,
-            'departamento_id' => $clientes->departamento_id,
-            'depatarmento_nombre'=> optional($clientes->departamento)->nombre
-
+            'id' => $concepto_pedido->id,
+            'pedido_id' => $concepto_pedido->pedido_id,
+            'producto_id' => $concepto_pedido->producto_id,
+            'cantidad' => $concepto_pedido->cantidad,
+            'precio' => $concepto_pedido->precio,
+    
         ];
     }
-
-
 }

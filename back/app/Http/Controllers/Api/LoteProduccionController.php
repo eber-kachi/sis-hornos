@@ -1,25 +1,26 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
+use App\Models\LoteProduccion;
 use Illuminate\Http\Request;
-use App\Models\Cliente;
 use Illuminate\Support\Facades\Validator;
 
-class ClientesController extends Controller
+class LoteProduccionController extends Controller
 {
+    
     public function index()
     {
+        $lote_produccion = LoteProduccion::paginate(25);
 
-
-        $clientes = Cliente::paginate(25);
-        $data = $clientes->transform(function ($clientes) {
-            return $this->transform($clientes);
+        $data = $lote_produccion->transform(function ($lote_produccion) {
+            return $this->transform($lote_produccion);
         });
 
         return $this->successResponse(
-            'Clientess were successfully retrieved.',
+            'Lote Produccion were successfully retrieved.',
             $data
         );
 
@@ -38,12 +39,11 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::create($data);
+            $lote_produccion = LoteProduccion::create($data);
 
             return $this->successResponse(
-                'Clientes  was successfully added.',
-                $this->transform($clientes)
-
+                'Lote  Produccion was successfully added.',
+                $this->transform($lote_produccion)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -51,7 +51,7 @@ class ClientesController extends Controller
     }
 
     /**
-     * Display the specified Clientes.
+     * Display the specified Productos.
      *
      * @param int $id
      *
@@ -59,16 +59,16 @@ class ClientesController extends Controller
      */
     public function show($id)
     {
-        $clientes = Cliente::findOrFail($id);
+        $lote_produccion = LoteProduccion::findOrFail($id);
 
         return $this->successResponse(
-            'Cliente  was successfully retrieved.',
-            $this->transform($clientes)
+            'Lote  Produccion was successfully retrieved.',
+            $this->transform($lote_produccion)
         );
     }
 
     /**
-     * Update the specified Clientes in the storage.
+     * Update the specified Productos in the storage.
      *
      * @param int $id
      * @param Illuminate\Http\Request $request
@@ -86,12 +86,12 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::findOrFail($id);
-            $clientes->update($data);
+            $lote_produccion = LoteProduccion::findOrFail($id);
+            $lote_produccion->update($data);
 
             return $this->successResponse(
-                'Clientes  was successfully updated.',
-                $this->transform($clientes)
+                'Lote  Produccion was successfully updated.',
+                $this->transform($lote_produccion)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -99,7 +99,7 @@ class ClientesController extends Controller
     }
 
     /**
-     * Remove the specified Clientes from the storage.
+     * Remove the specified Productos from the storage.
      *
      * @param int $id
      *
@@ -108,12 +108,12 @@ class ClientesController extends Controller
     public function destroy($id)
     {
         try {
-            $clientes = Cliente::findOrFail($id);
-            $clientes->delete();
+            $lote_produccion = LoteProduccion::findOrFail($id);
+            $lote_produccion->delete();
 
             return $this->successResponse(
-                'Clientes was successfully deleted.',
-                $this->transform($clientes)
+                'Materiles was successfully deleted.',
+                $this->transform($lote_produccion)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -130,12 +130,11 @@ class ClientesController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
+            "cantidad" => "required|numeric|min:0",
+            "fecha_inicio" => "nullable",
+            "fecha_final" => "nullable",
+            "activo" => "string",
+            "fecha_registro" => "required",
             'enabled' => 'boolean',
         ];
 
@@ -152,14 +151,13 @@ class ClientesController extends Controller
     protected function getData(Request $request)
     {
         $rules = [
-
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
+            "cantidad" => "required|numeric|min:0",
+            "fecha_inicio" => "nullable",
+            "fecha_final" => "nullable",
+            "activo" => "string",
+            "fecha_registro" => "required",
             'enabled' => 'boolean',
+
         ];
 
 
@@ -173,28 +171,25 @@ class ClientesController extends Controller
     }
 
     /**
-     * Transform the giving Clientes to public friendly array
+     * Transform the giving Productos to public friendly array
      *
-     * @param App\Models\Clientes $clientes
+     * @param App\Models\Productos $lote_produccion
      *
      * @return array
      */
-    protected function transform(Cliente $clientes)
+    protected function transform(Producto $lote_produccion)
     {
 
         return [
-            'id' => $clientes->id,
-            'nombres' => $clientes->nombres,
-            'apellidos' => $clientes->apellidos,
-            'carnet_identidad' => $clientes->carnet_identidad,
-            'fecha_nacimiento' => $clientes->fecha_nacimiento,
-            'provincia' => $clientes->provincia,
-            'celular' => $clientes->celular,
-            'departamento_id' => $clientes->departamento_id,
-            'depatarmento_nombre'=> optional($clientes->departamento)->nombre
+            'id' => $lote_produccion->id,
+            'cantidad' => $lote_produccion->cantidad,
+            'fecha_inicio' => $lote_produccion->fecha_inicio,
+            'fecha_final' => $lote_produccion->fecha_final,
+            'activo' => $lote_produccion->activo,
+            'fecha_registro' => $lote_produccion->fecha_registro,
+          
+
 
         ];
     }
-
-
 }

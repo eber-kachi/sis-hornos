@@ -1,25 +1,26 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
+use App\Models\Medida;
 use Illuminate\Http\Request;
-use App\Models\Cliente;
 use Illuminate\Support\Facades\Validator;
 
-class ClientesController extends Controller
+class MedidasController extends Controller
 {
+    
     public function index()
     {
+        $medida = Medida::paginate(25);
 
-
-        $clientes = Cliente::paginate(25);
-        $data = $clientes->transform(function ($clientes) {
-            return $this->transform($clientes);
+        $data = $medida->transform(function ($medida) {
+            return $this->transform($medida);
         });
 
         return $this->successResponse(
-            'Clientess were successfully retrieved.',
+            'Medidas were successfully retrieved.',
             $data
         );
 
@@ -38,12 +39,11 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::create($data);
+            $medida = Medida::create($data);
 
             return $this->successResponse(
-                'Clientes  was successfully added.',
-                $this->transform($clientes)
-
+                'Medida was successfully added.',
+                $this->transform($medida)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -51,7 +51,7 @@ class ClientesController extends Controller
     }
 
     /**
-     * Display the specified Clientes.
+     * Display the specified Medidas.
      *
      * @param int $id
      *
@@ -59,16 +59,16 @@ class ClientesController extends Controller
      */
     public function show($id)
     {
-        $clientes = Cliente::findOrFail($id);
+        $medida = Medida::findOrFail($id);
 
         return $this->successResponse(
-            'Cliente  was successfully retrieved.',
-            $this->transform($clientes)
+            'Medidas was successfully retrieved.',
+            $this->transform($medida)
         );
     }
 
     /**
-     * Update the specified Clientes in the storage.
+     * Update the specified Medidas in the storage.
      *
      * @param int $id
      * @param Illuminate\Http\Request $request
@@ -86,12 +86,12 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::findOrFail($id);
-            $clientes->update($data);
+            $medida = Medida::findOrFail($id);
+            $medida->update($data);
 
             return $this->successResponse(
-                'Clientes  was successfully updated.',
-                $this->transform($clientes)
+                'Medidas was successfully updated.',
+                $this->transform($medida)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -99,7 +99,7 @@ class ClientesController extends Controller
     }
 
     /**
-     * Remove the specified Clientes from the storage.
+     * Remove the specified Medidas from the storage.
      *
      * @param int $id
      *
@@ -108,12 +108,12 @@ class ClientesController extends Controller
     public function destroy($id)
     {
         try {
-            $clientes = Cliente::findOrFail($id);
-            $clientes->delete();
+            $medida = Medida::findOrFail($id);
+            $medida->delete();
 
             return $this->successResponse(
-                'Clientes was successfully deleted.',
-                $this->transform($clientes)
+                'Medida was successfully deleted.',
+                $this->transform($medida)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -130,14 +130,9 @@ class ClientesController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
-            'enabled' => 'boolean',
-        ];
+
+            "nombre" => "required|string",
+            'enabled' => 'boolean',        ];
 
         return Validator::make($request->all(), $rules);
     }
@@ -153,13 +148,9 @@ class ClientesController extends Controller
     {
         $rules = [
 
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
+            "nombre" => "required|string",
             'enabled' => 'boolean',
+
         ];
 
 
@@ -173,28 +164,18 @@ class ClientesController extends Controller
     }
 
     /**
-     * Transform the giving Clientes to public friendly array
+     * Transform the giving Medidas to public friendly array
      *
-     * @param App\Models\Clientes $clientes
+     * @param App\Models\Medidas $medida
      *
      * @return array
      */
-    protected function transform(Cliente $clientes)
+    protected function transform(Medida $medida)
     {
 
         return [
-            'id' => $clientes->id,
-            'nombres' => $clientes->nombres,
-            'apellidos' => $clientes->apellidos,
-            'carnet_identidad' => $clientes->carnet_identidad,
-            'fecha_nacimiento' => $clientes->fecha_nacimiento,
-            'provincia' => $clientes->provincia,
-            'celular' => $clientes->celular,
-            'departamento_id' => $clientes->departamento_id,
-            'depatarmento_nombre'=> optional($clientes->departamento)->nombre
-
+            'id' => $medida->id,
+            'nombre' => $medida->nombre,
         ];
     }
-
-
 }

@@ -1,29 +1,43 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
+use App\Models\asignacionLote;
+use App\Models\LoteProduccion;
 use Illuminate\Http\Request;
-use App\Models\Cliente;
 use Illuminate\Support\Facades\Validator;
 
-class ClientesController extends Controller
+class AsignacionLotesController extends Controller
 {
     public function index()
     {
+        $asignacion_lote = AsignacionLote::paginate(25);
 
-
-        $clientes = Cliente::paginate(25);
-        $data = $clientes->transform(function ($clientes) {
-            return $this->transform($clientes);
+        $data = $asignacion_lote->transform(function ($asignacion_lote) {
+            return $this->transform($asignacion_lote);
         });
 
         return $this->successResponse(
-            'Clientess were successfully retrieved.',
+            'AsignacionLote were successfully retrieved.',
             $data
+           // $asignacion_lote
         );
 
     }
+
+    public function indexProductoMaterial()
+{
+    $data= LoteProduccion::with('grupos_trabajos')->get();
+
+
+    return $this->successResponse(
+        'AsignacionLote were successfully retrieved.',
+        $data
+       // $asignacion_lote
+    );
+}
 
 
 
@@ -38,12 +52,11 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::create($data);
+            $asignacion_lote = AsignacionLote::create($data);
 
             return $this->successResponse(
-                'Clientes  was successfully added.',
-                $this->transform($clientes)
-
+                'Asignacion Lotes was successfully added.',
+                $this->transform($asignacion_lote)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -51,7 +64,7 @@ class ClientesController extends Controller
     }
 
     /**
-     * Display the specified Clientes.
+     * Display the specified AsignacionLotes.
      *
      * @param int $id
      *
@@ -59,16 +72,16 @@ class ClientesController extends Controller
      */
     public function show($id)
     {
-        $clientes = Cliente::findOrFail($id);
+        $asignacion_lote = AsignacionLote::findOrFail($id);
 
         return $this->successResponse(
-            'Cliente  was successfully retrieved.',
-            $this->transform($clientes)
+            'Asignacion Lotes was successfully retrieved.',
+            $this->transform($asignacion_lote)
         );
     }
 
     /**
-     * Update the specified Clientes in the storage.
+     * Update the specified AsignacionLotes in the storage.
      *
      * @param int $id
      * @param Illuminate\Http\Request $request
@@ -86,20 +99,20 @@ class ClientesController extends Controller
 
             $data = $this->getData($request);
 
-            $clientes = Cliente::findOrFail($id);
-            $clientes->update($data);
+            $asignacion_lote = AsignacionLote::findOrFail($id);
+            $asignacion_lote->update($data);
 
             return $this->successResponse(
-                'Clientes  was successfully updated.',
-                $this->transform($clientes)
+                'Asignacion Lotes was successfully updated.',
+                $this->transform($asignacion_lote)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }
 
-    /**
-     * Remove the specified Clientes from the storage.
+    /**successResponse
+     * Remove the specified AsignacionLotes from the storage.
      *
      * @param int $id
      *
@@ -108,12 +121,12 @@ class ClientesController extends Controller
     public function destroy($id)
     {
         try {
-            $clientes = Cliente::findOrFail($id);
-            $clientes->delete();
+            $asignacion_lote = AsignacionLote::findOrFail($id);
+            $asignacion_lote->delete();
 
             return $this->successResponse(
-                'Clientes was successfully deleted.',
-                $this->transform($clientes)
+                'AsignacionLote was successfully deleted.',
+                $this->transform($asignacion_lote)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -130,12 +143,9 @@ class ClientesController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
+            "lote_produccion_id" => "required",
+            "grupos_trabajo_id" => "required",
+            "cantidad_asignada" => "required",
             'enabled' => 'boolean',
         ];
 
@@ -152,13 +162,9 @@ class ClientesController extends Controller
     protected function getData(Request $request)
     {
         $rules = [
-
-            'nombres' =>'required|string|min:1|max:255',
-            'apellidos' => 'string|min:1|max:255',
-            'carnet_identidad' => 'required|string|min:1|max:255',
-            'provincia' => 'required|string|min:1|max:255',
-            'departamento_id' => 'required',
-            'celular' =>'required|numeric|min:0',
+            "lote_produccion_id" => "required",
+            "grupos_trabajo_id" => "required",
+            "cantidad_asignada" => "required",
             'enabled' => 'boolean',
         ];
 
@@ -173,28 +179,21 @@ class ClientesController extends Controller
     }
 
     /**
-     * Transform the giving Clientes to public friendly array
+     * Transform the giving AsignacionLotes to public friendly array
      *
-     * @param App\Models\Clientes $clientes
+     * @param App\Models\AsignacionLote $asignacion_lote
      *
      * @return array
      */
-    protected function transform(Cliente $clientes)
+    protected function transform(AsignacionLote $asignacion_lote)
     {
 
         return [
-            'id' => $clientes->id,
-            'nombres' => $clientes->nombres,
-            'apellidos' => $clientes->apellidos,
-            'carnet_identidad' => $clientes->carnet_identidad,
-            'fecha_nacimiento' => $clientes->fecha_nacimiento,
-            'provincia' => $clientes->provincia,
-            'celular' => $clientes->celular,
-            'departamento_id' => $clientes->departamento_id,
-            'depatarmento_nombre'=> optional($clientes->departamento)->nombre
-
+            'id' => $asignacion_lote->id,
+            'lote_produccion_id' => $asignacion_lote->lote_produccion_id,
+            'grupos_trabajo_id' => $asignacion_lote->grupos_trabajo_id,
+            'cantidad_asignada' => $asignacion_lote->cantidad_asignada,
+    
         ];
     }
-
-
 }
