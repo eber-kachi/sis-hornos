@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
+use App\Models\ConceptoPedido;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +20,7 @@ class PedidosController extends Controller
         });
 
         return $this->successResponse(
-            'Productoss were successfully retrieved.',
+            'Pedidos were successfully retrieved.',
             $data
         );
 
@@ -36,13 +37,27 @@ class PedidosController extends Controller
                 return $this->errorResponse($validator->errors()->all());
             }
 
-            $data = $this->getData($request);
+            //$data = $this->getData($request);
 
-            $pedidos = Pedido::create($data);
+            $pedido = new Pedido();
+            $pedido->total_precio = collect($request->conceptos)->sum('cantidad * precio');
+            $pedido->fecha_pedido = now();
+            $pedido->cliente_id = $request->cliente_id;
+            $pedido->save();
+    
+            foreach ($request->conceptos as $request_concepto) {
+                $concepto = new ConceptoPedido();
+                $concepto->cantidad = $request_concepto->cantidad;
+                $concepto->producto_id = $request_concepto->producto_id;
+                $concepto->precio = $request_concepto->precio;
+                $concepto->pedido_id = $pedido->Id;
+                $concepto->save();
+
+            }
 
             return $this->successResponse(
-                'Grupos Trabajos was successfully added.',
-                $this->transform($pedidos)
+                'Pedidos was successfully added.',
+                $this->transform($pedido)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -50,7 +65,7 @@ class PedidosController extends Controller
     }
 
     /**
-     * Display the specified Productos.
+     * Display the specified Pedido.
      *
      * @param int $id
      *
@@ -61,13 +76,13 @@ class PedidosController extends Controller
         $pedidos = Pedido::findOrFail($id);
 
         return $this->successResponse(
-            'Grupos Trabajos was successfully retrieved.',
+            'Pedidos was successfully retrieved.',
             $this->transform($pedidos)
         );
     }
 
     /**
-     * Update the specified Productos in the storage.
+     * Update the specified Pedido in the storage.
      *
      * @param int $id
      * @param Illuminate\Http\Request $request
@@ -89,7 +104,7 @@ class PedidosController extends Controller
             $pedidos->update($data);
 
             return $this->successResponse(
-                'Grupos Trabajos was successfully updated.',
+                'Pedidos was successfully updated.',
                 $this->transform($pedidos)
             );
         } catch (Exception $exception) {
@@ -98,7 +113,7 @@ class PedidosController extends Controller
     }
 
     /**
-     * Remove the specified Productos from the storage.
+     * Remove the specified Pedido from the storage.
      *
      * @param int $id
      *
@@ -129,10 +144,11 @@ class PedidosController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            "nombre" => "required|string",
-            "caracteristicas" => "nullable|string",
-            "precio_unitario" => "nullable|numeric|min:0",
-            "costo" => "nullable|numeric|min:0",
+            "total_precio" => "nullable|numeric|min:0",
+            "lote_produccion_id" => "nullable",
+            "cliente_id" => "required",
+            "lote_produccion_id"=>"nullable",
+            
             'enabled' => 'boolean',
         ];
 
@@ -150,10 +166,11 @@ class PedidosController extends Controller
     {
         $rules = [
 
-            "nombre" => "required|string",
-            "caracteristicas" => "nullable|string",
-            "precio_unitario" => "nullable|numeric|min:0",
-            "costo" => "nullable|numeric|min:0",
+            "total_precio" => "nullable|numeric|min:0",
+            "lote_produccion_id" => "nullable",
+            "cliente_id" => "required",
+            "lote_produccion_id"=>"nullable",
+            
             'enabled' => 'boolean',
 
         ];
@@ -169,9 +186,9 @@ class PedidosController extends Controller
     }
 
     /**
-     * Transform the giving Productos to public friendly array
+     * Transform the giving Pedido to public friendly array
      *
-     * @param App\Models\Productos $pedidos
+     * @param App\Models\Pedido $pedidos
      *
      * @return array
      */
@@ -180,10 +197,10 @@ class PedidosController extends Controller
 
         return [
             'id' => $pedidos->id,
-            'nombre' => $pedidos->nombre,
-            'caracteristicas' => $pedidos->caracteristicas,
-            'precio_unitario' => $pedidos->precio_unitario,
-            'costo' => $pedidos->costo,
+            'total_precio' =>  $pedidos->total_precio,
+            'fecha_pedido' => $pedidos->fecha_pedido,
+            'cliente_id' => $pedidos->cliente_id,
+            
 
 
         ];

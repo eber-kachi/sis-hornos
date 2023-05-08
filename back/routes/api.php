@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\LoteProduccionController;
 use App\Http\Controllers\Api\MaterialesController;
 use App\Http\Controllers\Api\MaterialProductosController;
 use App\Http\Controllers\Api\MedidasController;
+use App\Http\Controllers\Api\PedidosController;
 use App\Http\Controllers\Api\PersonalController;
 
 /*
