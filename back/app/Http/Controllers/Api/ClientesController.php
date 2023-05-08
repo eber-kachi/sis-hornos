@@ -19,7 +19,7 @@ class ClientesController extends Controller
         });
 
         return $this->successResponse(
-            'Clientess were successfully retrieved.',
+            'Clientes were successfully retrieved.',
             $data
         );
 
@@ -136,7 +136,6 @@ class ClientesController extends Controller
             'provincia' => 'required|string|min:1|max:255',
             'departamento_id' => 'required',
             'celular' =>'required|numeric|min:0',
-            'enabled' => 'boolean',
         ];
 
         return Validator::make($request->all(), $rules);
@@ -159,16 +158,10 @@ class ClientesController extends Controller
             'provincia' => 'required|string|min:1|max:255',
             'departamento_id' => 'required',
             'celular' =>'required|numeric|min:0',
-            'enabled' => 'boolean',
         ];
 
 
         $data = $request->validate($rules);
-
-
-        $data['enabled'] = $request->has('enabled');
-
-
         return $data;
     }
 

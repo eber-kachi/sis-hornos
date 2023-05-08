@@ -42,7 +42,7 @@ class MaterialesController extends Controller
             $materiales = Material::create($data);
 
             return $this->successResponse(
-                'Grupos Trabajos was successfully added.',
+                'Materiales  was successfully added.',
                 $this->transform($materiales)
             );
         } catch (Exception $exception) {
@@ -62,7 +62,7 @@ class MaterialesController extends Controller
         $materiales = Material::findOrFail($id);
 
         return $this->successResponse(
-            'Grupos Trabajos was successfully retrieved.',
+            'Materiales  was successfully retrieved.',
             $this->transform($materiales)
         );
     }
@@ -90,7 +90,7 @@ class MaterialesController extends Controller
             $materiales->update($data);
 
             return $this->successResponse(
-                'Grupos Trabajos was successfully updated.',
+                'Materiales was successfully updated.',
                 $this->transform($materiales)
             );
         } catch (Exception $exception) {
@@ -133,7 +133,7 @@ class MaterialesController extends Controller
             "nombre" => "required|string",
             "medida_id" => "required",
             "caracteristica" => "nullable",
-           
+
         ];
 
         return Validator::make($request->all(), $rules);
