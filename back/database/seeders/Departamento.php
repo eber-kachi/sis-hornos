@@ -24,6 +24,6 @@ class Departamento extends Seeder
             ['nombre' => 'Tarija'],
             ['nombre' => 'Chuquisaca']
         ];
-        DB::table('medidas')->insert($data);
+        DB::table('departamentos')->insert($data);
     }
 }
