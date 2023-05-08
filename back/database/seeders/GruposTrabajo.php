@@ -18,6 +18,16 @@ class GruposTrabajo extends Seeder
             'cantidad_integrantes'=> 3,
             'tipo_grupo_id'=> 1
 
+        ], [
+            'nombre' => 'Grupo 1',
+            'cantidad_integrantes' => 3,
+            'tipo_grupo_id' => 1
+
+        ], [
+            'nombre' => 'Grupo 1',
+            'cantidad_integrantes' => 3,
+            'tipo_grupo_id' => 1
+
         ]);
     }
 }

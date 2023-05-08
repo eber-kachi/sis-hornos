@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->foreignId('medidas_id')
+            $table->foreignId('medida_id')
                 ->constrained('medidas');
             $table->string('caracteristica');
 
-          
+
             $table->timestamps();
         });
     }

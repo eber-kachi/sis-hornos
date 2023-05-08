@@ -17,7 +17,15 @@ class tipoGrupo extends Seeder
 
         'nombre'=>'Expertos',
         'cantidad_produccion_diaria'=> 3,
-    ]);
+    ], [
+
+            'nombre' => 'Expertos',
+            'cantidad_produccion_diaria' => 3,
+        ], [
+
+            'nombre' => 'Expertos',
+            'cantidad_produccion_diaria' => 3,
+        ]);
 
     }
 }

@@ -4,13 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
+use App\Models\AsignacionLote;
 use App\Models\LoteProduccion;
+use App\Models\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class LoteProduccionController extends Controller
 {
-    
+
+    private Modelomatematico $modelomatematico;
+    public function __construct()
+    {
+        $this->modelomatematico = new Modelomatematico();
+    }
+
     public function index()
     {
         $lote_produccion = LoteProduccion::paginate(25);
@@ -49,6 +57,62 @@ class LoteProduccionController extends Controller
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }
+
+
+    public function agregar(Request $request)
+    {
+
+        try {
+
+            $lote = new LoteProduccion();
+            $lote->cantidad = $request->cantidad;
+            $lote->fecharegistro = today();
+            $lote->save();
+
+            foreach ($request->pedidos as $modelPedido) {
+                $pedido = Pedido::find($modelPedido->id);
+                if ($pedido) {
+                    $pedido->id_lote_produccion = $lote->id;
+                    $pedido->save();
+                }
+            }
+
+            $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote);
+
+            foreach ($asignacion as $loteAsignacion) {
+                $asignacionLote = new AsignacionLote();
+                $asignacionLote->grupos_trabajo_id = $loteAsignacion->grupos_trabajo_id;
+                $asignacionLote->lote_produccion_id = $loteAsignacion->lote_produccion_id;
+                $asignacionLote->cantidad_asignada = $loteAsignacion->cantidad_asignada;
+                $asignacionLote->save();
+            }
+
+
+            return $this->successResponse(
+                'Lote  Produccion was successfully added.',
+                $this->transform($lote)
+            );
+            
+
+
+        } catch (Exception $exception) {
+            return $this->errorResponse('Unexpected error occurred while trying to process your request.');
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Display the specified Productos.
@@ -177,7 +241,7 @@ class LoteProduccionController extends Controller
      *
      * @return array
      */
-    protected function transform(Producto $lote_produccion)
+    protected function transform(LoteProduccion $lote_produccion)
     {
 
         return [
@@ -187,7 +251,9 @@ class LoteProduccionController extends Controller
             'fecha_final' => $lote_produccion->fecha_final,
             'activo' => $lote_produccion->activo,
             'fecha_registro' => $lote_produccion->fecha_registro,
-          
+            'tiempo_dias' => (int)$this->modelomatematico->tiempoProducccionLote($lote_produccion->cantidad ?? 0),
+
+
 
 
         ];
