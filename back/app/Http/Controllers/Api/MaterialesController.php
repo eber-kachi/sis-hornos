@@ -131,7 +131,7 @@ class MaterialesController extends Controller
     {
         $rules = [
             "nombre" => "required|string",
-            "medidas_id" => "required",
+            "medida_id" => "required",
             "cantidad" => "required",
             "caracteristica" => "nullable",
             'enabled' => 'boolean',
@@ -151,7 +151,7 @@ class MaterialesController extends Controller
     {
         $rules = [
             "nombre" => "required|string",
-            "medidas_id" => "required",
+            "medida_id" => "required",
             "cantidad" => "required",
             "caracteristica" => "nullable",
             'enabled' => 'boolean',
@@ -183,7 +183,7 @@ class MaterialesController extends Controller
             'nombre' => $materiales->nombre,
             'cantidad' => $materiales->cantidad,
             'caracteristica' => $materiales->caracteristica,
-            'medidas_id' => $materiales->medidas_id,
+            'medida_id' => $materiales->medida_id,
          
 
 
