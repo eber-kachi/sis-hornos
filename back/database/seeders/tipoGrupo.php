@@ -13,11 +13,18 @@ class tipoGrupo extends Seeder
      */
     public function run(): void
     {
-        DB::table('tipo_grupos')->insert([
+        // Array con los datos de los tipos de grupo
+        $tipos = [
+            ['nombre' => 'G2', 'cantidad_produccion_diaria' => 2.5],
+            ['nombre' => 'G3', 'cantidad_produccion_diaria' => 3],
+            ['nombre' => 'G4', 'cantidad_produccion_diaria' => 3.5],
+            ['nombre' => 'G5', 'cantidad_produccion_diaria' => 4],
+            // Agrega más tipos aquí
+        ];
 
-        'nombre'=>'Expertos',
-        'cantidad_produccion_diaria'=> 3,
-    ]);
-
+        // Bucle para insertar cada tipo de grupo en la tabla
+        foreach ($tipos as $tipo) {
+            DB::table('tipo_grupos')->insert($tipo);
+        }
     }
 }
