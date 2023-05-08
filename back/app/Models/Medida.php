@@ -11,4 +11,9 @@ class Medida extends Model
     protected $fillable = ['nombre'];
    
     use HasFactory;
+
+    public function Materiales(){
+        return $this->hasMany(Material::class);
+    }
+
 }

@@ -132,9 +132,8 @@ class MaterialesController extends Controller
         $rules = [
             "nombre" => "required|string",
             "medida_id" => "required",
-            "cantidad" => "nullable",
             "caracteristica" => "nullable",
-            'enabled' => 'boolean',
+           
         ];
 
         return Validator::make($request->all(), $rules);
@@ -152,19 +151,11 @@ class MaterialesController extends Controller
         $rules = [
             "nombre" => "required|string",
             "medida_id" => "required",
-            "cantidad" => "nullable",
             "caracteristica" => "nullable",
-            'enabled' => 'boolean',
 
         ];
 
-
         $data = $request->validate($rules);
-
-
-        $data['enabled'] = $request->has('enabled');
-
-
         return $data;
     }
 
@@ -181,9 +172,9 @@ class MaterialesController extends Controller
         return [
             'id' => $materiales->id,
             'nombre' => $materiales->nombre,
-            'cantidad' => $materiales->cantidad,
             'caracteristica' => $materiales->caracteristica,
             'medida_id' => $materiales->medida_id,
+            'medida_nombre'=> optional($materiales->medidas)->nombre
 
 
 

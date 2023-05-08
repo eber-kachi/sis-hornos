@@ -9,8 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Material extends Model
 {
-    protected $fillable = ['nombre', 'medida_id','caracteristica','cantidad'];
+    protected $fillable = ['nombre', 'medida_id','caracteristica'];
     use HasFactory;
+
+
+    public function Medidas(){
+        return $this->belongsTo(Medida::class,'medida_id','id');
+    }
 
     public function productos(): BelongsToMany
     {
