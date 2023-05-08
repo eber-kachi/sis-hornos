@@ -22,7 +22,7 @@ class Medidas extends Seeder
             ['nombre' => '(Cm2) Centimetros cuadrado'],
             ['nombre' => '(L)litros']
         ];
-        DB::table('medidas')->insertOrIgnore($data, ['nombre']);
+        DB::table('medidas')->insert($data);
 
     }
 }
