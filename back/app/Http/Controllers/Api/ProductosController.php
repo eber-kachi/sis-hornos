@@ -91,25 +91,49 @@ class ProductosController extends Controller
     public function update($id, Request $request)
     {
         try {
+            // Buscar el producto por su id
+            $producto = Producto::find($id);
+    
+            // Comprobar si existe
+            if (!$producto) {
+                return $this->errorResponse('Producto not found.');
+            }
+    
+            // Validar los datos del request
             $validator = $this->getValidator($request);
-
+    
             if ($validator->fails()) {
                 return $this->errorResponse($validator->errors()->all());
             }
-
-            $data = $this->getData($request);
-
-            $productos = Producto::findOrFail($id);
-            $productos->update($data);
-
+    
+            // Actualizar los atributos del producto
+            $producto->nombre = $request->nombre;
+            $producto->precio_unitario = $request->precio_unitario;
+            $producto->caracteristicas = $request->caracteristicas;
+            $producto->costo = $request->costo;
+            $producto->save();
+    
+            // Preparar el array de materiales
+            foreach ($request->materiales as $index => $material) {
+                $materiales[$material['material_id']] = [
+                    'cantidad' => $material['cantidad'],
+                    'descripcion' => $material['descripcion'] ?? null
+                ];
+            }
+    
+            // Sincronizar los materiales con el producto
+            $producto->materials()->sync($materiales);
+    
+            // Devolver una respuesta de éxito con el producto y sus materiales
             return $this->successResponse(
-                'Produtos was successfully updated.',
-                $this->transform($productos)
+                'Producto was successfully updated.',
+                $this->transform($producto)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }
+    
 
     /**
      * Remove the specified Productos from the storage.
@@ -187,12 +211,17 @@ class ProductosController extends Controller
      */
     protected function transform(Producto $productos)
     {
+        // Cargar la relación de materiales con el producto
+        $productos->load('materials');
+
         return [
             'id' => $productos->id,
             'nombre' => $productos->nombre,
             'caracteristicas' => $productos->caracteristicas,
             'precio_unitario' => $productos->precio_unitario,
             'costo' => $productos->costo,
+            // Obtener el array de materiales con los atributos deseados
+            'materiales' => $productos->materials->pluck('id', 'nombre', 'cantidad', 'descripcion')
         ];
     }
 }
