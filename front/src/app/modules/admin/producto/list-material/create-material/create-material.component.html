@@ -1,8 +1,8 @@
 <h1 mat-dialog-title>Crear Material</h1>
-<div mat-dialog-content>
+<ng-container mat-dialog-content>
     <form [formGroup]="formGroup" (change)="formChanged()">
-        <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
-            <div class="">
+        <div class="gap-2 flex flex-row">
+            <div class="w-[70%]">
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Nombre</mat-label>
                     <input
@@ -17,19 +17,40 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div class="">
+            <div class="w-[30%]">
                 <mat-form-field appearance="fill" class="w-full">
-                    <mat-label>Kg</mat-label>
-                    <input
-                        type="number"
-                        matInput
-                        placeholder=""
-                        formControlName="kg"
-                    />
-                    <mat-error
-                        *ngIf="formGroup.controls.kg.hasError('required')"
+
+                    <!--                    <mat-label>Roles</mat-label>-->
+                    <!--                    <mat-select formControlName="rol_id">-->
+                    <!--                        <mat-option-->
+                    <!--                            *ngFor="let tGrupo of roles"-->
+                    <!--                            [value]="tGrupo.id"-->
+                    <!--                        >-->
+                    <!--                            {{ tGrupo.display_name }}-->
+                    <!--                        </mat-option>-->
+                    <!--                    </mat-select>-->
+                    <mat-label>Medída</mat-label>
+                    <!--                    <input-->
+                    <!--                        type="number"-->
+                    <!--                        matInput-->
+                    <!--                        placeholder=""-->
+                    <!--                        formControlName="kg"-->
+                    <!--                    />-->
+                    <mat-select
+                        matNativeControl
+                        formControlName="medida_id"
+                        required
                     >
-                        Kg es requerido
+                        <mat-option *ngFor="let item of medidas" [value]="item.id">
+                            {{ item.nombre }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="
+                            formGroup.controls.medida_id.hasError('required')
+                        "
+                    >
+                        Medidas es requerido
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -38,71 +59,24 @@
         <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
             <div class="">
                 <mat-form-field appearance="fill" class="w-full">
-                    <mat-label>Largo</mat-label>
+                    <mat-label>Caracteristicas</mat-label>
                     <input
-                        type="number"
+                        type="text"
                         matInput
                         placeholder=""
-                        formControlName="largo"
+                        formControlName="caracteristica"
                     />
                     <mat-error
-                        *ngIf="formGroup.controls.largo.hasError('required')"
+                        *ngIf="formGroup.controls.caracteristica.hasError('required')"
                     >
                         Largo es requerido
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div class="">
-                <mat-form-field appearance="fill" class="w-full">
-                    <mat-label>Ancho</mat-label>
-                    <input
-                        type="number"
-                        matInput
-                        placeholder=""
-                        formControlName="ancho"
-                    />
-                    <mat-error
-                        *ngIf="formGroup.controls.cm.hasError('required')"
-                    >
-                        Ancho es requerido
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div class="">
-                <mat-form-field appearance="fill" class="w-full">
-                    <mat-label>Cm</mat-label>
-                    <input
-                        type="number"
-                        matInput
-                        placeholder=""
-                        formControlName="cm"
-                    />
-                    <mat-error
-                        *ngIf="formGroup.controls.cm.hasError('required')"
-                    >
-                        Cm es requerido
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div class="">
-                <mat-form-field appearance="fill" class="w-full">
-                    <mat-label>Cm2</mat-label>
-                    <input
-                        type="number"
-                        matInput
-                        placeholder=""
-                        formControlName="cm2"
-                    />
-                    <mat-error
-                        *ngIf="formGroup.controls.cm2.hasError('required')"
-                    >
-                        Cm2 es requerido
-                    </mat-error>
-                </mat-form-field>
-            </div>
         </div>
+
     </form>
-</div>
+</ng-container>
 <div mat-dialog-actions>
     <button
         mat-raised-button

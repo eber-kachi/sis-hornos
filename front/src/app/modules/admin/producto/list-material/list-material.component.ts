@@ -13,11 +13,8 @@ export class ListMaterialComponent implements OnInit {
     displayedColumns: string[] = [
         'id',
         'nombre',
-        'kg',
-        'largo',
-        'ancho',
-        'cm',
-        'cm2',
+        'caracteristicas',
+        'medida_nombre',
         'actions',
     ];
     dataSource = [];

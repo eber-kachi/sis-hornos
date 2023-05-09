@@ -5,9 +5,9 @@ import {HttpClient} from "@angular/common/http";
 @Injectable({
   providedIn: 'root'
 })
-export class ClienteService extends BaseAPIClass {
+export class MedidaService extends BaseAPIClass {
     constructor(protected httpClient: HttpClient) {
         super(httpClient);
-        this.baseUrl = '/cliente';
+        this.baseUrl = '/medidas';
     }
 }
