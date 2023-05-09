@@ -13,7 +13,7 @@ class AsignacionLotesController extends Controller
 {
     public function index()
     {
-        $asignacion_lote = AsignacionLote::paginate(25);
+        $asignacion_lote = AsignacionLote::orderBy('id', 'desc')->get();
 
         $data = $asignacion_lote->transform(function ($asignacion_lote) {
             return $this->transform($asignacion_lote);
@@ -193,7 +193,7 @@ class AsignacionLotesController extends Controller
             'lote_produccion_id' => $asignacion_lote->lote_produccion_id,
             'grupos_trabajo_id' => $asignacion_lote->grupos_trabajo_id,
             'cantidad_asignada' => $asignacion_lote->cantidad_asignada,
-    
+
         ];
     }
 }

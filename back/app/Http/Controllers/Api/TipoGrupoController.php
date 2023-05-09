@@ -13,7 +13,7 @@ class TipoGrupoController extends Controller
     public function index()
     {
 
-        $TipoGrupos = TipoGrupo::paginate(25);
+        $TipoGrupos = TipoGrupo::orderBy('id', 'desc')->get();
         $data =$TipoGrupos->transform(function ($TipoGrupo) {
             return $this->transform($TipoGrupo);
         });

@@ -15,7 +15,7 @@ class DepartamentosController extends Controller
 
     public function index()
     {
-        $departamento = Departamento::paginate(25);
+        $departamento = Departamento::orderBy('id', 'desc')->get();
 
         $data = $departamento->transform(function ($departamento) {
             return $this->transform($departamento);

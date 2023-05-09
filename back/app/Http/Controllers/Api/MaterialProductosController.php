@@ -14,7 +14,7 @@ class MaterialProductosController extends Controller
 {
     public function index()
     {
-        $material_producto = MaterialProductos::paginate(25);
+        $material_producto = MaterialProductos::orderBy('id', 'desc')->get();
 
         $data = $material_producto->transform(function ($material_producto) {
             return $this->transform($material_producto);

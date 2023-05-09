@@ -12,7 +12,7 @@ class MaterialesController extends Controller
 {
     public function index()
     {
-        $materiales = Material::paginate(25);
+        $materiales = Material::orderBy('id', 'desc')->get();
 
         $data = $materiales->transform(function ($materiales) {
             return $this->transform($materiales);

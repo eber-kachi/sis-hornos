@@ -18,7 +18,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(25);
+        $users = User::orderBy('id', 'desc')->get();
 
         $data = $users->transform(function ($user) {
             return $this->transform($user);

@@ -12,7 +12,7 @@ class ProductosController extends Controller
 
     public function index()
     {
-        $productos = Producto::paginate(25);
+        $productos = Producto::orderBy('id', 'desc')->get();
 
         $data = $productos->transform(function ($productos) {
             return $this->transform($productos);

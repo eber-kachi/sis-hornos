@@ -13,7 +13,8 @@ class ClientesController extends Controller
     {
 
 
-        $clientes = Cliente::paginate(25);
+        $clientes = Cliente::orderBy('id', 'desc')->get();
+
         $data = $clientes->transform(function ($clientes) {
             return $this->transform($clientes);
         });
@@ -60,7 +61,6 @@ class ClientesController extends Controller
     public function show($id)
     {
         $clientes = Cliente::findOrFail($id);
-
         return $this->successResponse(
             'Cliente  was successfully retrieved.',
             $this->transform($clientes)
@@ -174,7 +174,6 @@ class ClientesController extends Controller
      */
     protected function transform(Cliente $clientes)
     {
-
         return [
             'id' => $clientes->id,
             'nombres' => $clientes->nombres,

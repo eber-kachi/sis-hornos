@@ -13,7 +13,7 @@ class PedidosController extends Controller
     
     public function index()
     {
-        $pedidos = Pedido::paginate(25);
+        $pedidos = Pedido::orderBy('id', 'desc')->get();
 
         $data = $pedidos->transform(function ($pedidos) {
             return $this->transform($pedidos);

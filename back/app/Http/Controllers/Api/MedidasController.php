@@ -13,7 +13,7 @@ class MedidasController extends Controller
     
     public function index()
     {
-        $medida = Medida::paginate(25);
+        $medida = Medida::orderBy('id', 'desc')->get();
 
         $data = $medida->transform(function ($medida) {
             return $this->transform($medida);

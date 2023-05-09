@@ -13,7 +13,7 @@ class ConceptoPedidoController extends Controller
 {
     public function index()
     {
-        $concepto_pedido = ConceptoPedido::paginate(25);
+        $concepto_pedido = ConceptoPedido::orderBy('id', 'desc')->get();
 
         $data = $concepto_pedido->transform(function ($concepto_pedido) {
             return $this->transform($concepto_pedido);

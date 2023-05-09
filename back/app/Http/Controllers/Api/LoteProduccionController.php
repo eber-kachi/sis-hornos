@@ -21,7 +21,7 @@ class LoteProduccionController extends Controller
 
     public function index()
     {
-        $lote_produccion = LoteProduccion::paginate(25);
+        $lote_produccion = LoteProduccion::orderBy('id', 'desc')->get();
 
         $data = $lote_produccion->transform(function ($lote_produccion) {
             return $this->transform($lote_produccion);
