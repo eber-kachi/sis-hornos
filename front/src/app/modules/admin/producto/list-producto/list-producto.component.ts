@@ -41,7 +41,7 @@ export class ListProductoComponent implements OnInit {
     edit(id: string | number | ArrayBufferView | ArrayBuffer) {
         console.log(id);
         const dialogRef = this.dialog.open(CreateProductoComponent, {
-            width: '640px',
+            width: '940px',
             disableClose: true,
             data: { id: id },
         });
@@ -78,7 +78,7 @@ export class ListProductoComponent implements OnInit {
 
     createNew() {
         const dialogRef = this.dialog.open(CreateProductoComponent, {
-            width: '640px',
+            width: '940px',
             disableClose: true,
         });
         dialogRef.afterClosed().subscribe((res) => {

@@ -1,14 +1,15 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component, Inject} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
     MatDialogRef,
 } from '@angular/material/dialog';
-import { TipoGrupoService } from '@core/service/api/tipo-grupo.service';
-import { PersonalService } from '@core/service/api/personal.service';
-import { DepartamentoService } from '@core/service/departamento.service';
-import { MaterialService } from '@core/service/api/material.service';
+import {TipoGrupoService} from '@core/service/api/tipo-grupo.service';
+import {PersonalService} from '@core/service/api/personal.service';
+import {DepartamentoService} from '@core/service/departamento.service';
+import {MaterialService} from '@core/service/api/material.service';
+import {MedidaService} from "@core/service/api/medida.service";
 
 @Component({
     selector: 'app-create-material',
@@ -18,11 +19,14 @@ import { MaterialService } from '@core/service/api/material.service';
 export class CreateMaterialComponent {
     public formGroup: FormGroup;
     editing;
+
+    medidas: any[] = [];
     constructor(
         private fb: FormBuilder,
         public dialog: MatDialogRef<CreateMaterialComponent>,
         @Inject(MAT_DIALOG_DATA) private dataEdit: any,
         private materialService: MaterialService,
+        private medidaService: MedidaService,
     ) {
         this.editing = dataEdit;
         console.log('data editing', this.editing);
@@ -37,14 +41,18 @@ export class CreateMaterialComponent {
     public ngOnInit(): void {
         this.formGroup = this.fb.group({
             nombre: ['', [Validators.required]],
-            kg: ['', [Validators.required]],
-            largo: ['', [Validators.required]],
-            ancho: ['', [Validators.required]],
-            cm: ['', [Validators.required]],
-            cm2: ['', [Validators.required]],
+            medida_id:['',[Validators.required]],
+            caracteristica: ['', [Validators.required]],
+            // largo: ['', [Validators.required]],
+            // ancho: ['', [Validators.required]],
+            // cm: ['', [Validators.required]],
+            // cm2: ['', [Validators.required]],
             // username: [{value: '', disabled: true}, [Validators.required]],
             // password: ['megahornoroja', [Validators.required]],
         });
+
+
+        this.listMedidas();
     }
 
     closeDialog() {
@@ -85,5 +93,19 @@ export class CreateMaterialComponent {
         }
     }
 
-    formChanged() {}
+    formChanged() {
+    }
+
+    listMedidas() {
+        this.medidaService.getAll().subscribe(res => {
+            console.log(res);
+            this.medidas=res.data;
+
+            if (this.editing != null) {
+            }else{
+                this.formGroup.patchValue({medida_id: 1 })
+
+            }
+        })
+    }
 }

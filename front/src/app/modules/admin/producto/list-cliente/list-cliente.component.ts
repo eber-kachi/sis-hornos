@@ -3,6 +3,7 @@ import {MaterialService} from "@core/service/api/material.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AlertDialogComponent} from "@app/shared/alert-dialog/alert-dialog.component";
 import {CreateClienteComponent} from "@app/modules/admin/producto/list-cliente/create-cliente/create-cliente.component";
+import {ClienteService} from "@core/service/api/cliente.service";
 
 @Component({
   selector: 'app-list-cliente',
@@ -20,7 +21,7 @@ export class ListClienteComponent {
     ];
     dataSource = [];
     constructor(
-        private materialService: MaterialService,
+        private clienteService: ClienteService,
         public dialog: MatDialog
     ) {}
     ngOnInit(): void {
@@ -29,7 +30,7 @@ export class ListClienteComponent {
     }
 
     list() {
-        this.materialService.getAll().subscribe((res) => {
+        this.clienteService.getAll().subscribe((res) => {
             console.log(res);
             this.dataSource = res.data;
         });
@@ -63,7 +64,7 @@ export class ListClienteComponent {
         dialogRef.afterClosed().subscribe((confirmed: boolean) => {
             if (confirmed) {
                 console.log('borrando');
-                this.materialService.delete(id as string).subscribe((res) => {
+                this.clienteService.delete(id as string).subscribe((res) => {
                     console.log(res);
                     this.list();
                 });
