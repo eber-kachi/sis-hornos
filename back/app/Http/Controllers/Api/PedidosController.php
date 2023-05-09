@@ -13,7 +13,7 @@ class PedidosController extends Controller
     
     public function index()
     {
-        $pedidos = Pedido::orderBy('id', 'desc')->get();
+        $pedidos = Pedido::orderBy('id', 'desc')->paginate(25);
 
         $data = $pedidos->transform(function ($pedidos) {
             return $this->transform($pedidos);
@@ -53,8 +53,6 @@ class PedidosController extends Controller
             $pedido->save();
             //echo $pedido;
     
-         
-
             foreach ($request->conceptos as $request_concepto) {
                 $concepto = new ConceptoPedido();
                 $concepto->cantidad = $request_concepto['cantidad'];
@@ -64,8 +62,6 @@ class PedidosController extends Controller
                 $concepto->save();
 
             }
-
-
             return $this->successResponse(
                 'Pedidos was successfully added.',
                 $this->transform($pedido)
@@ -200,14 +196,21 @@ class PedidosController extends Controller
     protected function transform(Pedido $pedidos)
     {
 
-        return [
-            'id' => $pedidos->id,
-            'total_precio' =>  $pedidos->total_precio,
-            'fecha_pedido' => $pedidos->fecha_pedido,
-            'cliente_id' => $pedidos->cliente_id,
-            
+       // Cargar la relación de productos con el pedido
+    $pedidos->load('productos');
 
-
-        ];
+    return [
+        'id' => $pedidos->id,
+        'total_precio' =>  $pedidos->total_precio,
+        'fecha_pedido' => $pedidos->fecha_pedido,
+        'cliente_id' => $pedidos->cliente_id,
+        // Obtener el array de productos con el nombre y la cantidad
+        'productos' => $pedidos->productos->map(function ($producto) {
+            return [
+                'nombre' => $producto->nombre,
+                'cantidad' => $producto->pivot->cantidad
+            ];
+        })
+    ];
     }
 }

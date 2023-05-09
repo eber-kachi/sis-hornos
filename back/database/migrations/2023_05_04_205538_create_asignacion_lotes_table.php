@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('asignacion_lotes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lote_produccion_id')
-            ->constrained('lotes_produccion');
+            ->constrained('lotes_produccion')->onDelete('cascade');
             $table->foreignId('grupos_trabajo_id')
             ->constrained('grupos_trabajos');
             $table->integer('cantidad_asignada');
