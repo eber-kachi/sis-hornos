@@ -211,7 +211,7 @@ class ProductosController extends Controller
      */
     protected function transform(Producto $productos)
     {
-        // Cargar la relación de materiales con el producto
+       // Cargar la relación de materiales con el producto
         $productos->load('materials');
 
         return [
@@ -221,7 +221,13 @@ class ProductosController extends Controller
             'precio_unitario' => $productos->precio_unitario,
             'costo' => $productos->costo,
             // Obtener el array de materiales con los atributos deseados
-            'materiales' => $productos->materials->pluck('id', 'nombre', 'cantidad', 'descripcion')
-        ];
-    }
+            'materiales' => $productos->materials->map(function ($material) {
+                return [
+                    'id' => $material->id,
+                    'nombre' => $material->nombre,
+                    'cantidad' => $material->pivot->cantidad,
+                    'descripcion' => $material->pivot->descripcion
+                ];
+            }) ];
+}
 }
