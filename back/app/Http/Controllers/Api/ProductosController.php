@@ -36,13 +36,29 @@ class ProductosController extends Controller
                 return $this->errorResponse($validator->errors()->all());
             }
 
-            $data = $this->getData($request);
-
-            $productos = Producto::create($data);
+                // Crear el producto
+                $producto = new Producto();
+                $producto->nombre = $request->nombre;
+                $producto->precio_unitario = $request->precio_unitario;
+                $producto->caracteristicas = $request->caracteristicas;
+                $producto->costo = $request->costo;
+                $producto->save();
+                // Preparar el array para sincronizar los materiales
+                foreach ($request->materiales as $index => $material) {
+                    $materiales[$material['material_id']] = [
+                        'cantidad' => $material['cantidad'],
+                        'descripcion' => $material['descripcion'] ?? null
+                    ];
+                }
+            
+               
+                // Sincronizar los materiales con los datos adicionales
+                $producto->materials()->sync($materiales);
+            
 
             return $this->successResponse(
                 'Produtos was successfully added.',
-                $this->transform($productos)
+                $this->transform($producto)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -57,9 +73,7 @@ class ProductosController extends Controller
      * @return Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $productos = Producto::findOrFail($id);
-
+    {   $productos = Producto::findOrFail($id);
         return $this->successResponse(
             'Produtos was successfully retrieved.',
             $this->transform($productos)
@@ -133,7 +147,10 @@ class ProductosController extends Controller
             "caracteristicas" => "nullable|string",
             "precio_unitario" => "nullable|numeric|min:0",
             "costo" => "nullable|numeric|min:0",
-          
+            "materiales.*.cantidad" => "required|integer|min:1",
+            "materiales.*.descripcion" => "nullable|string|max:255",
+            "materiales.*.material_id" => "required"
+            
         ];
 
         return Validator::make($request->all(), $rules);
@@ -149,19 +166,15 @@ class ProductosController extends Controller
     protected function getData(Request $request)
     {
         $rules = [
-
             "nombre" => "required|string",
             "caracteristicas" => "nullable|string",
             "precio_unitario" => "nullable|numeric|min:0",
             "costo" => "nullable|numeric|min:0",
-
-
-        ];
-
-
+            "materiales.*.cantidad" => "required|integer|min:1",
+            "materiales.*.descripcion" => "nullable|string|max:255",
+            "materiales.*.material_id" => "required"
+         ];
         $data = $request->validate($rules);
-
-
         return $data;
     }
 
@@ -174,15 +187,12 @@ class ProductosController extends Controller
      */
     protected function transform(Producto $productos)
     {
-
         return [
             'id' => $productos->id,
             'nombre' => $productos->nombre,
             'caracteristicas' => $productos->caracteristicas,
             'precio_unitario' => $productos->precio_unitario,
             'costo' => $productos->costo,
-
-
         ];
     }
 }
