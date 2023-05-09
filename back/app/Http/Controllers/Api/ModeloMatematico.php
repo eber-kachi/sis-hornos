@@ -22,20 +22,23 @@ class ModeloMatematico {
         $this->grupoTrabajo = GruposTrabajo::orderBy('id')->get();
         $this->tipoGrupo = TipoGrupo::orderBy('id')->get();
         $this->asignacionLote = collect();
+
+        
     }
+   
 
     public function cantidadProductosAsignados(LoteProduccion $loteProduccion) {
         // Calcular el porcentaje y la cantidad asignada a cada grupo
         $cantidadTotal = $this->cantidadTotalProductoDia();
         foreach ($this->grupoTrabajo as $grupo) {
             foreach ($this->tipoGrupo as $tipo) {
-                if ($tipo->id == $grupo->idTipoGrupo) {
+                if ($tipo->id == $grupo->tipo_grupo_id) {
                     // Crear una nueva asignación de lote
                     $asignacion = new AsignacionLote();
                     $asignacion->grupos_trabajo_id = $grupo->id;
                     $asignacion->lote_produccion_id = $loteProduccion->id;
                     // Calcular el porcentaje del grupo
-                    $porcentaje = $this->porcentajeGrupo($tipo->cantidadProduccionDiaria, $cantidadTotal);
+                    $porcentaje = $this->porcentajeGrupo($tipo->cantidad_produccion_diaria, $cantidadTotal);
                     // Calcular la cantidad asignada al grupo
                     $asignacion->cantidad_asignada = $this->cantidadAsignada($porcentaje, $loteProduccion->cantidad);
                     // Añadir la asignación a la colección
@@ -43,6 +46,7 @@ class ModeloMatematico {
                 }
             }
         }
+        
         // Devolver la colección de asignaciones de lote
         return $this->asignacionLote;
     }
@@ -55,9 +59,9 @@ class ModeloMatematico {
     }
 
     // Convertir el porcentaje de un grupo
-    private function porcentajeGrupo($cantidadProduccionDiaria, $cantidadTotal) {
+    private function porcentajeGrupo($cantidad_produccion_diaria, $cantidadTotal) {
         // Calcular el porcentaje
-        $porcentaje = ($cantidadProduccionDiaria * 100) / $cantidadTotal;
+        $porcentaje = ($cantidad_produccion_diaria * 100) / $cantidadTotal;
         return $porcentaje;
     }
 

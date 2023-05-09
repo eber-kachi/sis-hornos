@@ -36,7 +36,7 @@ class LoteProduccionController extends Controller
 
     public function store(Request $request)
     {
-         //   dd($request);
+
         try {
 
             $lote = new LoteProduccion();
@@ -45,15 +45,14 @@ class LoteProduccionController extends Controller
             $lote->activo="activo";
             $lote->save();
 
-            foreach ($request->pedidos as $modelPedido) {
-                $pedido = Pedido::find($modelPedido['id']);
+            foreach ($request->pedidos as $requestPedido) {
+                $pedido = Pedido::find($requestPedido['id']);
                 if ($pedido) {
                     $pedido->lote_produccion_id = $lote->id;
                     $pedido->save();
                 }
             }
             echo $pedido;
-
             $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote);
             echo $asignacion;
             foreach ($asignacion as $loteAsignacion) {
@@ -63,15 +62,10 @@ class LoteProduccionController extends Controller
                 $asignacionLote->cantidad_asignada = $loteAsignacion->cantidad_asignada;
                 $asignacionLote->save();
             }
-
-
             return $this->successResponse(
                 'Lote  Produccion was successfully added.',
                 $this->transform($lote)
             );
-
-
-
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }

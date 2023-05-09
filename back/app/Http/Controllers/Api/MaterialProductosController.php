@@ -56,7 +56,7 @@ class MaterialProductosController extends Controller
             $material_producto = MaterialProductos::create($data);
 
             return $this->successResponse(
-                'Material Produccion was successfully added.',
+                'Material Producto was successfully added.',
                 $this->transform($material_producto)
             );
         } catch (Exception $exception) {
@@ -76,7 +76,7 @@ class MaterialProductosController extends Controller
         $material_producto = MaterialProductos::findOrFail($id);
 
         return $this->successResponse(
-            'Material Produccion was successfully retrieved.',
+            'Material Producto was successfully retrieved.',
             $this->transform($material_producto)
         );
     }
@@ -104,7 +104,7 @@ class MaterialProductosController extends Controller
             $material_producto->update($data);
 
             return $this->successResponse(
-                'Material Produccion was successfully updated.',
+                'Material Producto was successfully updated.',
                 $this->transform($material_producto)
             );
         } catch (Exception $exception) {
@@ -146,13 +146,8 @@ class MaterialProductosController extends Controller
         $rules = [
             "producto_id" => "required",
             "material_id" => "required",
-            "cantidad" => "nullable",
+            "cantidad" => "required",
             "descripcion" => "nullable",
-            "kg" => "nullable",
-            "largo_cm" => "nullable",
-            "ancho_cm" => "nullable",
-            "cm2" => "nullable",
-            'enabled' => 'boolean',
         ];
 
         return Validator::make($request->all(), $rules);
@@ -170,24 +165,14 @@ class MaterialProductosController extends Controller
         $rules = [
             "producto_id" => "required",
             "material_id" => "required",
-            "cantidad" => "nullable",
+            "cantidad" => "required",
             "descripcion" => "nullable",
-            "kg" => "nullable",
-            "largo_cm" => "nullable",
-            "ancho_cm" => "nullable",
-            "cm2" => "nullable",
-            'enabled' => 'boolean',
 
 
         ];
 
 
         $data = $request->validate($rules);
-
-
-        $data['enabled'] = $request->has('enabled');
-
-
         return $data;
     }
 
@@ -205,13 +190,9 @@ class MaterialProductosController extends Controller
             'id' => $material_producto->id,
             'cantidad' => $material_producto->cantidad,
             'descripcion' => $material_producto->descripcion,
-            'kg' => $material_producto->kg,
-            'largo_cm' => $material_producto->largo_cm,
-            'ancho_cm' => $material_producto->ancho_cm,
             'producto_id' => $material_producto->producto_id,
             'material_id' => $material_producto->material_id,
-            'cm2' => $material_producto->cm2,
-
+            
 
         ];
     }
