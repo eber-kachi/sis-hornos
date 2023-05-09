@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
-use App\Models\asignacionLote;
+use App\Models\AsignacionLote;
 use App\Models\LoteProduccion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

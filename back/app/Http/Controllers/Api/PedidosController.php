@@ -37,23 +37,34 @@ class PedidosController extends Controller
                 return $this->errorResponse($validator->errors()->all());
             }
 
-            //$data = $this->getData($request);
 
+            $total_precio = collect($request->conceptos)->map(function ($concepto) {
+                return $concepto['cantidad'] * $concepto['precio'];
+            })->sum();
+
+            // Aquí puedes mostrar el valor de la variable $total_precio
+           // echo $total_precio;
+
+            //$data = $this->getData($request);
             $pedido = new Pedido();
-            $pedido->total_precio = collect($request->conceptos)->sum('cantidad * precio');
+            $pedido->total_precio = $total_precio;
             $pedido->fecha_pedido = now();
             $pedido->cliente_id = $request->cliente_id;
             $pedido->save();
+            //echo $pedido;
     
+         
+
             foreach ($request->conceptos as $request_concepto) {
                 $concepto = new ConceptoPedido();
-                $concepto->cantidad = $request_concepto->cantidad;
-                $concepto->producto_id = $request_concepto->producto_id;
-                $concepto->precio = $request_concepto->precio;
-                $concepto->pedido_id = $pedido->Id;
+                $concepto->cantidad = $request_concepto['cantidad'];
+                $concepto->producto_id = $request_concepto['producto_id'];
+                $concepto->precio = $request_concepto['precio'];
+                $concepto->pedido_id = $pedido->id;
                 $concepto->save();
 
             }
+
 
             return $this->successResponse(
                 'Pedidos was successfully added.',
@@ -149,7 +160,6 @@ class PedidosController extends Controller
             "cliente_id" => "required",
             "lote_produccion_id"=>"nullable",
             
-            'enabled' => 'boolean',
         ];
 
         return Validator::make($request->all(), $rules);
@@ -171,16 +181,11 @@ class PedidosController extends Controller
             "cliente_id" => "required",
             "lote_produccion_id"=>"nullable",
             
-            'enabled' => 'boolean',
 
         ];
 
 
         $data = $request->validate($rules);
-
-
-        $data['enabled'] = $request->has('enabled');
-
 
         return $data;
     }

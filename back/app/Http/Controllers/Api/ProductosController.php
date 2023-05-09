@@ -19,7 +19,7 @@ class ProductosController extends Controller
         });
 
         return $this->successResponse(
-            'Productoss were successfully retrieved.',
+            'Productos were successfully retrieved.',
             $data
         );
 
@@ -41,7 +41,7 @@ class ProductosController extends Controller
             $productos = Producto::create($data);
 
             return $this->successResponse(
-                'Grupos Trabajos was successfully added.',
+                'Produtos was successfully added.',
                 $this->transform($productos)
             );
         } catch (Exception $exception) {
@@ -61,7 +61,7 @@ class ProductosController extends Controller
         $productos = Producto::findOrFail($id);
 
         return $this->successResponse(
-            'Grupos Trabajos was successfully retrieved.',
+            'Produtos was successfully retrieved.',
             $this->transform($productos)
         );
     }
@@ -89,7 +89,7 @@ class ProductosController extends Controller
             $productos->update($data);
 
             return $this->successResponse(
-                'Grupos Trabajos was successfully updated.',
+                'Produtos was successfully updated.',
                 $this->transform($productos)
             );
         } catch (Exception $exception) {
@@ -133,7 +133,7 @@ class ProductosController extends Controller
             "caracteristicas" => "nullable|string",
             "precio_unitario" => "nullable|numeric|min:0",
             "costo" => "nullable|numeric|min:0",
-            'enabled' => 'boolean',
+          
         ];
 
         return Validator::make($request->all(), $rules);
@@ -154,15 +154,12 @@ class ProductosController extends Controller
             "caracteristicas" => "nullable|string",
             "precio_unitario" => "nullable|numeric|min:0",
             "costo" => "nullable|numeric|min:0",
-            'enabled' => 'boolean',
+
 
         ];
 
 
         $data = $request->validate($rules);
-
-
-        $data['enabled'] = $request->has('enabled');
 
 
         return $data;

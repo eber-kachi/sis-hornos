@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\AsignacionLote;
+use App\Http\Controllers\Api\AsignacionLotesController;
 use App\Http\Controllers\Controller;
 use App\Models\AsignacionLote;
 use App\Models\GruposTrabajo;

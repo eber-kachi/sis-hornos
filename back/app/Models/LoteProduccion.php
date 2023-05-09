@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class LoteProduccion extends Model
 {
 
+    protected $table = 'lotes_produccion';
     protected $fillable = ['cantidad','fecha_inicio',
                          'fecha_final','activo','fecha_registro'];
     use HasFactory;
