@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('cantidad');
             $table->string('descripcion')->nullable();
-            $table->foreignId('producto_id')->constrained('productos');
-            $table->foreignId('material_id')->constrained('materials');
+            $table->foreignId('producto_id')->constrained('productos')->onDelete('cascade');
+            $table->foreignId('material_id')->constrained('materials')->onDelete('cascade');
             $table->timestamps();
         });
     }
