@@ -6,6 +6,7 @@ import {ListMaterialComponent} from "@app/modules/admin/producto/list-material/l
 import {ListProductoComponent} from "@app/modules/admin/producto/list-producto/list-producto.component";
 import {ListDepartamentoComponent} from "@app/modules/admin/producto/list-departamento/list-departamento.component";
 import {ListClienteComponent} from "@app/modules/admin/producto/list-cliente/list-cliente.component";
+import {ListPedidoComponent} from "@app/modules/admin/producto/list-pedido/list-pedido.component";
 
 const routes: Routes = [
     {
@@ -24,6 +25,10 @@ const routes: Routes = [
         path: 'lista-cliente',
         component: ListClienteComponent,
     },
+    {
+        path: 'lista-pedidos',
+        component: ListPedidoComponent,
+    }
 ];
 
 @NgModule({

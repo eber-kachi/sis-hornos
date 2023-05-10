@@ -21,6 +21,8 @@ import { ListDepartamentoComponent } from './list-departamento/list-departamento
 import { CreateDepartamentoComponent } from './list-departamento/create-departamento/create-departamento.component';
 import { ListClienteComponent } from './list-cliente/list-cliente.component';
 import { CreateClienteComponent } from './list-cliente/create-cliente/create-cliente.component';
+import { ListPedidoComponent } from './list-pedido/list-pedido.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import { CreateClienteComponent } from './list-cliente/create-cliente/create-cli
         ListDepartamentoComponent,
         CreateDepartamentoComponent,
         ListClienteComponent,
-        CreateClienteComponent
+        CreateClienteComponent,
+        ListPedidoComponent
     ],
     imports: [
         CommonModule,
@@ -51,6 +54,7 @@ import { CreateClienteComponent } from './list-cliente/create-cliente/create-cli
         MatGridListModule,
         // MatFormFieldControl,
         MatInputModule,
+        MatPaginatorModule
     ]
 })
 export class ProductoModule {
