@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Pedido extends Model
@@ -21,7 +22,7 @@ class Pedido extends Model
                     ->withTimestamps();
     }
 
-    public function clientes(){
+    public function clientes(): BelongsTo{
         return $this->belongsTo(Cliente::class,'cliente_id','id');
     }
 

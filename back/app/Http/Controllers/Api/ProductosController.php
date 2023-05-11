@@ -146,7 +146,9 @@ class ProductosController extends Controller
     {
         try {
             $productos = Producto::findOrFail($id);
-            $productos->delete();
+            $productos->materials()->detach(); 
+            // eliminar los conceptos relacionados 
+            $productos->delete(); // eliminar el pedido
 
             return $this->successResponse(
                 'Materiles was successfully deleted.',

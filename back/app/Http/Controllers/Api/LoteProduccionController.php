@@ -39,29 +39,35 @@ class LoteProduccionController extends Controller
 
         try {
 
+            // Crear un array con los ids y las cantidades de los pedidos
+            $pedidos_ids = array();
+            $pedidos_cantidades = array();
+            foreach ($request->pedidos as $requestPedido) {
+            $pedidos_ids[] = $requestPedido['id'];
+            $pedidos_cantidades[] = $requestPedido['cantidad'];
+            }
+
+            // Sumar las cantidades usando array_sum()
+            $suma = array_sum($pedidos_cantidades);
+
+            // Asignar la suma a la variable cantidad de lote
             $lote = new LoteProduccion();
-            $lote->cantidad = $request->cantidad;
+            $lote->cantidad = $suma;
             $lote->fecha_registro = today();
             $lote->activo="activo";
             $lote->save();
 
-            foreach ($request->pedidos as $requestPedido) {
-                $pedido = Pedido::find($requestPedido['id']);
-                if ($pedido) {
-                    $pedido->lote_produccion_id = $lote->id;
-                    $pedido->save();
-                }
-            }
-            echo $pedido;
+            // Actualizar el lote de producción en los pedidos con el método update()
+            Pedido::whereIn('id', $pedidos_ids)->update(['lote_produccion_id' => $lote->id]);
+            
+                // Usando el método attach()
             $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote);
-            echo $asignacion;
             foreach ($asignacion as $loteAsignacion) {
-                $asignacionLote = new AsignacionLote();
-                $asignacionLote->grupos_trabajo_id = $loteAsignacion->grupos_trabajo_id;
-                $asignacionLote->lote_produccion_id = $loteAsignacion->lote_produccion_id;
-                $asignacionLote->cantidad_asignada = $loteAsignacion->cantidad_asignada;
-                $asignacionLote->save();
+                $lote->GruposTrabajo()->attach($loteAsignacion->grupos_trabajo_id,
+                 ['cantidad_asignada' => $loteAsignacion->cantidad_asignada]);
             }
+
+
             return $this->successResponse(
                 'Lote  Produccion was successfully added.',
                 $this->transform($lote)
@@ -95,23 +101,45 @@ class LoteProduccionController extends Controller
      *
      * @return Illuminate\Http\Response
      */
-    public function update($id, Request $request)
-    {
-        try {
-            $validator = $this->getValidator($request);
 
-            if ($validator->fails()) {
-                return $this->errorResponse($validator->errors()->all());
+        public function update(Request $request, $id)
+        {
+        try {
+            // Obtener el lote de producción por el id
+            $lote = LoteProduccion::findOrFail($id);
+
+            // Crear un array con los ids y las cantidades de los pedidos
+            $pedidos_ids = array();
+            $pedidos_cantidades = array();
+            foreach ($request->pedidos as $requestPedido) {
+            $pedidos_ids[] = $requestPedido['id'];
+            $pedidos_cantidades[] = $requestPedido['cantidad'];
             }
 
-            $data = $this->getData($request);
+            // Sumar las cantidades usando array_sum()
+            $suma = array_sum($pedidos_cantidades);
 
-            $lote_produccion = LoteProduccion::findOrFail($id);
-            $lote_produccion->update($data);
+            // Asignar la suma a la variable cantidad de lote
+            $lote->fill([
+            'cantidad' => $suma,
+            'fecha_registro' => today(),
+            'activo' => "activo"
+            ]);
+            $lote->save();
+
+            // Actualizar el lote de producción en los pedidos con el método sync()
+            $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote);
+            $grupos_ids = array();
+            $atributos = array();
+            foreach ($asignacion as $loteAsignacion) {
+            $grupos_ids[] = $loteAsignacion->grupos_trabajo_id;
+            $atributos[$loteAsignacion->grupos_trabajo_id] = ['cantidad_asignada' => $loteAsignacion->cantidad_asignada];
+            }
+            $lote->gruposTrabajo()->sync($grupos_ids, $atributos);
 
             return $this->successResponse(
-                'Lote  Produccion was successfully updated.',
-                $this->transform($lote_produccion)
+            'Lote  Produccion was successfully updated.',
+            $this->transform($lote)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -128,12 +156,18 @@ class LoteProduccionController extends Controller
     public function destroy($id)
     {
         try {
-            $lote_produccion = LoteProduccion::findOrFail($id);
-            $lote_produccion->delete();
-
-            return $this->successResponse(
-                'Materiles was successfully deleted.',
-                $this->transform($lote_produccion)
+          // Obtener el lote de producción por el id
+          $lote = LoteProduccion::findOrFail($id);
+      
+          // Quitar la relación con los pedidos usando detach()
+          $lote->pedidos()->detach();
+      
+          // Eliminar el lote de producción
+          $lote->delete();
+      
+          return $this->successResponse(
+            'Lote  Produccion was successfully updated.',
+            $this->transform($lote)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -150,7 +184,7 @@ class LoteProduccionController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            "cantidad" => "required|numeric|min:0",
+            "cantidad" => "nullable",
             "fecha_inicio" => "nullable",
             "fecha_final" => "nullable",
             "activo" => "string",
@@ -170,7 +204,7 @@ class LoteProduccionController extends Controller
     protected function getData(Request $request)
     {
         $rules = [
-            "cantidad" => "required|numeric|min:0",
+            "cantidad" => "nullable",
             "fecha_inicio" => "nullable",
             "fecha_final" => "nullable",
             "activo" => "string",
@@ -191,8 +225,17 @@ class LoteProduccionController extends Controller
      *
      * @return array
      */
+  
     protected function transform(LoteProduccion $lote_produccion)
     {
+        // Cargar las relaciones del lote de producción
+        $lote_produccion->load('grupos_trabajos', 'pedidos', 'asignacion_lotes');
+
+        // Unir el array de grupos con el de asignación
+        $grupos_asignacion = $lote_produccion->GruposTrabajo->merge($lote_produccion->asignacionLotes);
+
+        // Agrupar los elementos por el idgrupo
+        $grupos_asignacion = $grupos_asignacion->groupBy('grupos_trabajo_id');
 
         return [
             'id' => $lote_produccion->id,
@@ -202,10 +245,25 @@ class LoteProduccionController extends Controller
             'activo' => $lote_produccion->activo,
             'fecha_registro' => $lote_produccion->fecha_registro,
             'tiempo_dias' => $this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad']),
-
-
-
-
+            // Transformar los grupos y las asignaciones
+            'grupos_asignacion' => $grupos_asignacion->map(function ($grupo) {
+            return [
+                'id' => $grupo[0]->id,
+                'nombre' => $grupo[0]->nombre,
+                // Obtener la cantidad asignada desde el pivot o desde la asignación
+                'cantidad_asignada' => isset($grupo[0]->pivot) ? $grupo[0]->pivot->cantidad_asignada : $grupo[1]->cantidad_asignada
+            ];
+            }),
+            // Transformar los pedidos
+            'pedidos' => $lote_produccion->Pedidos->map(function ($pedido) {
+            return [
+                'id' => $pedido->id,
+                'cliente_id' => $pedido->cliente_id,
+                'producto_id' => $pedido->producto_id,
+                'cantidad' => $pedido->cantidad,
+                'fecha_entrega' => $pedido->fecha_entrega
+            ];
+            })
         ];
-    }
+}
 }

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('concepto_pedidos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pedido_id')
-            ->constrained('pedidos');
+            ->constrained('pedidos')->onDelete('cascade');
             $table->foreignId('producto_id')
-            ->constrained('productos');
+            ->constrained('productos')->onDelete('cascade');
             $table->integer('cantidad');
             $table->integer('precio');
 

@@ -19,7 +19,7 @@ class RolsController extends Controller
      */
     public function index()
     {
-        $rols = Rol::orderBy('id', 'desc')->get();
+        $rols = Rol::paginate(25);
 
         $data = $rols->transform(function ($rol) {
             return $this->transform($rol);

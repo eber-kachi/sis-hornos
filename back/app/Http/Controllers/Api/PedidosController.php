@@ -13,7 +13,7 @@ class PedidosController extends Controller
     
     public function index()
     {
-        $pedidos = Pedido::orderBy('id', 'desc')->get();
+        $pedidos = Pedido::orderBy('id', 'desc')->paginate(25);
 
         $data = $pedidos->transform(function ($pedidos) {
             return $this->transform($pedidos);
@@ -42,33 +42,33 @@ class PedidosController extends Controller
                 return $concepto['cantidad'] * $concepto['precio'];
             })->sum();
 
-            // Aquí puedes mostrar el valor de la variable $total_precio
-           // echo $total_precio;
-
-            //$data = $this->getData($request);
+    
             $pedido = new Pedido();
             $pedido->total_precio = $total_precio;
             $pedido->fecha_pedido = now();
-            $pedido->cliente_id = $request->cliente_id;
-            $pedido->save();
-            //echo $pedido;
-    
-         
+            $pedido->clientes()->associate($request->cliente_id);
 
-            foreach ($request->conceptos as $request_concepto) {
-                $concepto = new ConceptoPedido();
-                $concepto->cantidad = $request_concepto['cantidad'];
-                $concepto->producto_id = $request_concepto['producto_id'];
-                $concepto->precio = $request_concepto['precio'];
-                $concepto->pedido_id = $pedido->id;
-                $concepto->save();
+             $pedido->save();
+            
+             $conceptos = []; // inicializar el array vacío
+             foreach ($request->conceptos as $index => $concepto) {
+                 if (isset($concepto['producto_id'])) {
+                     $conceptos[$concepto['producto_id']] = [
+                         'cantidad' => $concepto['cantidad'],
+                         'precio' => $concepto['precio'] ?? null
+                     ];
+                 }
+             }
+               // Sincronizar los materiales con los datos adicionales
+               $pedido->productos()->attach($conceptos);
 
-            }
-
-
+// Sincronizar los productos con los datos adicionales $pedido->productos()->sync($conceptos);
+            
+        
             return $this->successResponse(
                 'Pedidos was successfully added.',
                 $this->transform($pedido)
+               
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -103,20 +103,49 @@ class PedidosController extends Controller
     public function update($id, Request $request)
     {
         try {
+            // Buscar el pedido por su id
+            $pedido = Pedido::find($id);
+    
+            // Comprobar si existe
+            if (!$pedido) {
+                return $this->errorResponse('Pedido not found.');
+            }
+    
+            // Validar los datos del request
             $validator = $this->getValidator($request);
-
+    
             if ($validator->fails()) {
                 return $this->errorResponse($validator->errors()->all());
             }
 
-            $data = $this->getData($request);
+            $total_precio = collect($request->conceptos)->map(function ($concepto) {
+                return $concepto['cantidad'] * $concepto['precio'];
+            })->sum();
 
-            $pedidos = Pedido::findOrFail($id);
-            $pedidos->update($data);
 
+            $pedido->total_precio = $total_precio;
+            $pedido->fecha_pedido = now();
+            $pedido->clientes()->associate($request->cliente_id); 
+            $pedido->save();
+            
+            $conceptos = []; // inicializar el array vacío
+            foreach ($request->conceptos as $index => $concepto) {
+                if (isset($concepto['producto_id'])) {
+                    $conceptos[$concepto['producto_id']] = [
+                        'cantidad' => $concepto['cantidad'],
+                        'precio' => $concepto['precio'] ?? null
+                    ];
+                }
+            }
+               // Sincronizar los materiales con los datos adicionales
+               $pedido->productos()->sync($conceptos);
+            
+
+
+            // Devolver una respuesta de éxito con el pedido y sus conceptos
             return $this->successResponse(
-                'Pedidos was successfully updated.',
-                $this->transform($pedidos)
+                'Pedido was successfully updated.',
+                $this->transform($pedido)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -133,12 +162,15 @@ class PedidosController extends Controller
     public function destroy($id)
     {
         try {
-            $pedidos = Pedido::findOrFail($id);
-            $pedidos->delete();
+           
+            $pedido = Pedido::find($id); 
+            $pedido->productos()->detach(); 
+            // eliminar los conceptos relacionados 
+            $pedido->delete(); // eliminar el pedido
 
             return $this->successResponse(
-                'Materiles was successfully deleted.',
-                $this->transform($pedidos)
+                'Pedidos was successfully deleted.',
+                $this->transform($pedido)
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -200,14 +232,23 @@ class PedidosController extends Controller
     protected function transform(Pedido $pedidos)
     {
 
-        return [
-            'id' => $pedidos->id,
-            'total_precio' =>  $pedidos->total_precio,
-            'fecha_pedido' => $pedidos->fecha_pedido,
-            'cliente_id' => $pedidos->cliente_id,
-            
+            return [
+                'id' => $pedidos->id,
+                'total_precio' => $pedidos->total_precio,
+                'fecha_pedido' => $pedidos->fecha_pedido,
+                'cliente_id' => $pedidos->cliente_id,
 
-
-        ];
+                // Obtener el objeto cliente completo
+                'cliente' => $pedidos->clientes,
+                
+               // Obtener el array de concepto pedidos con el nombre y la cantidad
+                'productos' => $pedidos->productos->map(function ($producto) {
+                    return [
+                        'nombre' => $producto->nombre,
+                        'cantidad' => $producto->pivot->cantidad
+                ];
+                })
+            ];
+    
     }
 }
