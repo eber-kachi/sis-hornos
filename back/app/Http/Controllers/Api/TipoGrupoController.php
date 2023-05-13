@@ -12,8 +12,8 @@ class TipoGrupoController extends Controller
 
     public function index()
     {
-
-        $TipoGrupos = TipoGrupo::orderBy('id', 'desc')->get();
+    
+        $TipoGrupos = TipoGrupo::paginate(25);
         $data =$TipoGrupos->transform(function ($TipoGrupo) {
             return $this->transform($TipoGrupo);
         });

@@ -29,7 +29,7 @@ class AsignacionLotesController extends Controller
 
     public function indexProductoMaterial()
 {
-    $data= LoteProduccion::with('grupos_trabajos')->get();
+    $data= LoteProduccion::with('gruposTrabajos')->get();
 
 
     return $this->successResponse(

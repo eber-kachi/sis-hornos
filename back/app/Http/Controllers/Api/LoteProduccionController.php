@@ -8,6 +8,7 @@ use App\Models\AsignacionLote;
 use App\Models\LoteProduccion;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class LoteProduccionController extends Controller
@@ -39,33 +40,75 @@ class LoteProduccionController extends Controller
 
         try {
 
-            // Crear un array con los ids y las cantidades de los pedidos
             $pedidos_ids = array();
             $pedidos_cantidades = array();
             foreach ($request->pedidos as $requestPedido) {
-            $pedidos_ids[] = $requestPedido['id'];
-            $pedidos_cantidades[] = $requestPedido['cantidad'];
+
+                // Obtener el id del pedido
+                $pedidos_ids[] = $requestPedido['id'];
+                  // Obtener el pedido usando el método find()
+                $pedido = Pedido::find($requestPedido['id']);
+
+                // Obtener el primer producto relacionado con el pedido
+                $producto = $pedido->productos()->first();
+
+                // Obtener la cantidad del producto desde el atributo pivot
+                $pedidos_cantidades[] = $producto->pivot->cantidad;
+
+
+            }
+    // Sumar las cantidades usando array_sum()
+    $suma = array_sum($pedidos_cantidades);
+    $ultimo_lote = LoteProduccion::latest()->first();
+    // Si hay un último lote, usar su fecha final más un día como fecha de inicio
+   
+    if ($ultimo_lote) {
+            $fecha_inicio = Carbon::parse($ultimo_lote->fecha_final)->addDay();
+            // Si la fecha de inicio es sábado, sumar dos días
+            if ($fecha_inicio->isWeekend()) {
+            $fecha_inicio->addDays(2);
             }
 
-            // Sumar las cantidades usando array_sum()
-            $suma = array_sum($pedidos_cantidades);
+            // Si la fecha de inicio es domingo, sumar un día
+            else if ($fecha_inicio->dayOfWeek == Carbon::SUNDAY) {
+            $fecha_inicio->addDay();
+            }
+            }
+
+    // Si no hay un último lote, usar la fecha de hoy como fecha de inicio
+    else {
+    $fecha_inicio = Carbon::today();
+    }
 
             // Asignar la suma a la variable cantidad de lote
             $lote = new LoteProduccion();
             $lote->cantidad = $suma;
+            
             $lote->fecha_registro = today();
             $lote->activo="activo";
+            $lote->fecha_inicio = $fecha_inicio;
+            
+            // Obtener el tiempo en días desde el modelo matemático
+            $tiempo_dias = $this->modelomatematico->tiempoProduccionLote($lote['cantidad']);
+
+           // Crear una copia de la fecha de inicio
+            $fecha_final = $fecha_inicio->copy();
+            // Sumar el tiempo en días hábiles a la fecha final
+            $fecha_final->addWeekdays($tiempo_dias);
+            // Asignar la fecha final al lote de producción
+            $lote->fecha_final = $fecha_final;
             $lote->save();
+            $lotee =LoteProduccion::with('gruposTrabajos')->find($lote->id);
 
             // Actualizar el lote de producción en los pedidos con el método update()
             Pedido::whereIn('id', $pedidos_ids)->update(['lote_produccion_id' => $lote->id]);
-            
-                // Usando el método attach()
+
             $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote);
-            foreach ($asignacion as $loteAsignacion) {
-                $lote->GruposTrabajo()->attach($loteAsignacion->grupos_trabajo_id,
-                 ['cantidad_asignada' => $loteAsignacion->cantidad_asignada]);
-            }
+
+
+                $lotee->GruposTrabajos()->attach( $asignacion);
+
+
 
 
             return $this->successResponse(
@@ -158,13 +201,13 @@ class LoteProduccionController extends Controller
         try {
           // Obtener el lote de producción por el id
           $lote = LoteProduccion::findOrFail($id);
-      
+
           // Quitar la relación con los pedidos usando detach()
           $lote->pedidos()->detach();
-      
+
           // Eliminar el lote de producción
           $lote->delete();
-      
+
           return $this->successResponse(
             'Lote  Produccion was successfully updated.',
             $this->transform($lote)
@@ -220,24 +263,25 @@ class LoteProduccionController extends Controller
 
     /**
      * Transform the giving Productos to public friendly array
+     *  // Obtener la fecha de hoy
+
+    
+     *
+     *
+     * // Obtener el último lote de la tabla
+   
+     *
      *
      * @param App\Models\Productos $lote_produccion
      *
      * @return array
      */
-  
+
     protected function transform(LoteProduccion $lote_produccion)
     {
-        // Cargar las relaciones del lote de producción
-        $lote_produccion->load('grupos_trabajos', 'pedidos', 'asignacion_lotes');
 
-        // Unir el array de grupos con el de asignación
-        $grupos_asignacion = $lote_produccion->GruposTrabajo->merge($lote_produccion->asignacionLotes);
 
-        // Agrupar los elementos por el idgrupo
-        $grupos_asignacion = $grupos_asignacion->groupBy('grupos_trabajo_id');
-
-        return [
+            return [
             'id' => $lote_produccion->id,
             'cantidad' => $lote_produccion->cantidad,
             'fecha_inicio' => $lote_produccion->fecha_inicio,
@@ -245,25 +289,10 @@ class LoteProduccionController extends Controller
             'activo' => $lote_produccion->activo,
             'fecha_registro' => $lote_produccion->fecha_registro,
             'tiempo_dias' => $this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad']),
-            // Transformar los grupos y las asignaciones
-            'grupos_asignacion' => $grupos_asignacion->map(function ($grupo) {
-            return [
-                'id' => $grupo[0]->id,
-                'nombre' => $grupo[0]->nombre,
-                // Obtener la cantidad asignada desde el pivot o desde la asignación
-                'cantidad_asignada' => isset($grupo[0]->pivot) ? $grupo[0]->pivot->cantidad_asignada : $grupo[1]->cantidad_asignada
-            ];
-            }),
+            // Transformar los grupos de trabajo
+            'grupos_trabajo' => $lote_produccion->GruposTrabajos,
             // Transformar los pedidos
-            'pedidos' => $lote_produccion->Pedidos->map(function ($pedido) {
-            return [
-                'id' => $pedido->id,
-                'cliente_id' => $pedido->cliente_id,
-                'producto_id' => $pedido->producto_id,
-                'cantidad' => $pedido->cantidad,
-                'fecha_entrega' => $pedido->fecha_entrega
-            ];
-            })
+            'pedidos' => $lote_produccion->Pedidos,
         ];
 }
 }
