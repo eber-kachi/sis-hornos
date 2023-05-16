@@ -79,7 +79,7 @@ class GruposTrabajoController extends Controller
             ]);
 
             $tipoGrupo->update([
-                "nombre" => "Grupo"+"$count"+"optional($tipoGrupo->Productos)->nombre",
+                "nombre" => "Grupo" . "$count" . "optional($tipoGrupo->Productos)->nombre",
                 "cantidad_produccion_diaria" => $this->modelomatematico->cantidad_produccion_diaria($request->producion_diaria),
 
             ]);
@@ -203,10 +203,8 @@ class GruposTrabajoController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-            "nombre" => "required|string",
-            "cantidad_integrantes" => "null|numeric|min:0",
-            "tipo_grupo_id" => "required",
-            'enabled' => 'boolean',
+            "nombre" => 'required|string|min:1|max:255',
+            "cantidad_integrantes" => "required|numeric|min:0",
         ];
 
         return Validator::make($request->all(), $rules);
@@ -224,8 +222,6 @@ class GruposTrabajoController extends Controller
         $rules = [
             "nombre" => 'required|string|min:1|max:255',
             "cantidad_integrantes" => "required|numeric|min:0",
-            "tipo_grupo_id" => "required",
-            'enabled' => 'boolean',
         ];
 
 

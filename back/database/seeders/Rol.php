@@ -14,9 +14,9 @@ class Rol extends Seeder
     public function run(): void
     {
         $data = [
-            ['name'=>'Jefe Contratos','display_name' => 'Jefe Contratos', 'enabled'=>1],
-            ['name'=>'Ayudante Experto','display_name' => 'Ayudante Experto', 'enabled'=>1],
-            ['name'=>'Ayudante','display_name' => 'Ayudante', 'enabled'=>1]
+            ['id'=>6,'name'=>'Jefe Contratos','display_name' => 'Jefe Contratos', 'enabled'=>1],
+            ['id'=>7,'name'=>'Ayudante Experto','display_name' => 'Ayudante Experto', 'enabled'=>1],
+            ['id'=>8,'name'=>'Ayudante','display_name' => 'Ayudante', 'enabled'=>1]
 
         ];
         DB::table('rols')->insert($data);
