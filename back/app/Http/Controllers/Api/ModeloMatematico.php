@@ -99,18 +99,17 @@ class ModeloMatematico {
     public function cantidad_produccion_diaria(mixed $producion_diaria)
     {
         //$OTPGn Tiempo de Produccion de un Producto por el grupo de trabajo de $count integrantes
-        $producion_diaria = json_decode($producion_diaria);
-        $$cantidad =count($producion_diaria);
+        $cantidad=0;
+        $suma=0;
+        foreach ($producion_diaria as  $value) {
 
-
-
-         // Usar la función array_sum para obtener la suma de los datos
-        $suma = array_sum($producion_diaria);
-
+            $suma += $value ["cantidad"];
+            $cantidad++;
+        }
         $OTPGn = $cantidad/$suma;
         //$CPD cantidad_produccion_diaria Tiempo de Produccion de un Producto por el grupo de trabajo de $count integrantes
         $CPD = 1/$OTPGn;
-        return $$CPD;
+        return $CPD;
 
     }
 

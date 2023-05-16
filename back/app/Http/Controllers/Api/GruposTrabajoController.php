@@ -67,7 +67,11 @@ class GruposTrabajoController extends Controller
             ]);
 
             $count=0;
-            foreach ($request->personales as $key => $value) {
+            $personal= Personal::findOrFail($request->jefe_id);
+            $personal->id_grupo_trabajo=$gruposTrabajos->id;
+            $personal->save();
+            $count++;
+            foreach ($request->ayudantes as $key => $value) {
                 // abort(500,$value );
                 $personal= Personal::findOrFail($value);
                 $personal->id_grupo_trabajo=$gruposTrabajos->id;
@@ -79,10 +83,11 @@ class GruposTrabajoController extends Controller
             $gruposTrabajos->update([
                 "cantidad_integrantes" =>  $count
             ]);
+            $nombre =optional($tipoGrupo->Productos)->nombre;
 
             $tipoGrupo->update([
-                "nombre" => "Grupo" . "$count" . "optional($tipoGrupo->Productos)->nombre",
-                "cantidad_produccion_diaria" => $this->modelomatematico->cantidad_produccion_diaria($request->producion_diaria),
+                "nombre" => "Grupo" . "$count" . "$nombre",
+                "cantidad_produccion_diaria" => $this->modelomatematico->cantidad_produccion_diaria($request->produccion_diarias),
 
             ]);
             DB::commit(); // Confirmar transacción
