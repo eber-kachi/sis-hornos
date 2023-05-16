@@ -35,23 +35,58 @@
 <!--        </div>-->
 
         <mat-form-field appearance="fill" class="w-full">
-            <mat-label>Personal</mat-label>
-            <mat-select formControlName="personales" multiple>
+            <mat-label>Jefe de contrato</mat-label>
+            <mat-select formControlName="jefe_id" >
+                <mat-option
+                    *ngFor="let personal of jefes"
+                    [value]="personal.id"
+                >
+                    {{ personal.nombres }}    {{ personal.apellidos }}
+                </mat-option>
+            </mat-select>
+            <mat-error
+                *ngIf="formGroup.get('jefe_id')?.hasError('required')"
+            >
+                Seleccione Jefe
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Ayudantes</mat-label>
+            <mat-select formControlName="ayudantes" multiple>
                 <mat-option
                     *ngFor="let personal of personales"
                     [value]="personal.id"
                 >
-                    {{ personal.nombre_completo }}
+                    {{ personal.nombre_completo }}  
                 </mat-option>
             </mat-select>
             <mat-error
-                *ngIf="formGroup.get('personales')?.hasError('required')"
+                *ngIf="formGroup.get('ayudantes')?.hasError('required')"
             >
-                Seleccione personal
+                Seleccione Ayudantes
             </mat-error>
         </mat-form-field>
 
-<!--        <mat-form-field appearance="fill" class="w-full">-->
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Productos</mat-label>
+            <mat-select formControlName="productos_id" >
+                <mat-option
+                    *ngFor="let p of productos"
+                    [value]="p.id"
+                >
+                    {{ p.nombre }}
+                </mat-option>
+            </mat-select>
+            <mat-error
+                *ngIf="formGroup.get('productos_id')?.hasError('required')"
+            >
+                Seleccione Productos
+            </mat-error>
+        </mat-form-field>
+
+
+        <!--        <mat-form-field appearance="fill" class="w-full">-->
 <!--            <mat-label>Muestras de cantidad de productos  diarios</mat-label>-->
 <!--        </mat-form-field>-->
         <h4>Muestras de cantidad de productos  diarios</h4>

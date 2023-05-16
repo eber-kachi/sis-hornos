@@ -31,6 +31,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/lista-personal'
     },
     {
+        id   : 'lista-pedidos',
+        title: 'Pedidos',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/lista-pedidos'
+    },
+    {
         id   : 'lista-material',
         title: 'Material',
         type : 'basic',

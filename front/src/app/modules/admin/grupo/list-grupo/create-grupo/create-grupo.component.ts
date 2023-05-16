@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {GrupoTrabajoService} from '@core/service/api/grupo-trabajo.service';
 import {PersonalService} from '@core/service/api/personal.service';
 import {TipoGrupoService} from '@core/service/api/tipo-grupo.service';
+import {ProductoService} from "@core/service/api/producto.service";
 
 interface Website {
     value: string;
@@ -24,9 +25,11 @@ export class CreateGrupoComponent implements OnInit {
     public formGroup: FormGroup;
 
     personales: Personal[] = [];
+    productos: any[] = [];
     tipoGrupos: any[] = [];
     editing;
     total_produccion_diarias = 0;
+    jefes: any[] = [];
 
     constructor(
         private fb: FormBuilder,
@@ -34,7 +37,8 @@ export class CreateGrupoComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) dataEdit: any,
         private grupoTrabajoService: GrupoTrabajoService,
         private tipoGrupoService: TipoGrupoService,
-        private personalService: PersonalService
+        private personalService: PersonalService,
+        private productoService: ProductoService,
     ) {
         console.log('data editing', dataEdit);
         this.editing = dataEdit;
@@ -59,7 +63,9 @@ export class CreateGrupoComponent implements OnInit {
         this.formGroup = this.fb.group({
             nombre: ['', [Validators.required]],
             // tipo_grupo_id: ['', [Validators.required]],
-            personales: ['', [Validators.required]],
+            ayudantes: ['', [Validators.required]],
+            jefe_id: ['', [Validators.required]],
+            productos_id: ['', [Validators.required]],
             produccion_diarias: this.fb.array([])
         });
 
@@ -73,6 +79,8 @@ export class CreateGrupoComponent implements OnInit {
         }
         this.AddMaterial();
         // this.listTipoGrupos();
+        this.listProductos();
+        this.listjefes();
     }
 
     get materiales(): FormArray {
@@ -142,7 +150,7 @@ export class CreateGrupoComponent implements OnInit {
     }
 
     listPersonals() {
-        this.personalService.sinGrupo().subscribe((res) => {
+        this.personalService.getAllNoJefes().subscribe((res) => {
             console.log(res);
             res.data.forEach(personal => {
                 this.personales.push({id: personal.id, nombre_completo: `${personal.nombres} ${personal.apellidos}`});
@@ -155,6 +163,18 @@ export class CreateGrupoComponent implements OnInit {
             console.log(res);
             this.tipoGrupos = res.data;
             // this.personales=[];
+        });
+    }
+
+    private listProductos() {
+        this.productoService.getAll().subscribe((res) => {
+            this.productos = res.data;
+        });
+    }
+
+    private listjefes() {
+        this.personalService.getAllJefes().subscribe((res) => {
+            this.jefes = res.data;
         });
     }
 }

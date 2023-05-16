@@ -19,4 +19,19 @@ export class PersonalService extends BaseAPIClass {
             })
         );
     }
+
+    getAllJefes() {
+        return this.httpClient.get(`${this.baseUrl}/lista/jefe`).pipe(
+            map((body: any) => {
+                return body;
+            })
+        );
+    }
+    getAllNoJefes() {
+        return this.httpClient.get(`${this.baseUrl}/lista/nojefe`).pipe(
+            map((body: any) => {
+                return body;
+            })
+        );
+    }
 }
