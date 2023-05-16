@@ -71,10 +71,15 @@ Route::group([
          ->name('api.rols.rol.destroy');
 });
 
-Route::get('/personal/sin-grupo', [PersonalController::class,'singrupo']);
+
 Route::resource('/tipo_grupos', TipoGrupoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/grupos_trabajo', GruposTrabajoController::class, ['update','destroy','show','index'.'store']);
+
 Route::resource('/personal', PersonalController::class, ['update','destroy','show','index'.'store']);
+Route::get('/personal/lista/sin-grupo', [PersonalController::class,'singrupo']);
+Route::get('/personal/lista/jefe', [PersonalController::class,'personalSinGrupoJefe']);
+Route::get('/personal/lista/nojefe', [PersonalController::class,'personalsingruponojefe']);
+
 Route::resource('/materiales', MaterialesController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/productos', ProductosController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/materiales_productos', MaterialProductosController::class, ['update','destroy','show','index'.'store']);

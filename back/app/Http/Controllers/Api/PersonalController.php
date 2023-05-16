@@ -13,35 +13,81 @@ class PersonalController extends Controller
 {
     public function index()
     {
-        $personal = Personal::with("GruposTrabajo")->get();
+            $personal = Personal::with("GruposTrabajo")->get();
 
+            $data = $personal->transform(function ($personal) {
+                return $this->transform($personal);
+            });
+
+            return $this->successResponse(
+                'Personalss were successfully retrieved.',
+                $data
+            );
+
+     }
+
+    public function singrupo()
+    {
+        // Obtener los personales que no tienen grupo de trabajo asignado
+        $personales = Personal::whereNull('id_grupo_trabajo')->get();
+
+        // Devolver los personales
+            $data = $personales->transform(function ($personal) {
+                return $this->transform($personal);
+            });
+
+            return $this->successResponse(
+                'Personalss were successfully retrieved.',
+                $data
+            );
+
+    }
+
+
+        // Crear una función que liste al personal con id_grupo_trabajo null y con rol jefe de Contratos
+    public function personalSinGrupoJefe()
+     {
+        // Obtener el personal con id_grupo_trabajo null y con rol jefe de Contratos
+        $personal = Personal::whereNull('id_grupo_trabajo')->whereHas('user', function ($query) {
+            $query->where('name', 'jefe de Contratos');
+        })->get();
+
+        dd($personal);
+
+        // Devolver el personal
         $data = $personal->transform(function ($personal) {
             return $this->transform($personal);
         });
 
         return $this->successResponse(
-            'Personalss were successfully retrieved.',
+            'Personal sin grupo de trabajo y con rol jefe de Contratos were successfully retrieved.',
             $data
         );
 
-    }
+        }
 
-    public function singrupo()
-    {
-    // Obtener los personales que no tienen grupo de trabajo asignado
-    $personales = Personal::whereNull('id_grupo_trabajo')->get();
+        // Crear una función que liste al personal con id_grupo_trabajo null y que no tienen el rol jefe de Contratos
+        public function personalsingruponojefe()
+        {
+        // Obtener el personal con id_grupo_trabajo null y que no tienen el rol jefe de Contratos
+        $personal = Personal::whereNull('id_grupo_trabajo')->whereDoesntHave('user', function ($query) {
+            $query->where('name', 'jefe de Contratos');
+        })->get();
 
-    // Devolver los personales
-        $data = $personales->transform(function ($personal) {
+        // Devolver el personal
+        $data = $personal->transform(function ($personal) {
             return $this->transform($personal);
         });
 
         return $this->successResponse(
-            'Personalss were successfully retrieved.',
+            'Personal sin grupo de trabajo y que no tienen el rol jefe de Contratos were successfully retrieved.',
             $data
         );
 
-    }
+        }
+
+
+
 
 
 
@@ -242,6 +288,7 @@ class PersonalController extends Controller
             'id_grupo_trabajo' => $personal->id_grupo_trabajo,
             'user_id' => $personal->user_id,
             'rol_id'=>optional($personal->user)->rol_id,
+            'rol_nombre'=>optional($personal->user)->rol->display_name,
             'grupo_trabajo_nombre'=> optional($personal->GruposTrabajo)->nombre
 
 
