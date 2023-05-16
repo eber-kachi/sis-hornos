@@ -4,7 +4,7 @@
         <div class="m-2">
             <mat-form-field appearance="fill" class="w-full">
                 <mat-label>Nombre</mat-label>
-                <input matInput placeholder="Nombre" formControlName="nombre" />
+                <input matInput placeholder="Nombre" formControlName="nombre"/>
                 <mat-error
                     *ngIf="formGroup.controls.nombre.hasError('required')"
                 >
@@ -13,26 +13,26 @@
             </mat-form-field>
         </div>
 
-        <div class="m-2">
-            <mat-form-field appearance="fill" class="w-full">
-                <mat-label>Tipo grupo</mat-label>
-                <mat-select formControlName="tipo_grupo_id">
-                    <mat-option
-                        *ngFor="let tGrupo of tipoGrupos"
-                        [value]="tGrupo.id"
-                    >
-                        {{ tGrupo.nombre }}
-                    </mat-option>
-                </mat-select>
-                <mat-error
-                    *ngIf="
-                        formGroup.controls.tipo_grupo_id.hasError('required')
-                    "
-                >
-                    tipo grupo es requerido
-                </mat-error>
-            </mat-form-field>
-        </div>
+<!--        <div class="m-2">-->
+<!--            <mat-form-field appearance="fill" class="w-full">-->
+<!--                <mat-label>Tipo grupo</mat-label>-->
+<!--                <mat-select formControlName="tipo_grupo_id">-->
+<!--                    <mat-option-->
+<!--                        *ngFor="let tGrupo of tipoGrupos"-->
+<!--                        [value]="tGrupo.id"-->
+<!--                    >-->
+<!--                        {{ tGrupo.nombre }}-->
+<!--                    </mat-option>-->
+<!--                </mat-select>-->
+<!--                <mat-error-->
+<!--                    *ngIf="-->
+<!--                        formGroup.controls.tipo_grupo_id.hasError('required')-->
+<!--                    "-->
+<!--                >-->
+<!--                    tipo grupo es requerido-->
+<!--                </mat-error>-->
+<!--            </mat-form-field>-->
+<!--        </div>-->
 
         <mat-form-field appearance="fill" class="w-full">
             <mat-label>Personal</mat-label>
@@ -50,6 +50,48 @@
                 Seleccione personal
             </mat-error>
         </mat-form-field>
+
+<!--        <mat-form-field appearance="fill" class="w-full">-->
+<!--            <mat-label>Muestras de cantidad de productos  diarios</mat-label>-->
+<!--        </mat-form-field>-->
+        <h4>Muestras de cantidad de productos  diarios</h4>
+        <div formArrayName="produccion_diarias" class="w-[100%]">
+            <table class="table-auto table-fixed">
+                <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ng-container *ngFor="let material of materiales.controls;let i = index, let z = last">
+                    <ng-container [formGroupName]="i">
+                        <tr >
+                            <td>
+                                {{i + 1}}
+                            </td>
+                            <td >
+                                <mat-form-field floatLabel="never">
+                                    <input type="number" [id]="i" matInput placeholder="Cantidad" formControlName="cantidad">
+                                </mat-form-field>
+                            </td>
+                            <td class="">
+                                <button mat-mini-fab color="accent" type="button" title="" (click)="AddMaterial()">
+                                    <mat-icon>exposure_plus_1</mat-icon>
+                                </button>
+                                <button mat-mini-fab color="warn" type="button" (click)="removeMaterial(i)">
+                                    <mat-icon color="warn">delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+                </tbody>
+            </table>
+        </div>
+
+
     </form>
 </div>
 <div mat-dialog-actions>

@@ -15,6 +15,7 @@ export class ListPersonalComponent implements OnInit {
         'id',
         'nombres',
         'carnet_identidad',
+        'rol_nombre',
         'grupo_trabajo_nombre',
         // 'personales',
         // 'grupo',

@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {GrupoTrabajoService} from '@core/service/api/grupo-trabajo.service';
 import {PersonalService} from '@core/service/api/personal.service';
@@ -26,6 +26,7 @@ export class CreateGrupoComponent implements OnInit {
     personales: Personal[] = [];
     tipoGrupos: any[] = [];
     editing;
+    total_produccion_diarias = 0;
 
     constructor(
         private fb: FormBuilder,
@@ -49,7 +50,7 @@ export class CreateGrupoComponent implements OnInit {
                 });
 
                 this.formGroup.patchValue(res.data.grupo_trabajo);
-                this.formGroup.patchValue({'personales': personales.map(p=>p.id )});
+                this.formGroup.patchValue({'personales': personales.map(p => p.id)});
             });
         }
     }
@@ -57,8 +58,9 @@ export class CreateGrupoComponent implements OnInit {
     public ngOnInit(): void {
         this.formGroup = this.fb.group({
             nombre: ['', [Validators.required]],
-            tipo_grupo_id: ['', [Validators.required]],
+            // tipo_grupo_id: ['', [Validators.required]],
             personales: ['', [Validators.required]],
+            produccion_diarias: this.fb.array([])
         });
 
         this.formGroup.valueChanges.subscribe((res) => {
@@ -66,11 +68,32 @@ export class CreateGrupoComponent implements OnInit {
         });
         if (this.editing != null) {
             this.listPersonals();
-        }else{
+        } else {
             this.listPersonals();
         }
+        this.AddMaterial();
+        // this.listTipoGrupos();
+    }
 
-        this.listTipoGrupos();
+    get materiales(): FormArray {
+        return this.formGroup.get('produccion_diarias') as FormArray;
+    }
+
+    newMaterial() {
+        return this.fb.group({
+            nombre: ['Muestra', [Validators.required]],
+            cantidad: ['', [Validators.required]],
+        });
+    }
+
+    AddMaterial() {
+        this.materiales.push(this.newMaterial());
+    }
+
+    public removeMaterial(index) {
+        console.log("delete");
+
+        this.materiales.removeAt(index)
     }
 
     closeDialog() {
@@ -97,7 +120,12 @@ export class CreateGrupoComponent implements OnInit {
                     }
                 );
         } else {
-            this.grupoTrabajoService.create(this.formGroup.getRawValue()).subscribe(
+            const producion: any[] = this.materiales.value;
+            const va = producion.map((p, index) => {
+                return {...p, nombre: p.nombre + index};
+            });
+
+            this.grupoTrabajoService.create({...this.formGroup.getRawValue(), produccion_diarias: va}).subscribe(
                 (res) => {
                     console.log(res);
                     this.formGroup.enable();
@@ -117,7 +145,7 @@ export class CreateGrupoComponent implements OnInit {
         this.personalService.sinGrupo().subscribe((res) => {
             console.log(res);
             res.data.forEach(personal => {
-                this.personales.push( {id: personal.id, nombre_completo: `${personal.nombres} ${personal.apellidos}`});
+                this.personales.push({id: personal.id, nombre_completo: `${personal.nombres} ${personal.apellidos}`});
             });
         });
     }
