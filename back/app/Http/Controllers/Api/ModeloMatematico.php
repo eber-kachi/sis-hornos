@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\AsignacionLotesController;
-use App\Http\Controllers\Controller;
 use App\Models\AsignacionLote;
 use App\Models\GruposTrabajo;
 use App\Models\LoteProduccion;
@@ -23,9 +22,9 @@ class ModeloMatematico {
         $this->tipoGrupo = TipoGrupo::orderBy('id')->get();
         $this->asignacionLote = collect();
 
-        
+
     }
-   
+
 
     public function cantidadProductosAsignados(LoteProduccion $loteProduccion) {
         // Calcular el porcentaje y la cantidad asignada a cada grupo
@@ -46,8 +45,9 @@ class ModeloMatematico {
                 }
             }
         }
-        
+
         // Devolver la colección de asignaciones de lote
+
         return $this->asignacionLote;
     }
 
@@ -95,5 +95,40 @@ class ModeloMatematico {
         // Devolver la cantidad total
         return $cantidadTotal;
     }
+
+    public function cantidad_produccion_diaria(mixed $producion_diaria)
+    {
+        //$OTPGn Tiempo de Produccion de un Producto por el grupo de trabajo de $count integrantes
+        $producion_diaria = json_decode($producion_diaria);
+        $$cantidad =count($producion_diaria);
+
+
+
+         // Usar la función array_sum para obtener la suma de los datos
+        $suma = array_sum($producion_diaria);
+
+        $OTPGn = $cantidad/$suma;
+        //$CPD cantidad_produccion_diaria Tiempo de Produccion de un Producto por el grupo de trabajo de $count integrantes
+        $CPD = 1/$OTPGn;
+        return $$CPD;
+
+    }
+
+    private function Stand_Deviation(mixed $arr)
+    {
+            $num_of_elements = count ($arr);
+            $variance = 0.0;
+            // Calcular la media usando array_sum ()
+            $average = array_sum ($arr)/$num_of_elements;
+            foreach ($arr as $i)
+            {
+                // Sumar los cuadrados de las diferencias entre
+                // cada elemento y la media.
+                $variance += pow ( ($i - $average), 2);
+            }
+            return (float)sqrt ($variance/$num_of_elements);
+
+    }
+
 
 }

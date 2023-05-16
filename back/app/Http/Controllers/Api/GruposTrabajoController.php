@@ -6,10 +6,19 @@ use App\Http\Controllers\Api\Controller;
 use Illuminate\Http\Request;
 use App\Models\GruposTrabajo;
 use App\Models\Personal;
+use App\Models\TipoGrupo ;
 use Illuminate\Support\Facades\Validator;
+
 
 class GruposTrabajoController extends Controller
 {
+
+    private Modelomatematico $modelomatematico;
+    public function __construct()
+    {
+        $this->modelomatematico = new Modelomatematico();
+    }
+
     public function index()
     {
         $gruposTrabajos = GruposTrabajo::with(["tipoGrupos","personales"])->get();
@@ -38,14 +47,20 @@ class GruposTrabajoController extends Controller
                 return $this->errorResponse($validator->errors()->all());
             }
 
+            $tipoGrupo = TipoGrupo::create([
+                "nombre"=> 'Grupo',
+                "cantidad_produccion_diaria"=> 0,
+                "productos_id"=> $request->productos_id,
+
+            ]);
+
+
             // $data = $this->getData($request);
 
             // $gruposTrabajos = GruposTrabajo::create($data);
-
-
             $gruposTrabajos = GruposTrabajo::create([
                 "nombre"=> $request->nombre,
-                "tipo_grupo_id"=> $request->tipo_grupo_id,
+                "tipo_grupo_id"=> $tipoGrupo->id,
                 "cantidad_integrantes"=> 0,
             ]);
 
@@ -61,6 +76,12 @@ class GruposTrabajoController extends Controller
 
             $gruposTrabajos->update([
                 "cantidad_integrantes" =>  $count
+            ]);
+
+            $tipoGrupo->update([
+                "nombre" => "Grupo"+"$count"+"optional($tipoGrupo->Productos)->nombre",
+                "cantidad_produccion_diaria" => $this->modelomatematico->cantidad_produccion_diaria($request->producion_diaria),
+
             ]);
 
             return $this->successResponse(

@@ -27,5 +27,9 @@ class Producto extends Model
                     ->withTimestamps();
     }
 
+    public function TipoGrupos(){
+        return $this->hasMany(TipoGrupo::class);
+    }
+
 
 }

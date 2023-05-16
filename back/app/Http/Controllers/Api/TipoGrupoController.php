@@ -45,7 +45,7 @@ class TipoGrupoController extends Controller
     }
 
     /**
-     * Store a new user in the storage.
+     * Store a new tipo$tipoGrupo in the storage.
      *
      * @param Illuminate\Http\Request $request
      *
@@ -64,11 +64,11 @@ class TipoGrupoController extends Controller
 
             $data = $this->getData($request);
 
-            $user = TipoGrupo::create($data);
+            $tipoGrupo = TipoGrupo::create($data);
 
             return $this->successResponse(
 			    'Tipo Grupo was successfully added.',
-			    $this->transform($user)
+			    $this->transform($tipoGrupo)
 			);
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
@@ -77,7 +77,7 @@ class TipoGrupoController extends Controller
     }
 
      /**
-     * Display the specified user.
+     * Display the specified tipo$tipoGrupo.
      *
      * @param int $id
      *
@@ -88,7 +88,7 @@ class TipoGrupoController extends Controller
     {
        $tipoGrupo = TipoGrupo::find($id);
        return $this->successResponse(
-        'User was successfully retrieved.',
+        'tipo$tipoGrupo was successfully retrieved.',
         $this->transform($tipoGrupo)
     );
     }

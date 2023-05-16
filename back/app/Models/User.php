@@ -19,7 +19,6 @@ class User  extends Authenticatable
      * @var string
      */
     protected $table = 'users';
-
     /**
     * The database primary key value.
     *
@@ -28,7 +27,6 @@ class User  extends Authenticatable
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     // public $incrementing = false;
-
 
     /**
      * Attributes that should be mass-assignable.
