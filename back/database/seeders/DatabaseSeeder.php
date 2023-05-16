@@ -44,9 +44,10 @@ class DatabaseSeeder extends Seeder
 
        // $this->call(tipoGrupo::class);
         //$this->call(GruposTrabajo::class);
-       $this->call(Rol::class);
+
         $this->call(Medidas::class);
         $this->call(Departamento::class);
+        $this->call(Roles::class);
 
     }
 }
