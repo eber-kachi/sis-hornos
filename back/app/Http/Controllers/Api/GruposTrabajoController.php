@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\GruposTrabajo;
 use App\Models\Personal;
 use App\Models\TipoGrupo ;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -41,6 +42,7 @@ class GruposTrabajoController extends Controller
     public function store(Request $request)
     {
         try {
+            DB::beginTransaction(); // Iniciar transacción
             $validator = $this->getValidator($request);
 
             if ($validator->fails()) {
@@ -83,12 +85,14 @@ class GruposTrabajoController extends Controller
                 "cantidad_produccion_diaria" => $this->modelomatematico->cantidad_produccion_diaria($request->producion_diaria),
 
             ]);
-
+            DB::commit(); // Confirmar transacción
             return $this->successResponse(
 			    'Grupos Trabajos was successfully added.',
 			    $this->transform($gruposTrabajos)
 			);
         } catch (Exception $exception) {
+
+            DB::rollBack(); // Deshacer transacción
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }

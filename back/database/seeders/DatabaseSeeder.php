@@ -40,8 +40,6 @@ class DatabaseSeeder extends Seeder
         //     "user_id" => 1
         // ]);
 
-
-
        // $this->call(tipoGrupo::class);
         //$this->call(GruposTrabajo::class);
 
@@ -49,6 +47,8 @@ class DatabaseSeeder extends Seeder
         $this->call(Departamento::class);
         $this->call(Roles::class);
         $this->call(Producto::class);
+        $this->call(Personal::class);
+
 
 
     }
