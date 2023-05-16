@@ -204,7 +204,7 @@ class GruposTrabajoController extends Controller
     {
         $rules = [
             "nombre" => 'required|string|min:1|max:255',
-            "cantidad_integrantes" => "required|numeric|min:0",
+
         ];
 
         return Validator::make($request->all(), $rules);
@@ -221,16 +221,10 @@ class GruposTrabajoController extends Controller
     {
         $rules = [
             "nombre" => 'required|string|min:1|max:255',
-            "cantidad_integrantes" => "required|numeric|min:0",
         ];
 
 
         $data = $request->validate($rules);
-
-
-        $data['enabled'] = $request->has('enabled');
-
-
         return $data;
     }
 
