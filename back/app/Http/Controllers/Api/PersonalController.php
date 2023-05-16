@@ -49,10 +49,9 @@ class PersonalController extends Controller
      {
         // Obtener el personal con id_grupo_trabajo null y con rol jefe de Contratos
         $personal = Personal::whereNull('id_grupo_trabajo')->whereHas('user', function ($query) {
-            $query->where('name', 'jefe de Contratos');
+            $query->where('rol_id', 6);
         })->get();
 
-        dd($personal);
 
         // Devolver el personal
         $data = $personal->transform(function ($personal) {
@@ -71,7 +70,7 @@ class PersonalController extends Controller
         {
         // Obtener el personal con id_grupo_trabajo null y que no tienen el rol jefe de Contratos
         $personal = Personal::whereNull('id_grupo_trabajo')->whereDoesntHave('user', function ($query) {
-            $query->where('name', 'jefe de Contratos');
+            $query->where('rol_id', 6);
         })->get();
 
         // Devolver el personal
