@@ -24,10 +24,7 @@ class GruposTrabajoController extends Controller
     {
         $gruposTrabajos = GruposTrabajo::with(["tipoGrupos","personales"])->get();
 
-        // $data = $gruposTrabajos->transform(function ($gruposTrabajos) {
-        //     return $this->transform($gruposTrabajos);
-        // });
-        // dd( $gruposTrabajos);
+
 
         return $this->successResponse(
             'gruposTrabajoss were successfully retrieved.',
@@ -135,13 +132,7 @@ class GruposTrabajoController extends Controller
     public function update($id, Request $request)
     {
         try {
-            // $validator = $this->getValidator($request);
 
-            // if ($validator->fails()) {
-            //     return $this->errorResponse($validator->errors()->all());
-            // }
-
-            // $data = $this->getData($request);
 
             $gruposTrabajos = GruposTrabajo::findOrFail($id);
             // $gruposTrabajos->update($data);
@@ -152,31 +143,44 @@ class GruposTrabajoController extends Controller
                 $personal->id_grupo_trabajo = null;
                 $personal->save();
             }
-
+            $tipoGrupo = TipoGrupo::findOrFail($gruposTrabajos->tipo_grupo_id);
             $count=0;
-            foreach ($request->personales as $key => $value) {
 
+            $personal= Personal::findOrFail($request->jefe_id);
+            $personal->id_grupo_trabajo=$gruposTrabajos->id;
+            $personal->save();
+            $count++;
+            foreach ($request->ayudantes as $key => $value) {
+                // abort(500,$value );
                 $personal= Personal::findOrFail($value);
-                $personal->id_grupo_trabajo = $gruposTrabajos->id;
+                $personal->id_grupo_trabajo=$gruposTrabajos->id;
                 $personal->save();
                 $count++;
             }
-
             $gruposTrabajos = GruposTrabajo::findOrFail($gruposTrabajos->id);
 
             $gruposTrabajos->update([
                 "nombre"=> $request->nombre,
-                "tipo_grupo_id"=> $request->tipo_grupo_id,
                 "cantidad_integrantes" =>  $count
             ]);
+            $nombre =optional($tipoGrupo->Productos)->nombre;
 
+            $tipoGrupo->update([
+                "nombre" => "Grupo" . "$count" . "$nombre",
+                "cantidad_produccion_diaria" => $this->modelomatematico->cantidad_produccion_diaria($request->produccion_diarias),
+
+            ]);
+            DB::commit(); // Confirmar transacción
             return $this->successResponse(
-			    'Grupos Trabajos was successfully updated.',
-			    $this->transform($gruposTrabajos)
-			);
+                'Grupos Trabajos was successfully added.',
+                $this->transform($gruposTrabajos)
+            );
         } catch (Exception $exception) {
+
+            DB::rollBack(); // Deshacer transacción
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
+
     }
 
     /**
@@ -249,6 +253,8 @@ class GruposTrabajoController extends Controller
 
         return [
             'id' => $gruposTrabajos->id,
+            'jefe'=>$this->jefe($gruposTrabajos->id),
+            'ayudantes'=>$this->lista_ayudantes($gruposTrabajos->id,),
             'nombre' => $gruposTrabajos->nombre,
             'cantidad_integrantes' => $gruposTrabajos->cantidad_integrantes,
             'tipo_grupo_id' => $gruposTrabajos->tipo_grupo_id,
@@ -258,7 +264,25 @@ class GruposTrabajoController extends Controller
         ];
     }
 
+    protected function jefe ($id_gruposTrabajos) {
 
+        $jefe = Personal::join('users', 'personals.user_id', '=', 'users.id')
+        ->where('users.rol_id', '=', 6)
+        ->where('personals.id_grupo_trabajo', '=', $id_gruposTrabajos)
+        ->get();
+
+        return $jefe ;
+        }
+
+    protected function lista_ayudantes ($id_gruposTrabajos) {
+
+            $personales = Personal::join('users', 'personals.user_id', '=', 'users.id')
+                ->where('users.rol_id', '<>', 6)
+                ->where('personals.id_grupo_trabajo', '=', $id_gruposTrabajos)
+                ->get();
+
+            return $personales;
+    }
    function updatePersonal($id_eliminado):void{
 
         Personal::where ('id_grupo_trabajo', '=', $id_eliminado)->update ( ['id_grupo_trabajo' => null]);
