@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('fecha_pedido');
             $table->integer('total_precio');
+            $table->string('estado');
             $table->foreignId('lote_produccion_id')
                 ->nullable()
             ->constrained('lotes_produccion');

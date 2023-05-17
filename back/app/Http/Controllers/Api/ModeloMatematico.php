@@ -69,7 +69,7 @@ class ModeloMatematico {
     public function tiempoProduccionLote($cantidad) {
         // Obtener la cantidad total de producto por día
         $cantidadTotal = $this->cantidadTotalProductoDia();
-        // Calcular el tiempo de producción sin tiempo muerto
+        // Calcular el tiempo de producción sin tiempo muerto si es 0
         $tiempoProduccion = $cantidad / $cantidadTotal;
         // Añadir el 10% de tiempo muerto
         $tiempoMuerto = $tiempoProduccion * 0.1;

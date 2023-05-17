@@ -16,7 +16,8 @@ return new class extends Migration
             $table->integer('cantidad');
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_final')->nullable();
-            $table->string('activo');
+            $table->string('estado');
+            $table->string('color');
             $table->date('fecha_registro');
             $table->timestamps();
 

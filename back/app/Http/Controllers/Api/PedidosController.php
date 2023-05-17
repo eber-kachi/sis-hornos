@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class PedidosController extends Controller
 {
-    
+
     public function index()
     {
         $pedidos = Pedido::orderBy('id', 'desc')->paginate(25);
@@ -42,14 +42,15 @@ class PedidosController extends Controller
                 return $concepto['cantidad'] * $concepto['precio'];
             })->sum();
 
-    
+
             $pedido = new Pedido();
             $pedido->total_precio = $total_precio;
             $pedido->fecha_pedido = now();
             $pedido->clientes()->associate($request->cliente_id);
+            $pedido->estado="activo";
 
              $pedido->save();
-            
+
              $conceptos = []; // inicializar el array vacío
              foreach ($request->conceptos as $index => $concepto) {
                  if (isset($concepto['producto_id'])) {
@@ -63,17 +64,31 @@ class PedidosController extends Controller
                $pedido->productos()->attach($conceptos);
 
 // Sincronizar los productos con los datos adicionales $pedido->productos()->sync($conceptos);
-            
-        
+
+
             return $this->successResponse(
                 'Pedidos was successfully added.',
                 $this->transform($pedido)
-               
+
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }
+
+
+    public function listarPedidosActivosPorProducto($producto_id)
+    {
+        // Buscar los pedidos que tienen el producto_id y el estado activo en la tabla pivote
+        $pedidos = Pedido::whereHas('productos', function ($query) use ($producto_id) {
+            $query->where('producto_id', $producto_id);
+        })->where('estado', 'activo')->get();
+
+        // Devolver  con los pedidos
+        return $pedidos;
+    }
+
+
 
     /**
      * Display the specified Pedido.
@@ -105,15 +120,15 @@ class PedidosController extends Controller
         try {
             // Buscar el pedido por su id
             $pedido = Pedido::find($id);
-    
+
             // Comprobar si existe
             if (!$pedido) {
                 return $this->errorResponse('Pedido not found.');
             }
-    
+
             // Validar los datos del request
             $validator = $this->getValidator($request);
-    
+
             if ($validator->fails()) {
                 return $this->errorResponse($validator->errors()->all());
             }
@@ -125,9 +140,9 @@ class PedidosController extends Controller
 
             $pedido->total_precio = $total_precio;
             $pedido->fecha_pedido = now();
-            $pedido->clientes()->associate($request->cliente_id); 
+            $pedido->clientes()->associate($request->cliente_id);
             $pedido->save();
-            
+
             $conceptos = []; // inicializar el array vacío
             foreach ($request->conceptos as $index => $concepto) {
                 if (isset($concepto['producto_id'])) {
@@ -139,7 +154,7 @@ class PedidosController extends Controller
             }
                // Sincronizar los materiales con los datos adicionales
                $pedido->productos()->sync($conceptos);
-            
+
 
 
             // Devolver una respuesta de éxito con el pedido y sus conceptos
@@ -162,10 +177,10 @@ class PedidosController extends Controller
     public function destroy($id)
     {
         try {
-           
-            $pedido = Pedido::find($id); 
-            $pedido->productos()->detach(); 
-            // eliminar los conceptos relacionados 
+
+            $pedido = Pedido::find($id);
+            $pedido->productos()->detach();
+            // eliminar los conceptos relacionados
             $pedido->delete(); // eliminar el pedido
 
             return $this->successResponse(
@@ -191,7 +206,7 @@ class PedidosController extends Controller
             "lote_produccion_id" => "nullable",
             "cliente_id" => "required",
             "lote_produccion_id"=>"nullable",
-            
+
         ];
 
         return Validator::make($request->all(), $rules);
@@ -212,7 +227,7 @@ class PedidosController extends Controller
             "lote_produccion_id" => "nullable",
             "cliente_id" => "required",
             "lote_produccion_id"=>"nullable",
-            
+
 
         ];
 
@@ -240,7 +255,7 @@ class PedidosController extends Controller
 
                 // Obtener el objeto cliente completo
                 'cliente' => $pedidos->clientes,
-                
+
                // Obtener el array de concepto pedidos con el nombre y la cantidad
                 'productos' => $pedidos->productos->map(function ($producto) {
                     return [
@@ -249,6 +264,6 @@ class PedidosController extends Controller
                 ];
                 })
             ];
-    
+
     }
 }

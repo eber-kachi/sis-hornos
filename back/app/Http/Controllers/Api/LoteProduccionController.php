@@ -61,7 +61,7 @@ class LoteProduccionController extends Controller
     $suma = array_sum($pedidos_cantidades);
     $ultimo_lote = LoteProduccion::latest()->first();
     // Si hay un último lote, usar su fecha final más un día como fecha de inicio
-   
+
     if ($ultimo_lote) {
             $fecha_inicio = Carbon::parse($ultimo_lote->fecha_final)->addDay();
             // Si la fecha de inicio es sábado, sumar dos días
@@ -83,11 +83,13 @@ class LoteProduccionController extends Controller
             // Asignar la suma a la variable cantidad de lote
             $lote = new LoteProduccion();
             $lote->cantidad = $suma;
-            
+            // color
+            $color= $this->generarColorAleatorio();
             $lote->fecha_registro = today();
-            $lote->activo="activo";
+            $lote->estado="activo";
+            $lote->color=$color;
             $lote->fecha_inicio = $fecha_inicio;
-            
+
             // Obtener el tiempo en días desde el modelo matemático
             $tiempo_dias = $this->modelomatematico->tiempoProduccionLote($lote['cantidad']);
 
@@ -265,17 +267,39 @@ class LoteProduccionController extends Controller
      * Transform the giving Productos to public friendly array
      *  // Obtener la fecha de hoy
 
-    
+
      *
      *
      * // Obtener el último lote de la tabla
-   
+
      *
      *
      * @param App\Models\Productos $lote_produccion
      *
      * @return array
      */
+// Generar un color aleatorio en formato hexadecimal
+    function generarColorAleatorio()
+    {
+        // Crear un array con los posibles valores hexadecimales
+        $valores = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
+
+        // Inicializar el color con el símbolo #
+        $color = '#';
+
+        // Añadir seis valores aleatorios al color
+        for ($i = 0; $i < 6; $i++) {
+            // Elegir un valor al azar del array
+            $valor = $valores[rand(0, 15)];
+
+            // Añadir el valor al color
+            $color .= $valor;
+        }
+
+        // Devolver el color generado
+        return $color;
+    }
+
 
     protected function transform(LoteProduccion $lote_produccion)
     {

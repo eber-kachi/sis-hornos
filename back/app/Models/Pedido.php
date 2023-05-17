@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Pedido extends Model
 {
-    protected $fillable = ['fecha_pedido','total_precio','lote_produccion_id',
+    protected $fillable = ['fecha_pedido','total_precio','lote_produccion_id','estado',
                             'cliente_id'];
     use HasFactory;
 
