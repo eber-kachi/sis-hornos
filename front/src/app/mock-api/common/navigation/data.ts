@@ -63,7 +63,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/lista-cliente'
-    }
+    },
+    {
+        id   : 'calendario',
+        title: 'Cronograma',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/cronograma'
+    },
 
 ];
 export const compactNavigation: FuseNavigationItem[] = [

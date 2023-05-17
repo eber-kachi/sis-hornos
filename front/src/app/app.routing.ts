@@ -75,6 +75,7 @@ export const appRoutes: Route[] = [
             {path: '', loadChildren: () => import('app/modules/admin/grupo/grupo.module').then(m => m.GrupoModule)},
             {path: '', loadChildren: () => import('app/modules/admin/user/user.module').then(m => m.UserModule)},
             {path: '', loadChildren: () => import('app/modules/admin/producto/producto.module').then(m => m.ProductoModule)},
+            {path: '', loadChildren: () => import('app/modules/admin/cronograma/cronograma.module').then(m => m.CronogramaModule)},
             // {path: 'tipo-grupo', component: },
         ]
     }
