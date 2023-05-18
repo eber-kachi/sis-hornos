@@ -20,16 +20,15 @@ class Producto extends Model
                     ->withTimestamps();
     }
 
-    public function pedidos(): BelongsToMany
-    {
-        return $this->belongsToMany(Pedido::class, 'concepto_pedidos')
-                    ->withPivot('cantidad', 'precio')
-                    ->withTimestamps();
+    public function pedidos(){
+        return $this->hasMany(Pedido::class);
     }
 
     public function TipoGrupos(){
         return $this->hasMany(TipoGrupo::class);
     }
+
+
 
 
 }

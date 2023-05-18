@@ -16,6 +16,9 @@ return new class extends Migration
             $table->date('fecha_pedido');
             $table->integer('total_precio');
             $table->string('estado');
+            $table->integer('cantidad');
+            $table->foreignId('producto_id')
+                ->constrained('productos')->onDelete('cascade');
             $table->foreignId('lote_produccion_id')
                 ->nullable()
             ->constrained('lotes_produccion');

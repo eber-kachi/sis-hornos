@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
-use App\Models\ConceptoPedido;
 use App\Models\Pedido;
+use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 class PedidosController extends Controller
 {
@@ -37,33 +38,21 @@ class PedidosController extends Controller
                 return $this->errorResponse($validator->errors()->all());
             }
 
-
-            $total_precio = collect($request->conceptos)->map(function ($concepto) {
-                return $concepto['cantidad'] * $concepto['precio'];
-            })->sum();
-
+            // Buscar el producto con ese id
+            $producto = Producto::find($request->producto_id);
+            // Calcular el precio total usando el método sum
+            $precio = $producto->precio_unitario * $request->cantidad;
 
             $pedido = new Pedido();
-            $pedido->total_precio = $total_precio;
+            $pedido->total_precio = $precio;
+            $pedido->cantidad = $request->cantidad;
+            $pedido->producto_id = $request->producto_id;
             $pedido->fecha_pedido = now();
             $pedido->clientes()->associate($request->cliente_id);
-            $pedido->estado="activo";
+
+            $pedido->estado="Activo";
 
              $pedido->save();
-
-             $conceptos = []; // inicializar el array vacío
-             foreach ($request->conceptos as $index => $concepto) {
-                 if (isset($concepto['producto_id'])) {
-                     $conceptos[$concepto['producto_id']] = [
-                         'cantidad' => $concepto['cantidad'],
-                         'precio' => $concepto['precio'] ?? null
-                     ];
-                 }
-             }
-               // Sincronizar los materiales con los datos adicionales
-               $pedido->productos()->attach($conceptos);
-
-// Sincronizar los productos con los datos adicionales $pedido->productos()->sync($conceptos);
 
 
             return $this->successResponse(
@@ -132,39 +121,26 @@ class PedidosController extends Controller
             if ($validator->fails()) {
                 return $this->errorResponse($validator->errors()->all());
             }
+                // Buscar el producto con ese id
+                $producto = Producto::find($request->producto_id);
+                // Calcular el precio total usando el método sum
+                $precio = $producto->precio_unitario * $request->cantidad;
 
-            $total_precio = collect($request->conceptos)->map(function ($concepto) {
-                return $concepto['cantidad'] * $concepto['precio'];
-            })->sum();
+                $pedido->total_precio = $precio;
+                $pedido->cantidad = $request->cantidad;
+                $pedido->producto_id = $request->producto_id;
+                $pedido->fecha_pedido = now();
+                $pedido->clientes()->associate($request->cliente_id);
+                $pedido->estado="Activo";
+                $pedido->save();
+                return $this->successResponse(
+                    'Pedidos was successfully added.',
+                    $this->transform($pedido)
 
-
-            $pedido->total_precio = $total_precio;
-            $pedido->fecha_pedido = now();
-            $pedido->clientes()->associate($request->cliente_id);
-            $pedido->save();
-
-            $conceptos = []; // inicializar el array vacío
-            foreach ($request->conceptos as $index => $concepto) {
-                if (isset($concepto['producto_id'])) {
-                    $conceptos[$concepto['producto_id']] = [
-                        'cantidad' => $concepto['cantidad'],
-                        'precio' => $concepto['precio'] ?? null
-                    ];
-                }
+                );
+            } catch (Exception $exception) {
+                return $this->errorResponse('Unexpected error occurred while trying to process your request.');
             }
-               // Sincronizar los materiales con los datos adicionales
-               $pedido->productos()->sync($conceptos);
-
-
-
-            // Devolver una respuesta de éxito con el pedido y sus conceptos
-            return $this->successResponse(
-                'Pedido was successfully updated.',
-                $this->transform($pedido)
-            );
-        } catch (Exception $exception) {
-            return $this->errorResponse('Unexpected error occurred while trying to process your request.');
-        }
     }
 
     /**
@@ -179,7 +155,6 @@ class PedidosController extends Controller
         try {
 
             $pedido = Pedido::find($id);
-            $pedido->productos()->detach();
             // eliminar los conceptos relacionados
             $pedido->delete(); // eliminar el pedido
 
@@ -255,14 +230,11 @@ class PedidosController extends Controller
 
                 // Obtener el objeto cliente completo
                 'cliente' => $pedidos->clientes,
+                'producto' => $pedidos->productos,
 
-               // Obtener el array de concepto pedidos con el nombre y la cantidad
-                'productos' => $pedidos->productos->map(function ($producto) {
-                    return [
-                        'nombre' => $producto->nombre,
-                        'cantidad' => $producto->pivot->cantidad
-                ];
-                })
+
+
+
             ];
 
     }

@@ -79,15 +79,14 @@ class LoteProduccionController extends Controller
     else {
     $fecha_inicio = Carbon::today();
     }
-
-            // Asignar la suma a la variable cantidad de lote
+        // Asignar la suma a la variable cantidad de lote
             $lote = new LoteProduccion();
             $lote->cantidad = $suma;
             // color
-            $color= $this->generarColorAleatorio();
+            $color = $this->generarColorAleatorio();
             $lote->fecha_registro = today();
-            $lote->estado="activo";
-            $lote->color=$color;
+            $lote->estado = "activo";
+            $lote->color = $color;
             $lote->fecha_inicio = $fecha_inicio;
 
             // Obtener el tiempo en días desde el modelo matemático
@@ -295,7 +294,7 @@ class LoteProduccionController extends Controller
             // Añadir el valor al color
             $color .= $valor;
         }
-
+        $color = strval($color);
         // Devolver el color generado
         return $color;
     }
@@ -310,7 +309,9 @@ class LoteProduccionController extends Controller
             'cantidad' => $lote_produccion->cantidad,
             'fecha_inicio' => $lote_produccion->fecha_inicio,
             'fecha_final' => $lote_produccion->fecha_final,
-            'activo' => $lote_produccion->activo,
+            'activo' => $lote_produccion->estado,
+                'fecha_registro' => $lote_produccion->fecha_registro,
+
             'fecha_registro' => $lote_produccion->fecha_registro,
             'tiempo_dias' => $this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad']),
             // Transformar los grupos de trabajo
