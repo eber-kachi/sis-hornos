@@ -20,9 +20,28 @@ class PedidosController extends Controller
             return $this->transform($pedidos);
         });
 
+
         return $this->successResponse(
             'Pedidos were successfully retrieved.',
-            $data
+            $data,
+            [
+                'links' => [
+                    'first' => $pedidos->url(1),
+                    'last' => $pedidos->url($pedidos->lastPage()),
+                    'prev' => $pedidos->previousPageUrl(),
+                    'next' => $pedidos->nextPageUrl(),
+                ],
+                'meta' =>
+                    [
+                        'current_page' => $pedidos->currentPage(),
+                        'from' => $pedidos->firstItem(),
+                        'last_page' => $pedidos->lastPage(),
+                        'path' => $pedidos->resolveCurrentPath(),
+                        'per_page' => $pedidos->perPage(),
+                        'to' => $pedidos->lastItem(),
+                        'total' => $pedidos->total(),
+                    ],
+            ]
         );
 
     }
