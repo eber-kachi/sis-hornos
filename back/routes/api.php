@@ -71,6 +71,7 @@ Route::group([
          ->name('api.rols.rol.destroy');
 });
 
+Route::group(['middleware' => 'auth:api'], function(){
 
 Route::resource('/tipo_grupos', TipoGrupoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/grupos_trabajo', GruposTrabajoController::class, ['update','destroy','show','index'.'store']);
@@ -97,7 +98,7 @@ Route::resource('/medidas', MedidasController::class, ['update','destroy','show'
 Route::get('/lote', [LoteProduccionController::class,'agregar']);
 
 
-
+});
 
 
 
