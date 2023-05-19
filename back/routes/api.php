@@ -91,7 +91,7 @@ Route::resource('/concepto_pedidos', ConceptoPedidoController::class, ['update',
 Route::resource('/lotes_produccion', LoteProduccionController::class, ['update','destroy','show','index'.'store']);
 
 Route::resource('/pedidos', PedidosController::class, ['update','destroy','show','index'.'store']);
-Route::get('/pedidos/lista/activos', [PersonalController::class,'listarPedidosActivosPorProducto']);
+Route::get('/pedidos/lista/activos', [PedidosController::class,'listarPedidosActivosPorProducto']);
 
 Route::resource('/medidas', MedidasController::class, ['update','destroy','show','index'.'store']);
 Route::get('/lote', [LoteProduccionController::class,'agregar']);

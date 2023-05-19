@@ -18,12 +18,10 @@ class LoteProduccion extends Model
     public function Pedidos(){
         return $this->hasMany(Pedido::class);
     }
-
     public function GruposTrabajos(): BelongsToMany
     {
         return $this->belongsToMany(GruposTrabajo::class, 'asignacion_lotes')
                     ->withPivot('cantidad_asignada')
                     ->withTimestamps();
     }
-
 }

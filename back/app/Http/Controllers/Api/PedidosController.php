@@ -56,7 +56,6 @@ class PedidosController extends Controller
             if ($validator->fails()) {
                 return $this->errorResponse($validator->errors()->all());
             }
-
             // Buscar el producto con ese id
             $producto = Producto::find($request->producto_id);
             // Calcular el precio total usando el método sum
@@ -77,24 +76,46 @@ class PedidosController extends Controller
             return $this->successResponse(
                 'Pedidos was successfully added.',
                 $this->transform($pedido)
-
             );
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }
 
-
-    public function listarPedidosActivosPorProducto($producto_id)
+    public function listarPedidosActivosPorProducto (Request $request)
     {
         // Buscar los pedidos que tienen el producto_id y el estado activo en la tabla pivote
-        $pedidos = Pedido::whereHas('productos', function ($query) use ($producto_id) {
-            $query->where('producto_id', $producto_id);
-        })->where('estado', 'activo')->get();
+        $pedidos = Pedido::where('estado', 'activo')->where('producto_id', $request->producto_id)->paginate(25);;
 
-        // Devolver  con los pedidos
-        return $pedidos;
-    }
+         // Devolver con los pedidos
+         $data = $pedidos->transform(function ($pedidos) {
+             return $this->transform($pedidos);
+         });
+
+
+         return $this->successResponse(
+             'Pedidos were successfully retrieved.',
+             $data,
+             [
+                 'links' => [
+                     'first' => $pedidos->url(1),
+                     'last' => $pedidos->url($pedidos->lastPage()),
+                     'prev' => $pedidos->previousPageUrl(),
+                     'next' => $pedidos->nextPageUrl(),
+                 ],
+                 'meta' =>
+                     [
+                         'current_page' => $pedidos->currentPage(),
+                         'from' => $pedidos->firstItem(),
+                         'last_page' => $pedidos->lastPage(),
+                         'path' => $pedidos->resolveCurrentPath(),
+                         'per_page' => $pedidos->perPage(),
+                         'to' => $pedidos->lastItem(),
+                         'total' => $pedidos->total(),
+                     ],
+             ]
+         );
+}
 
 
 
@@ -114,7 +135,6 @@ class PedidosController extends Controller
             $this->transform($pedidos)
         );
     }
-
     /**
      * Update the specified Pedido in the storage.
      *
@@ -133,10 +153,8 @@ class PedidosController extends Controller
             if (!$pedido) {
                 return $this->errorResponse('Pedido not found.');
             }
-
             // Validar los datos del request
             $validator = $this->getValidator($request);
-
             if ($validator->fails()) {
                 return $this->errorResponse($validator->errors()->all());
             }
@@ -144,7 +162,6 @@ class PedidosController extends Controller
                 $producto = Producto::find($request->producto_id);
                 // Calcular el precio total usando el método sum
                 $precio = $producto->precio_unitario * $request->cantidad;
-
                 $pedido->total_precio = $precio;
                 $pedido->cantidad = $request->cantidad;
                 $pedido->producto_id = $request->producto_id;
@@ -243,6 +260,7 @@ class PedidosController extends Controller
 
             return [
                 'id' => $pedidos->id,
+                'cantidad' => $pedidos->cantidad,
                 'total_precio' => $pedidos->total_precio,
                 'fecha_pedido' => $pedidos->fecha_pedido,
                 'cliente_id' => $pedidos->cliente_id,
@@ -250,9 +268,6 @@ class PedidosController extends Controller
                 // Obtener el objeto cliente completo
                 'cliente' => $pedidos->clientes,
                 'producto' => $pedidos->productos,
-
-
-
 
             ];
 
