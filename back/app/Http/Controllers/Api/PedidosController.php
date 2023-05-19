@@ -261,6 +261,9 @@ class PedidosController extends Controller
             return [
                 'id' => $pedidos->id,
                 'cantidad' => $pedidos->cantidad,
+                'producto_id' => $pedidos->producto_id,
+                'estado' => $pedidos->estado,
+
                 'total_precio' => $pedidos->total_precio,
                 'fecha_pedido' => $pedidos->fecha_pedido,
                 'cliente_id' => $pedidos->cliente_id,
