@@ -14,7 +14,7 @@ class PedidosController extends Controller
 
     public function index()
     {
-        $pedidos = Pedido::orderBy('id', 'desc')->paginate(25);
+        $pedidos = Pedido::orderBy('id', 'desc')->paginate(10);
 
         $data = $pedidos->transform(function ($pedidos) {
             return $this->transform($pedidos);
@@ -85,7 +85,7 @@ class PedidosController extends Controller
     public function listarPedidosActivosPorProducto (Request $request)
     {
         // Buscar los pedidos que tienen el producto_id y el estado activo en la tabla pivote
-        $pedidos = Pedido::where('estado', 'activo')->where('producto_id', $request->producto_id)->paginate(25);;
+        $pedidos = Pedido::where('estado', 'activo')->where('producto_id', $request->producto_id)->paginate(10);;
 
          // Devolver con los pedidos
          $data = $pedidos->transform(function ($pedidos) {
