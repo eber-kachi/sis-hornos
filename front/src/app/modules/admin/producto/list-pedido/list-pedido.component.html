@@ -1,57 +1,93 @@
 <div class="flex flex-col flex-auto min-w-0">
-    <!-- Main -->
-    <div class="flex-auto p-6 sm:p-10">
-        <!-- CONTENT GOES HERE -->
-        <div
-            class="h-400 min-h-400 max-h-400 border-dashed border-gray-300 rounded-2xl"
-        >
+  <!-- Main -->
+  <div class="flex-auto p-6 sm:p-10">
+    <!-- CONTENT GOES HERE -->
+    <div class="border-dashed border-gray-300 rounded-2xl">
+      <div
+        class="m-4 flex flex-row flex-wrap justify-between items-center content-center"
+      >
+        <h3 class="float-left h-4 font-bold">Lista de pedidos</h3>
+        <button mat-raised-button color="primary" (click)="createNew()">
+          Nuevo
+        </button>
+      </div>
+      <mat-table [dataSource]="dataSource$">
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{ row.id }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha_pedido">
+          <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            {{ row.fecha_pedido }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+          <mat-cell *matCellDef="let row">
             <div
-                class="m-4 flex flex-row flex-wrap justify-between items-center content-center"
+              class="px-1 rounded-md  {{
+                row.estado == 'Activo' && 'bg-lime-400'
+              }}"
             >
-                <h3 class="float-left h-4 font-bold">Lista de material</h3>
-                <button mat-raised-button color="primary" (click)="createNew()">
-                    Nuevo
-                </button>
+              {{ row.estado }}
             </div>
-            <mat-table [dataSource]="dataSource$">
-                <ng-container matColumnDef="id">
-                    <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{ row.id }}</mat-cell>
-                </ng-container>
+          </mat-cell>
+        </ng-container>
 
-                <ng-container matColumnDef="fecha_pedido">
-                    <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        {{ row.fecha_pedido }}
-                    </mat-cell>
-                </ng-container>
+        <ng-container matColumnDef="total_precio">
+          <mat-header-cell *matHeaderCellDef>Precio Total </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            {{ row.total_precio }}
+          </mat-cell>
+        </ng-container>
 
-                <ng-container matColumnDef="total_precio">
-                    <mat-header-cell *matHeaderCellDef>Total</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        {{ row.total_precio }}
-                    </mat-cell>
-                </ng-container>
+        <ng-container matColumnDef="cliente">
+          <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            {{ row.cliente.nombres }} {{ row.cliente.apellidos }}
+          </mat-cell>
+        </ng-container>
 
-                <ng-container matColumnDef="cliente">
-                    <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        {{ row.gender }}
-                    </mat-cell>
-                </ng-container>
+        <ng-container matColumnDef="detalle">
+          <mat-header-cell *matHeaderCellDef>Detalle</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <div class="flex flex-nowrap items-start flex-col">
+              <p class="text-xs">
+                Nombre Producto: {{ row?.producto?.nombre }}
+              </p>
+              <p class="text-xs">
+                Precio Unitario:
+                {{ row?.producto?.precio_unitario }}
+              </p>
+              <p class="text-xs">Costo: {{ row?.producto?.costo }}</p>
+              <p class="text-xs">
+                Caracteristicas:
+                {{ row?.producto?.caracteristicas }}
+              </p>
+            </div>
+          </mat-cell>
+        </ng-container>
 
-                <ng-container matColumnDef="detalle">
-                    <mat-header-cell *matHeaderCellDef>Detalle</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        {{ row }}
-                    </mat-cell>
-                </ng-container>
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="edit(element.id)">
+              <mat-icon>launch</mat-icon>
+            </button>
+            <button mat-icon-button (click)="delete(element.id)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
 
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-            </mat-table>
-            <mat-paginator [length]="pageTotal" [pageSize]="pageSize"></mat-paginator>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
 
-        </div>
+      <mat-paginator [length]="pageTotal" [pageSize]="pageSize"></mat-paginator>
+      <!-- (page)="handlerChangePage($event)" -->
     </div>
+  </div>
 </div>

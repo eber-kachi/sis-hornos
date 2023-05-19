@@ -23,6 +23,7 @@ import { ListClienteComponent } from './list-cliente/list-cliente.component';
 import { CreateClienteComponent } from './list-cliente/create-cliente/create-cliente.component';
 import { ListPedidoComponent } from './list-pedido/list-pedido.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { CreatePedidoComponent } from './list-pedido/create-pedido/create-pedido.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
         CreateDepartamentoComponent,
         ListClienteComponent,
         CreateClienteComponent,
-        ListPedidoComponent
+        ListPedidoComponent,
+        CreatePedidoComponent
     ],
     imports: [
         CommonModule,

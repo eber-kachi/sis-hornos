@@ -1,75 +1,144 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PedidoService } from '@core/service/api/pedido.service';
-import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { Observable, Subject, of } from 'rxjs';
+import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from '@app/shared/alert-dialog/alert-dialog.component';
+import { CreatePedidoComponent } from './create-pedido/create-pedido.component';
 
 @Component({
-    selector: 'app-list-pedido',
-    templateUrl: './list-pedido.component.html',
-    styleUrls: ['./list-pedido.component.scss'],
+  selector: 'app-list-pedido',
+  templateUrl: './list-pedido.component.html',
+  styleUrls: ['./list-pedido.component.scss'],
 })
-export class ListPedidoComponent implements OnInit, AfterViewInit {
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    // displayedColumns = ['id', 'name', 'status', 'gender', 'species'];
-    displayedColumns = [
-        'id',
-        'fecha_pedido',
-        'total_precio',
-        'cliente',
-        'detalle',
-    ];
-    dataSource$ = new Observable<any[]>();
-    pageTotal: number;
-    pageSize: number = 3;
+export class ListPedidoComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  // displayedColumns = ['id', 'name', 'status', 'gender', 'species'];
+  displayedColumns = [
+    'id',
+    'fecha_pedido',
+    'estado',
+    'total_precio',
+    'cliente',
+    'detalle',
+    'actions',
+  ];
+  dataSource$ = new Observable<any[]>();
+  pageTotal: number;
+  pageSize: number = 3;
+  private unsubscribe$ = new Subject<void>();
 
-    constructor(
-        private characterService: PedidoService,
-        private route: ActivatedRoute,
-        private router: Router
-    ) {}
+  constructor(
+    private characterService: PedidoService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public dialog: MatDialog
+  ) {}
 
-    ngOnInit() {
-        this.getDataFromApi();
-    }
+  ngOnInit() {
+    this.getDataFromApi();
+  }
 
-    ngAfterViewInit(): void {
-        this.paginator.page.subscribe(() => {
-            console.log(this.route.url);
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
-            this.router.navigate(['/'], {
-                relativeTo: this.route,
-                queryParams: { page: this.paginator.pageIndex + 1 },
-                queryParamsHandling: 'merge',
-            });
-        });
-    }
+  ngAfterViewInit(): void {
+    this.paginator.page.subscribe(() => {
+      this.router.navigate(['/lista-pedidos'], {
+        relativeTo: this.route,
+        queryParams: { page: this.paginator.pageIndex + 1 },
+        queryParamsHandling: 'merge',
+      });
+    });
+  }
 
-    getDataFromApi() {
-        this.dataSource$ = this.route.queryParams.pipe(
-            switchMap((params: Params) => {
-                const filters = {
-                    // status: params.status || '',
-                    // gender: params.gender || '',
-                    // name: params.name || '',
-                    page: params.page || 1,
-                };
+  getDataFromApi() {
+    this.dataSource$ = this.route.queryParams.pipe(
+      takeUntil(this.unsubscribe$),
+      switchMap((params: Params) => {
+        const filters = {
+          // status: params.status || '',
+          // gender: params.gender || '',
+          // name: params.name || '',
+          page: params.page || 1,
+        };
 
-                return this.characterService.getAll(filters).pipe(
-                    map((res) => {
-                        console.log('paginacion=>', res);
-                        this.pageTotal = res.meta.total;
-                        return res.data;
-                    }),
-                    catchError(() => {
-                        this.pageTotal = 0;
-                        return of(null);
-                    })
-                );
-            })
+        return this.characterService.getAll(filters).pipe(
+          map((res) => {
+            console.log('paginacion=>', res);
+            this.pageSize = res.meta.per_page;
+            this.pageTotal = res.meta.total;
+            return res.data;
+          }),
+          catchError(() => {
+            this.pageTotal = 0;
+            return of(null);
+          })
         );
-    }
+      })
+    );
+  }
 
-    createNew() {}
+  createNew() {
+    const dialogRef = this.dialog.open(CreatePedidoComponent, {
+      width: '640px',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      console.log('edit list', res);
+      if (res) {
+        this.getDataFromApi();
+      }
+    });
+  }
+
+  edit(id: string | number | ArrayBufferView | ArrayBuffer) {
+    console.log(id);
+    const dialogRef = this.dialog.open(CreatePedidoComponent, {
+      width: '640px',
+      disableClose: true,
+      data: { id: id },
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      console.log('edit list', res);
+      if (res) {
+        this.getDataFromApi();
+      }
+    });
+  }
+
+  delete(id: string | number | ArrayBufferView | ArrayBuffer) {
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      data: {
+        message: 'Estas seguro que deseas eliminar?',
+        buttonText: {
+          ok: 'Si',
+          cancel: 'Cancelar',
+        },
+      },
+    });
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        console.log('borrando');
+        this.characterService.delete(id as string).subscribe((res) => {
+          console.log(res);
+          this.getDataFromApi();
+        });
+      }
+    });
+  }
+
+  // handlerChangePage(event: PageEvent) {
+  //   console.log(event);
+  // }
 }
