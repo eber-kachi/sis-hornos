@@ -57,11 +57,12 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         if (response.status === 409) {
             // console.log(response);
             // @ts-ignore
-            // this.alertSwal.showSwallError(
-            //     // @ts-ignore
-            //     response?.error?.errors[0] || response?.error?.message
-            // );
+            this.alertSwal.showSwallError(
+                // @ts-ignore
+                response?.error?.errors[0] || response?.error?.message
+            );
         } else if (response.status === 401) {
+          this.alertSwal.showSwallError('Session caducada.');
             this.localStorageService.clearItem(credentialsKey);
             this.router.navigate(['/sign-in'], {
                 replaceUrl: true,
