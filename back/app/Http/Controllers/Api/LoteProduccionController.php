@@ -151,14 +151,23 @@ class LoteProduccionController extends Controller
             // Obtener el lote de producción por el id
             $lote = LoteProduccion::findOrFail($id);
 
-            // Crear un array con los ids y las cantidades de los pedidos
             $pedidos_ids = array();
             $pedidos_cantidades = array();
             foreach ($request->pedidos as $requestPedido) {
-            $pedidos_ids[] = $requestPedido['id'];
-            $pedidos_cantidades[] = $requestPedido['cantidad'];
-            }
 
+                // Obtener el id del pedido
+                $pedidos_ids[] = $requestPedido['id'];
+                // Obtener el pedido usando el método find()
+                $pedido = Pedido::find($requestPedido['id']);
+
+                // Obtener el primer producto relacionado con el pedido
+                $producto = $pedido->productos()->first();
+
+                // Obtener la cantidad del producto desde el atributo pivot
+                $pedidos_cantidades[] = $pedido->cantidad;
+
+
+            }
             // Sumar las cantidades usando array_sum()
             $suma = array_sum($pedidos_cantidades);
 
