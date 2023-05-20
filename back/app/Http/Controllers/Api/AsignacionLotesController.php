@@ -52,6 +52,7 @@ class AsignacionLotesController extends Controller
 
             $data = $this->getData($request);
 
+
             $asignacion_lote = AsignacionLote::create($data);
 
             return $this->successResponse(

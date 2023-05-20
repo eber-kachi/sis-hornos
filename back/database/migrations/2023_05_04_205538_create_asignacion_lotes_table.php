@@ -18,6 +18,11 @@ return new class extends Migration
             $table->foreignId('grupos_trabajo_id')
             ->constrained('grupos_trabajos');
             $table->integer('cantidad_asignada');
+
+            $table->integer('porcentaje_avance');
+            $table->foreignId('id_procesos')
+                ->constrained('procesos')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

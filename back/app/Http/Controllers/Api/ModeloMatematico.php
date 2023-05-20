@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AsignacionLotesController;
 use App\Models\AsignacionLote;
 use App\Models\GruposTrabajo;
 use App\Models\LoteProduccion;
+use App\Models\Proceso;
 use App\Models\TipoGrupo;
 
 
@@ -29,19 +30,53 @@ class ModeloMatematico {
     public function cantidadProductosAsignados(LoteProduccion $loteProduccion) {
         // Calcular el porcentaje y la cantidad asignada a cada grupo
         $cantidadTotal = $this->cantidadTotalProductoDia();
+        $asignaciones = AsignacionLote::where('lote_produccion_id', $loteProduccion->id)->get();
         foreach ($this->grupoTrabajo as $grupo) {
             foreach ($this->tipoGrupo as $tipo) {
                 if ($tipo->id == $grupo->tipo_grupo_id) {
-                    // Crear una nueva asignación de lote
-                    $asignacion = new AsignacionLote();
+
+                    if ($asignaciones->isEmpty()) {
+
+                        // crear la Lista de procesos
+                        $proceso = new Proceso();
+                        $proceso->marcado_planchas="En espera";
+                        $proceso->cortado_planchas="En espera";
+                        $proceso->plegado_planchas="En espera";
+                        $proceso->soldadura="En espera";
+                        $proceso->prueba_conductos="En espera";
+                        $proceso->armado_cuerpo="En espera";
+                        $proceso->pintado="En espera";
+                        $proceso->armado_accesorios="En espera";
+                        $proceso->save();
+                        echo "No hay asignaciones para este lote";
+                        // Crear una nueva asignación de lote
+                        $asignacion = new AsignacionLote();
+                        $asignacion->grupos_trabajo_id = $grupo->id;
+                        $asignacion->lote_produccion_id = $loteProduccion->id;
+                        // Calcular el porcentaje del grupo
+                        $porcentaje = $this->porcentajeGrupo($tipo->cantidad_produccion_diaria, $cantidadTotal);
+                        // Calcular la cantidad asignada al grupo
+                        $asignacion->cantidad_asignada = $this->cantidadAsignada($porcentaje, $loteProduccion->cantidad);
+                        $asignacion->id_procesos = $proceso->id;
+                        $asignacion->porcentaje_avance=0;
+                        // Añadir la asignación a la colección
+                        $this->asignacionLote->push($asignacion);
+
+                    }
+
+                    $asignacion = AsignacionLote::where('grupos_trabajo_id', $grupo->_id)->first();
                     $asignacion->grupos_trabajo_id = $grupo->id;
                     $asignacion->lote_produccion_id = $loteProduccion->id;
                     // Calcular el porcentaje del grupo
                     $porcentaje = $this->porcentajeGrupo($tipo->cantidad_produccion_diaria, $cantidadTotal);
                     // Calcular la cantidad asignada al grupo
                     $asignacion->cantidad_asignada = $this->cantidadAsignada($porcentaje, $loteProduccion->cantidad);
+                    $asignacion->porcentaje_avance=0;
                     // Añadir la asignación a la colección
                     $this->asignacionLote->push($asignacion);
+
+
+
                 }
             }
         }
@@ -50,12 +85,11 @@ class ModeloMatematico {
 
         return $this->asignacionLote;
     }
-
-
-
     private function cantidadAsignada($porcentaje, $cantidad) {
-        // Redondear la cantidad asignada según el porcentaje
-        return round(($porcentaje * $cantidad) / 100);
+        // Redondear la cantidad asignada según el porcentaje y el modo
+
+        return round(($porcentaje * $cantidad) / 100, 0, PHP_ROUND_HALF_UP);
+
     }
 
     // Convertir el porcentaje de un grupo
@@ -77,7 +111,6 @@ class ModeloMatematico {
         // Devolver el tiempo de producción
         return $tiempoProduccion;
     }
-
 // Convertir la cantidad total de producto por día
     public function cantidadTotalProductoDia() {
         // Inicializar la cantidad total a cero
@@ -95,7 +128,6 @@ class ModeloMatematico {
         // Devolver la cantidad total
         return $cantidadTotal;
     }
-
     public function cantidad_produccion_diaria(mixed $producion_diaria)
     {
         //$OTPGn Tiempo de Produccion de un Producto por el grupo de trabajo de $count integrantes

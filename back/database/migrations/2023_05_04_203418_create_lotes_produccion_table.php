@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('lotes_produccion', function (Blueprint $table) {
             $table->id();
             $table->integer('cantidad');
+            $table->integer('porcentaje_total');
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_final')->nullable();
             $table->string('estado');

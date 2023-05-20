@@ -12,7 +12,7 @@ class LoteProduccion extends Model
 
     protected $table = 'lotes_produccion';
     protected $fillable = ['cantidad','fecha_inicio',
-                         'fecha_final','color','fecha_registro','estado'];
+                         'fecha_final','color','fecha_registro','estado','porcentaje_total'];
     use HasFactory;
 
     public function Pedidos(){
