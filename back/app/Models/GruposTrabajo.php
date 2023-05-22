@@ -23,7 +23,7 @@ class GruposTrabajo extends Model
    public function LotesProduccion(): BelongsToMany
    {
        return $this->belongsToMany(LoteProduccion::class, 'asignacion_lotes')
-                   ->withPivot('cantidad_asignada')
+                   ->withPivot('cantidad_asignada','porcentaje_avance','id_procesos')
                    ->withTimestamps();
    }
 

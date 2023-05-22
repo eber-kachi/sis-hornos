@@ -241,8 +241,9 @@ class LoteProduccionController extends Controller
           // Obtener el lote de producción por el id
           $lote = LoteProduccion::findOrFail($id);
 
-          // Quitar la relación con los pedidos usando detach()
-          $lote->pedidos()->detach();
+            // Poner null en el campo lote_produccion_id de todos los pedidos del lote
+            Pedido::where('lote_produccion_id', $lote->id)->update(['lote_produccion_id' => null]);
+
 
           // Eliminar el lote de producción
           $lote->delete();
