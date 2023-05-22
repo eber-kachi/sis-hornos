@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Api\AsignacionLotesController;
 use App\Http\Controllers\Api\ClientesController;
 use App\Http\Controllers\Api\DepartamentosController;
 use App\Http\Controllers\Api\ProductosController;
@@ -71,7 +72,7 @@ Route::group([
          ->name('api.rols.rol.destroy');
 });
 
-Route::group(['middleware' => 'auth:api'], function(){
+//Route::group(['middleware' => 'auth:api'], function(){
 
 Route::resource('/tipo_grupos', TipoGrupoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/grupos_trabajo', GruposTrabajoController::class, ['update','destroy','show','index'.'store']);
@@ -88,7 +89,6 @@ Route::get('/index_producto_material',[MaterialProductosController::class,'index
 Route::resource('/cliente', ClientesController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/departamentos', DepartamentosController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/asignacion_lotes', AsignacionLotesController::class, ['update','destroy','show','index'.'store']);
-Route::resource('/concepto_pedidos', ConceptoPedidoController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/lotes_produccion', LoteProduccionController::class, ['update','destroy','show','index'.'store']);
 
 Route::resource('/pedidos', PedidosController::class, ['update','destroy','show','index'.'store']);
@@ -98,7 +98,7 @@ Route::resource('/medidas', MedidasController::class, ['update','destroy','show'
 Route::get('/lote', [LoteProduccionController::class,'agregar']);
 
 
-});
+//});
 
 
 
