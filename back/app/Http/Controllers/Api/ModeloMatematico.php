@@ -48,7 +48,6 @@ class ModeloMatematico {
                         $proceso->pintado="En espera";
                         $proceso->armado_accesorios="En espera";
                         $proceso->save();
-                        echo "No hay asignaciones para este lote";
                         // Crear una nueva asignación de lote
                         $asignacion = new AsignacionLote();
                         $asignacion->grupos_trabajo_id = $grupo->id;
@@ -63,16 +62,15 @@ class ModeloMatematico {
                         $this->asignacionLote->push($asignacion);
 
                     }else{
-                        $asignacion = AsignacionLote::where('grupos_trabajo_id', $grupo->id)->first();
-                        $asignacion->grupos_trabajo_id = $grupo->id;
-                        $asignacion->lote_produccion_id = $loteProduccion->id;
-                        // Calcular el porcentaje del grupo
+                        $asignacion = AsignacionLote::where ([ ['lote_produccion_id', '=', $loteProduccion->id], ['grupos_trabajo_id', '=', $grupo->id] ])->first();
                         $porcentaje = $this->porcentajeGrupo($tipo->cantidad_produccion_diaria, $cantidadTotal);
                         // Calcular la cantidad asignada al grupo
                         $asignacion->cantidad_asignada = $this->cantidadAsignada($porcentaje, $loteProduccion->cantidad);
                         $asignacion->porcentaje_avance=0;
+                        $asignacion->save();
                         // Añadir la asignación a la colección
                         $this->asignacionLote->push($asignacion);
+
 
                     }
 

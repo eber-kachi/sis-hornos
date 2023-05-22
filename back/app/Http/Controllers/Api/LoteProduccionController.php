@@ -147,55 +147,85 @@ class LoteProduccionController extends Controller
 
         public function update(Request $request, $id)
         {
-        try {
-            // Obtener el lote de producción por el id
-            $lote = LoteProduccion::findOrFail($id);
 
-            $pedidos_ids = array();
-            $pedidos_cantidades = array();
-            foreach ($request->pedidos as $requestPedido) {
+            try {
+                DB::beginTransaction(); // Iniciar transacción
+                $pedidos_ids = array();
+                $pedidos_cantidades = array();
+                foreach ($request->pedidos as $requestPedido) {
 
-                // Obtener el id del pedido
-                $pedidos_ids[] = $requestPedido['id'];
-                // Obtener el pedido usando el método find()
-                $pedido = Pedido::find($requestPedido['id']);
+                    // Obtener el id del pedido
+                    $pedidos_ids[] = $requestPedido['id'];
+                    // Obtener el pedido usando el método find()
+                    $pedido = Pedido::find($requestPedido['id']);
 
-                // Obtener el primer producto relacionado con el pedido
-                $producto = $pedido->productos()->first();
+                    // Obtener el primer producto relacionado con el pedido
+                    $producto = $pedido->productos()->first();
 
-                // Obtener la cantidad del producto desde el atributo pivot
-                $pedidos_cantidades[] = $pedido->cantidad;
+                    // Obtener la cantidad del producto desde el atributo pivot
+                    $pedidos_cantidades[] = $pedido->cantidad;
 
 
+                }
+                // Sumar las cantidades usando array_sum()
+                $suma = array_sum($pedidos_cantidades);
+
+                $ultimo_lote = LoteProduccion::where('id', '<', $id)->latest()->first();
+
+                // Si hay un lote anterior, usar su fecha final más un día como fecha de inicio
+                if ($ultimo_lote) {
+                    $fecha_inicio = Carbon::parse($ultimo_lote->fecha_final)->addDay();
+                    // Si la fecha de inicio es sábado, sumar dos días
+                    if ($fecha_inicio->isWeekend()) {
+                        $fecha_inicio->addDays(2);
+                    }
+                    // Si la fecha de inicio es domingo, sumar un día
+                    else if ($fecha_inicio->dayOfWeek == Carbon::SUNDAY) {
+                        $fecha_inicio->addDay();
+                    }
+                }
+                // Si no hay un lote anterior, usar la fecha de hoy como fecha de inicio
+                else {
+                    $fecha_inicio = Carbon::today();
+                }
+
+                // Asignar la suma a la variable cantidad de lote
+                $lote = LoteProduccion::find($id); // Buscar el lote por su id
+                $lote->cantidad = $suma; // Asignar los nuevos valores
+                // color
+                $color = $this->generarColorAleatorio();
+                $lote->fecha_registro = today();
+                $lote->estado = "activo";
+                $lote->color = $color;
+                $lote->fecha_inicio = $fecha_inicio;
+                $lote->porcentaje_total = 0 ;
+
+                // Obtener el tiempo en días desde el modelo matemático
+                 $tiempo_dias =round($this->modelomatematico->tiempoProduccionLote($lote['cantidad']));
+                 // Crear una copia de la fecha de inicio
+                 $fecha_final = $fecha_inicio->copy();
+                 // Sumar el tiempo en días hábiles a la fecha final
+                 $fecha_final->addWeekdays($tiempo_dias);
+                 // Asignar la fecha final al lote de producción
+                 $lote->fecha_final = $fecha_final;
+                 $lote->save();
+                // Poner null en el campo lote_produccion_id de todos los pedidos del lote
+                Pedido::where('lote_produccion_id', $lote->id)->update(['lote_produccion_id' => null]);
+
+                 // Actualizar el lote de producción en los pedidos con el método update()
+                Pedido::whereIn('id', $pedidos_ids)->update(['lote_produccion_id' => $lote->id]);
+               $this->modelomatematico->cantidadProductosAsignados($lote);
+                //echo $asignacion;
+                DB::commit(); // Confirmar transacción
+                return $this->successResponse(
+                    'Lote Produccion was successfully added.',
+                    $this->transform($lote)
+                );
+            } catch (Exception $exception) {
+
+                DB::rollBack(); // Deshacer transacción
+                return $this->errorResponse('Unexpected error occurred while trying to process your request.');
             }
-            // Sumar las cantidades usando array_sum()
-            $suma = array_sum($pedidos_cantidades);
-
-            // Asignar la suma a la variable cantidad de lote
-            $lote->fill([
-            'cantidad' => $suma,
-            'fecha_registro' => today(),
-            'activo' => "activo"
-            ]);
-            $lote->save();
-
-            // Actualizar el lote de producción en los pedidos con el método sync()
-            $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote);
-            $grupos_ids = array();
-            $atributos = array();
-            foreach ($asignacion as $loteAsignacion) {
-            $grupos_ids[] = $loteAsignacion->grupos_trabajo_id;
-            $atributos[$loteAsignacion->grupos_trabajo_id] = ['cantidad_asignada' => $loteAsignacion->cantidad_asignada];
-            }
-            $lote->gruposTrabajo()->sync($grupos_ids, $atributos);
-
-            return $this->successResponse(
-            'Lote  Produccion was successfully updated.',
-            $this->transform($lote)
-            );
-        } catch (Exception $exception) {
-            return $this->errorResponse('Unexpected error occurred while trying to process your request.');
-        }
     }
 
     /**
