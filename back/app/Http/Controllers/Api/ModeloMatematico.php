@@ -62,19 +62,19 @@ class ModeloMatematico {
                         // Añadir la asignación a la colección
                         $this->asignacionLote->push($asignacion);
 
+                    }else{
+                        $asignacion = AsignacionLote::where('grupos_trabajo_id', $grupo->id)->first();
+                        $asignacion->grupos_trabajo_id = $grupo->id;
+                        $asignacion->lote_produccion_id = $loteProduccion->id;
+                        // Calcular el porcentaje del grupo
+                        $porcentaje = $this->porcentajeGrupo($tipo->cantidad_produccion_diaria, $cantidadTotal);
+                        // Calcular la cantidad asignada al grupo
+                        $asignacion->cantidad_asignada = $this->cantidadAsignada($porcentaje, $loteProduccion->cantidad);
+                        $asignacion->porcentaje_avance=0;
+                        // Añadir la asignación a la colección
+                        $this->asignacionLote->push($asignacion);
+
                     }
-
-                    $asignacion = AsignacionLote::where('grupos_trabajo_id', $grupo->_id)->first();
-                    $asignacion->grupos_trabajo_id = $grupo->id;
-                    $asignacion->lote_produccion_id = $loteProduccion->id;
-                    // Calcular el porcentaje del grupo
-                    $porcentaje = $this->porcentajeGrupo($tipo->cantidad_produccion_diaria, $cantidadTotal);
-                    // Calcular la cantidad asignada al grupo
-                    $asignacion->cantidad_asignada = $this->cantidadAsignada($porcentaje, $loteProduccion->cantidad);
-                    $asignacion->porcentaje_avance=0;
-                    // Añadir la asignación a la colección
-                    $this->asignacionLote->push($asignacion);
-
 
 
                 }
