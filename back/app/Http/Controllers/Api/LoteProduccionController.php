@@ -90,7 +90,7 @@ class LoteProduccionController extends Controller
             $lote->fecha_inicio = $fecha_inicio;
             $lote->porcentaje_total = 0 ;
             // Obtener el tiempo en días desde el modelo matemático
-            $tiempo_dias =round($this->modelomatematico->tiempoProduccionLote($lote['cantidad']));
+            $tiempo_dias =round($this->modelomatematico->tiempoProduccionLote($lote['cantidad'],$request->producto_id));
            // Crear una copia de la fecha de inicio
             $fecha_final = $fecha_inicio->copy();
             // Sumar el tiempo en días hábiles a la fecha final
@@ -99,9 +99,12 @@ class LoteProduccionController extends Controller
             $lote->fecha_final = $fecha_final;
             $lote->save();
             $lotee =LoteProduccion::with('gruposTrabajos')->find($lote->id);
-            // Actualizar el lote de producción en los pedidos con el método update()
-            Pedido::whereIn('id', $pedidos_ids)->update(['lote_produccion_id' => $lote->id]);
-            $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote);
+            // Actualizar el lote de producción y el estado en los pedidos con el método update()
+            Pedido::whereIn('id', $pedidos_ids)->update([
+                'lote_produccion_id' => $lote->id,
+                'estado' => 'Asignado'
+            ]);
+            $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote,$request->producto_id);
 
                 $lotee->GruposTrabajos()->attach( $asignacion);
 
@@ -188,9 +191,10 @@ class LoteProduccionController extends Controller
                 else {
                     $fecha_inicio = Carbon::today();
                 }
-
+               // echo $suma;
                 // Asignar la suma a la variable cantidad de lote
                 $lote = LoteProduccion::find($id); // Buscar el lote por su id
+               // echo $lote->cantidad;
                 $lote->cantidad = $suma; // Asignar los nuevos valores
                 // color
                 $color = $this->generarColorAleatorio();
@@ -201,7 +205,7 @@ class LoteProduccionController extends Controller
                 $lote->porcentaje_total = 0 ;
 
                 // Obtener el tiempo en días desde el modelo matemático
-                 $tiempo_dias =round($this->modelomatematico->tiempoProduccionLote($lote['cantidad']));
+                 $tiempo_dias =round($this->modelomatematico->tiempoProduccionLote($lote['cantidad'],$request->producto_id));
                  // Crear una copia de la fecha de inicio
                  $fecha_final = $fecha_inicio->copy();
                  // Sumar el tiempo en días hábiles a la fecha final
@@ -213,8 +217,11 @@ class LoteProduccionController extends Controller
                 Pedido::where('lote_produccion_id', $lote->id)->update(['lote_produccion_id' => null]);
 
                  // Actualizar el lote de producción en los pedidos con el método update()
-                Pedido::whereIn('id', $pedidos_ids)->update(['lote_produccion_id' => $lote->id]);
-               $this->modelomatematico->cantidadProductosAsignados($lote);
+                Pedido::whereIn('id', $pedidos_ids)->update([
+                    'lote_produccion_id' => $lote->id,
+                    'estado' => 'Asignado'
+                ]);
+               $this->modelomatematico->cantidadProductosAsignados($lote ,$request->producto_id);
                 //echo $asignacion;
                 DB::commit(); // Confirmar transacción
                 return $this->successResponse(
@@ -241,8 +248,12 @@ class LoteProduccionController extends Controller
           // Obtener el lote de producción por el id
           $lote = LoteProduccion::findOrFail($id);
 
+
             // Poner null en el campo lote_produccion_id de todos los pedidos del lote
-            Pedido::where('lote_produccion_id', $lote->id)->update(['lote_produccion_id' => null]);
+            Pedido::where('lote_produccion_id', $lote->id)->update([
+                'lote_produccion_id' => null,
+                'estado' => 'Activo'
+            ]);
 
 
           // Eliminar el lote de producción
@@ -348,7 +359,7 @@ class LoteProduccionController extends Controller
             'fecha_final' => $lote_produccion->fecha_final,
             'activo' => $lote_produccion->estado,
             'fecha_registro' => $lote_produccion->fecha_registro,
-            'tiempo_dias' => round($this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad'])),
+           // 'tiempo_dias' => round($this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad'],$request->id_producto)),
             // Transformar los grupos de trabajo
             'grupos_trabajo' => $lote_produccion->GruposTrabajos,
             // Transformar los pedidos

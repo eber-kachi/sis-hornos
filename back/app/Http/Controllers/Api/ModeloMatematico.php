@@ -13,13 +13,13 @@ use App\Models\TipoGrupo;
 class ModeloMatematico {
     // Tiempo de producción de un producto k por cada grupo de trabajo G4
     public $TPGn;
-    private $grupoTrabajo;
+    //private $grupoTrabajo;
     private $tipoGrupo;
     private $asignacionLote;
 
     public function __construct() {
         // Obtener los datos de la base de datos usando Eloquent
-        $this->grupoTrabajo = GruposTrabajo::orderBy('id')->get();
+        //$this->grupoTrabajo = GruposTrabajo::orderBy('id')->get();
         $this->tipoGrupo = TipoGrupo::orderBy('id')->get();
         $this->asignacionLote = collect();
 
@@ -27,14 +27,15 @@ class ModeloMatematico {
     }
 
 
-    public function cantidadProductosAsignados(LoteProduccion $loteProduccion) {
+    public function cantidadProductosAsignados( $loteProduccion, $id_producto) {
         // Calcular el porcentaje y la cantidad asignada a cada grupo
-        $cantidadTotal = $this->cantidadTotalProductoDia();
+        $gruposTrabajo = $this->obtenerGruposTrabajoPorProducto($id_producto);
+        $cantidadTotal = $this->cantidadTotalProductoDia($gruposTrabajo);
+       // $this->grupoTrabajo =$this->handle($tipo->id);
         $asignaciones = AsignacionLote::where('lote_produccion_id', $loteProduccion->id)->get();
-        foreach ($this->grupoTrabajo as $grupo) {
+        foreach ($gruposTrabajo as $grupo) {
             foreach ($this->tipoGrupo as $tipo) {
                 if ($tipo->id == $grupo->tipo_grupo_id) {
-
                     if ($asignaciones->isEmpty()) {
 
                         // crear la Lista de procesos
@@ -98,9 +99,12 @@ class ModeloMatematico {
     }
 
 // Convertir el tiempo de producción de un lote en días
-    public function tiempoProduccionLote($cantidad) {
+    public function tiempoProduccionLote($cantidad , $id_producto) {
+        // Calcular el porcentaje y la cantidad asignada a cada grupo
+        $gruposTrabajo = $this->obtenerGruposTrabajoPorProducto($id_producto);
+       // echo $gruposTrabajo;
         // Obtener la cantidad total de producto por día
-        $cantidadTotal = $this->cantidadTotalProductoDia();
+        $cantidadTotal = $this->cantidadTotalProductoDia($gruposTrabajo);
         // Calcular el tiempo de producción sin tiempo muerto si es 0
         $tiempoProduccion = $cantidad / $cantidadTotal;
         // Añadir el 10% de tiempo muerto
@@ -110,11 +114,11 @@ class ModeloMatematico {
         return $tiempoProduccion;
     }
 // Convertir la cantidad total de producto por día
-    public function cantidadTotalProductoDia() {
+    public function cantidadTotalProductoDia($grupoTrabajo ) {
         // Inicializar la cantidad total a cero
         $cantidadTotal = 0;
         // Recorrer cada grupo de trabajo
-        foreach ($this->grupoTrabajo as $grupo) {
+        foreach ($grupoTrabajo as $grupo) {
             // Recorrer cada tipo de grupo
             foreach ($this->tipoGrupo as $tipo) {
                 // Si el tipo coincide con el grupo, sumar la cantidad de producción diaria
@@ -158,6 +162,17 @@ class ModeloMatematico {
             return (float)sqrt ($variance/$num_of_elements);
 
     }
-
+    // En tu función
+    private function obtenerGruposTrabajoPorProducto($id_producto)
+    {
+        //echo $id_producto;
+            // Obtener los grupos de trabajo que tengan el mismo id producto
+            $grupos_trabajo = GruposTrabajo::whereHas('TipoGrupos', function ($query) use ($id_producto) {
+                $query->where('productos_id', $id_producto);
+            })->get();
+           // echo $grupos_trabajo;
+        // Devolver el array de grupos de trabajo
+        return $grupos_trabajo;
+    }
 
 }
