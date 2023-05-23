@@ -9,7 +9,7 @@ class AsignacionLote extends Model
 {
     protected $fillable = ['lote_produccion_id',
         'grupos_trabajo_id','cantidad_asignada',
-        'porcentaje_avance','id_procesos'];
+        'porcentaje_avance','$lote'];
     use HasFactory;
 
     public function Procesos(){

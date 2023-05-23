@@ -90,7 +90,7 @@ class LoteProduccionController extends Controller
             $lote->fecha_inicio = $fecha_inicio;
             $lote->porcentaje_total = 0 ;
             // Obtener el tiempo en días desde el modelo matemático
-            $tiempo_dias =round($this->modelomatematico->tiempoProduccionLote($lote['cantidad']));
+            $tiempo_dias =round($this->modelomatematico->tiempoProduccionLote($lote['cantidad'],$request->producto_id));
            // Crear una copia de la fecha de inicio
             $fecha_final = $fecha_inicio->copy();
             // Sumar el tiempo en días hábiles a la fecha final
@@ -104,7 +104,7 @@ class LoteProduccionController extends Controller
                 'lote_produccion_id' => $lote->id,
                 'estado' => 'procesado'
             ]);
-            $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote);
+            $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote,$request->producto_id);
 
                 $lotee->GruposTrabajos()->attach( $asignacion);
 
@@ -204,7 +204,7 @@ class LoteProduccionController extends Controller
                 $lote->porcentaje_total = 0 ;
 
                 // Obtener el tiempo en días desde el modelo matemático
-                 $tiempo_dias =round($this->modelomatematico->tiempoProduccionLote($lote['cantidad']));
+                 $tiempo_dias =round($this->modelomatematico->tiempoProduccionLote($lote['cantidad'],$request->producto_id));
                  // Crear una copia de la fecha de inicio
                  $fecha_final = $fecha_inicio->copy();
                  // Sumar el tiempo en días hábiles a la fecha final
@@ -217,7 +217,7 @@ class LoteProduccionController extends Controller
 
                  // Actualizar el lote de producción en los pedidos con el método update()
                 Pedido::whereIn('id', $pedidos_ids)->update(['lote_produccion_id' => $lote->id]);
-               $this->modelomatematico->cantidadProductosAsignados($lote);
+               $this->modelomatematico->cantidadProductosAsignados($lote,$request->producto_id);
                 //echo $asignacion;
                 DB::commit(); // Confirmar transacción
                 return $this->successResponse(
@@ -351,7 +351,7 @@ class LoteProduccionController extends Controller
             'fecha_final' => $lote_produccion->fecha_final,
             'activo' => $lote_produccion->estado,
             'fecha_registro' => $lote_produccion->fecha_registro,
-            'tiempo_dias' => round($this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad'])),
+           // 'tiempo_dias' => round($this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad'],$request->id_producto)),
             // Transformar los grupos de trabajo
             'grupos_trabajo' => $lote_produccion->GruposTrabajos,
             // Transformar los pedidos
