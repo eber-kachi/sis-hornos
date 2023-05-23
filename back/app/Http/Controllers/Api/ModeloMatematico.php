@@ -102,7 +102,7 @@ class ModeloMatematico {
     public function tiempoProduccionLote($cantidad , $id_producto) {
         // Calcular el porcentaje y la cantidad asignada a cada grupo
         $gruposTrabajo = $this->obtenerGruposTrabajoPorProducto($id_producto);
-        echo $gruposTrabajo;
+       // echo $gruposTrabajo;
         // Obtener la cantidad total de producto por día
         $cantidadTotal = $this->cantidadTotalProductoDia($gruposTrabajo);
         // Calcular el tiempo de producción sin tiempo muerto si es 0
@@ -165,12 +165,12 @@ class ModeloMatematico {
     // En tu función
     private function obtenerGruposTrabajoPorProducto($id_producto)
     {
-        echo $id_producto;
+        //echo $id_producto;
             // Obtener los grupos de trabajo que tengan el mismo id producto
             $grupos_trabajo = GruposTrabajo::whereHas('TipoGrupos', function ($query) use ($id_producto) {
                 $query->where('productos_id', $id_producto);
             })->get();
-            echo $grupos_trabajo;
+           // echo $grupos_trabajo;
         // Devolver el array de grupos de trabajo
         return $grupos_trabajo;
     }

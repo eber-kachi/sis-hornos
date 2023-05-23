@@ -102,7 +102,7 @@ class LoteProduccionController extends Controller
             // Actualizar el lote de producción y el estado en los pedidos con el método update()
             Pedido::whereIn('id', $pedidos_ids)->update([
                 'lote_produccion_id' => $lote->id,
-                'estado' => 'procesado'
+                'estado' => 'Asignado'
             ]);
             $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote,$request->producto_id);
 
@@ -191,9 +191,10 @@ class LoteProduccionController extends Controller
                 else {
                     $fecha_inicio = Carbon::today();
                 }
-
+               // echo $suma;
                 // Asignar la suma a la variable cantidad de lote
                 $lote = LoteProduccion::find($id); // Buscar el lote por su id
+               // echo $lote->cantidad;
                 $lote->cantidad = $suma; // Asignar los nuevos valores
                 // color
                 $color = $this->generarColorAleatorio();
@@ -216,8 +217,11 @@ class LoteProduccionController extends Controller
                 Pedido::where('lote_produccion_id', $lote->id)->update(['lote_produccion_id' => null]);
 
                  // Actualizar el lote de producción en los pedidos con el método update()
-                Pedido::whereIn('id', $pedidos_ids)->update(['lote_produccion_id' => $lote->id]);
-               $this->modelomatematico->cantidadProductosAsignados($lote,$request->producto_id);
+                Pedido::whereIn('id', $pedidos_ids)->update([
+                    'lote_produccion_id' => $lote->id,
+                    'estado' => 'Asignado'
+                ]);
+               $this->modelomatematico->cantidadProductosAsignados($lote ,$request->producto_id);
                 //echo $asignacion;
                 DB::commit(); // Confirmar transacción
                 return $this->successResponse(
@@ -244,8 +248,12 @@ class LoteProduccionController extends Controller
           // Obtener el lote de producción por el id
           $lote = LoteProduccion::findOrFail($id);
 
+
             // Poner null en el campo lote_produccion_id de todos los pedidos del lote
-            Pedido::where('lote_produccion_id', $lote->id)->update(['lote_produccion_id' => null]);
+            Pedido::where('lote_produccion_id', $lote->id)->update([
+                'lote_produccion_id' => null,
+                'estado' => 'Activo'
+            ]);
 
 
           // Eliminar el lote de producción
