@@ -99,8 +99,11 @@ class LoteProduccionController extends Controller
             $lote->fecha_final = $fecha_final;
             $lote->save();
             $lotee =LoteProduccion::with('gruposTrabajos')->find($lote->id);
-            // Actualizar el lote de producción en los pedidos con el método update()
-            Pedido::whereIn('id', $pedidos_ids)->update(['lote_produccion_id' => $lote->id]);
+            // Actualizar el lote de producción y el estado en los pedidos con el método update()
+            Pedido::whereIn('id', $pedidos_ids)->update([
+                'lote_produccion_id' => $lote->id,
+                'estado' => 'procesado'
+            ]);
             $asignacion = $this->modelomatematico->cantidadProductosAsignados($lote);
 
                 $lotee->GruposTrabajos()->attach( $asignacion);

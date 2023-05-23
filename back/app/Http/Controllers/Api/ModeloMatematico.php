@@ -19,7 +19,8 @@ class ModeloMatematico {
 
     public function __construct() {
         // Obtener los datos de la base de datos usando Eloquent
-        $this->grupoTrabajo = GruposTrabajo::orderBy('id')->get();
+        //$this->grupoTrabajo = GruposTrabajo::orderBy('id')->get();
+        $this->grupoTrabajo =array();
         $this->tipoGrupo = TipoGrupo::orderBy('id')->get();
         $this->asignacionLote = collect();
 
@@ -27,14 +28,15 @@ class ModeloMatematico {
     }
 
 
-    public function cantidadProductosAsignados(LoteProduccion $loteProduccion) {
+    public function cantidadProductosAsignados( LoteProduccion $loteProduccion) {
         // Calcular el porcentaje y la cantidad asignada a cada grupo
-        $cantidadTotal = $this->cantidadTotalProductoDia();
+        $this->grupoTrabajo = $this->obtenerGruposTrabajoPorLote($loteProduccion);
+        $cantidadTotal = $this->cantidadTotalProductoDia( $this->grupoTrabajo);
+       // $this->grupoTrabajo =$this->handle($tipo->id);
         $asignaciones = AsignacionLote::where('lote_produccion_id', $loteProduccion->id)->get();
         foreach ($this->grupoTrabajo as $grupo) {
             foreach ($this->tipoGrupo as $tipo) {
                 if ($tipo->id == $grupo->tipo_grupo_id) {
-
                     if ($asignaciones->isEmpty()) {
 
                         // crear la Lista de procesos
@@ -110,11 +112,11 @@ class ModeloMatematico {
         return $tiempoProduccion;
     }
 // Convertir la cantidad total de producto por día
-    public function cantidadTotalProductoDia() {
+    public function cantidadTotalProductoDia(GruposTrabajo $grupoTrabajo ) {
         // Inicializar la cantidad total a cero
         $cantidadTotal = 0;
         // Recorrer cada grupo de trabajo
-        foreach ($this->grupoTrabajo as $grupo) {
+        foreach ($grupoTrabajo as $grupo) {
             // Recorrer cada tipo de grupo
             foreach ($this->tipoGrupo as $tipo) {
                 // Si el tipo coincide con el grupo, sumar la cantidad de producción diaria
@@ -158,6 +160,28 @@ class ModeloMatematico {
             return (float)sqrt ($variance/$num_of_elements);
 
     }
+    // En tu función
+    private function obtenerGruposTrabajoPorLote(LoteProduccion $lote)
+    {
+        // Cargar los pedidos del lote
+        $lote->load('pedidos');
 
+        // Crear un array vacío para guardar los grupos de trabajo
+        $grupos_trabajo = [];
+
+        // Iterar sobre los pedidos del lote
+        foreach ($lote->pedidos as $pedido) {
+            // Obtener el id del producto del pedido
+            $producto_id = $pedido->producto_id;
+
+            // Obtener los grupos de trabajo que tengan el mismo id producto
+            $grupos_trabajo[$producto_id] = GruposTrabajo::whereHas('tipo', function ($query) use ($producto_id) {
+                $query->where('producto_id', $producto_id);
+            })->get();
+        }
+
+        // Devolver el array de grupos de trabajo
+        return $grupos_trabajo;
+    }
 
 }
