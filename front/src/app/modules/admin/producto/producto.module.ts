@@ -24,6 +24,10 @@ import { CreateClienteComponent } from './list-cliente/create-cliente/create-cli
 import { ListPedidoComponent } from './list-pedido/list-pedido.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { CreatePedidoComponent } from './list-pedido/create-pedido/create-pedido.component';
+import { ListLoteComponent } from './list-lote/list-lote.component';
+import { CreateLoteComponent } from './list-lote/create-lote/create-lote.component';
+import { ShowMaterialComponent } from './list-lote/show-material/show-material.component';
+import {ShowMaterialComponent as ShowMaterialProductoComponent} from "@app/modules/admin/producto/list-producto/show-material/show-material.component";
 
 
 @NgModule({
@@ -37,7 +41,11 @@ import { CreatePedidoComponent } from './list-pedido/create-pedido/create-pedido
         ListClienteComponent,
         CreateClienteComponent,
         ListPedidoComponent,
-        CreatePedidoComponent
+        CreatePedidoComponent,
+        ListLoteComponent,
+        CreateLoteComponent,
+        ShowMaterialComponent,
+        ShowMaterialProductoComponent
     ],
     imports: [
         CommonModule,

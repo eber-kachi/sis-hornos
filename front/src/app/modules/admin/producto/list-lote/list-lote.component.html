@@ -1,0 +1,136 @@
+<div class="flex flex-col flex-auto min-w-0">
+  <!-- Main -->
+  <div class="flex-auto p-6 sm:p-10">
+    <!-- CONTENT GOES HERE -->
+    <div class="border-dashed border-gray-300 rounded-2xl">
+      <div
+        class="m-4 flex flex-row flex-wrap justify-between items-center content-center"
+      >
+        <h3 class="float-left h-4 font-bold">Lista de Lote de produccion</h3>
+        <button mat-raised-button color="primary" (click)="createNew()">
+          Nuevo
+        </button>
+      </div>
+      <mat-table [dataSource]="dataSource$">
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{ row.id }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <ul class="font-light text-xs">
+              <li>
+                Fecha Inicio:
+                <strong class="px-1 rounded-md bg-lime-700 text-white">{{
+                  row.fecha_inicio
+                }}</strong>
+              </li>
+              <li>
+                Fecha Entrega:
+                <strong class="px-1 rounded-md bg-yellow-500 text-white">{{
+                  row.fecha_final
+                }}</strong>
+              </li>
+              <li>
+                Fecha Registro:
+                <strong class="px-1 rounded-md bg-slate-400 text-white">{{
+                  row.fecha_inicio
+                }}</strong>
+              </li>
+            </ul>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <div
+              class="px-1 rounded-md  {{
+                row.estado == 'Activo' && 'bg-lime-400'
+              }}"
+            >
+              {{ row.estado }}
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="grupo">
+          <mat-header-cell *matHeaderCellDef>Grupo Detalle</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <!--            {{ row.grupos_trabajo }}-->
+            <!--            <ul class="font-light text-xs" *ngFor="let g of row.grupos_trabajo">-->
+            <ul class="font-light text-sm" *ngFor="let g of row.grupos_trabajo">
+              <li>{{ g?.nombre }} - {{ g?.pivot?.cantidad_asignada }}</li>
+            </ul>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="pedido">
+          <mat-header-cell *matHeaderCellDef>Pedido Detalle</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <ul class="font-light text-sm" *ngFor="let g of row.pedidos">
+              <li class="flex flex-wrap bg-slate-200 p-2">
+                <div class="pl-1"><strong>C: </strong> {{ g?.cantidad }}</div>
+                <div class="pl-1">
+                  <strong>T.P: </strong> {{ g?.total_precio }}
+                </div>
+                <div class="pl-1">
+                  <strong>N: </strong> {{ g?.clientes?.nombres }}
+                  {{ g?.clientes?.apellidos }}
+                </div>
+              </li>
+            </ul>
+          </mat-cell>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="detalle">
+          <mat-header-cell *matHeaderCellDef>Detalle</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <div class="flex flex-nowrap items-start flex-col">
+              <p class="text-xs">
+                Nombre Producto: {{ row?.producto?.nombre }}
+              </p>
+              <p class="text-xs">
+                Precio Unitario:
+                {{ row?.producto?.precio_unitario }}
+              </p>
+              <p class="text-xs">Costo: {{ row?.producto?.costo }}</p>
+              <p class="text-xs">
+                Caracteristicas:
+                {{ row?.producto?.caracteristicas }}
+              </p>
+            </div>
+          </mat-cell>
+        </ng-container> -->
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <a
+              mat-flat-button
+              class="text-lime-600"
+              [routerLink]="['/lista-lote/' + element.id + '/materiales']"
+              >Materiales</a
+            >
+            <!--            <button mat-icon-button (click)="edit(element.id)">-->
+            <!--              <mat-icon>launch</mat-icon>-->
+            <!--            </button>-->
+            <button mat-icon-button (click)="edit(element.id)">
+              <mat-icon>launch</mat-icon>
+            </button>
+            <button mat-icon-button (click)="delete(element.id)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+
+      <mat-paginator [length]="pageTotal" [pageSize]="pageSize"></mat-paginator>
+      <!-- (page)="handlerChangePage($event)" -->
+    </div>
+  </div>
+</div>

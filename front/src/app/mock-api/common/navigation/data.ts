@@ -38,6 +38,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/lista-pedidos'
     },
     {
+      id   : 'lista-lote',
+      title: 'Lotes Produccion',
+      type : 'basic',
+      icon : 'heroicons_outline:chart-pie',
+      link : '/lista-lote'
+    },
+    {
         id   : 'lista-material',
         title: 'Material',
         type : 'basic',
