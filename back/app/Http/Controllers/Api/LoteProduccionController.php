@@ -414,21 +414,21 @@ class LoteProduccionController extends Controller
     }
 
 
-    protected function transform(LoteProduccion $lote_produccion)
-    {
-            return [
+    protected function transform(LoteProduccion $lote_produccion) {
+        // Obtener solo los pedidos que tienen el mismo lote_produccion_id que el lote
+        $pedidos = Pedido::with('clientes')->whereHas('lotesProducion', function ($query) use ($lote_produccion)
+        { $query->where('id', $lote_produccion->id); })->get();
+        return [
             'id' => $lote_produccion->id,
             'cantidad' => $lote_produccion->cantidad,
             'fecha_inicio' => $lote_produccion->fecha_inicio,
             'fecha_final' => $lote_produccion->fecha_final,
             'estado' => $lote_produccion->estado,
-                'color'=> $lote_produccion->color,
+            'color'=> $lote_produccion->color,
             'fecha_registro' => $lote_produccion->fecha_registro,
-           // 'tiempo_dias' => round($this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad'],$request->id_producto)),
-            // Transformar los grupos de trabajo
-            'grupos_trabajo' => $lote_produccion->GruposTrabajos,
-            // Transformar los pedidos
-            'pedidos' => $lote_produccion->Pedidos,
-        ];
-}
+        // ‘tiempo_dias’ => round($this->modelomatematico->tiempoProduccionLote($lote_produccion[‘cantidad’],$request->id_producto)),
+        // // Transformar los grupos de trabajo
+        'grupos_trabajo' => $lote_produccion->GruposTrabajos,
+        // Transformar los pedidos con eager loading
+        'pedidos' => $pedidos, ]; }
 }
