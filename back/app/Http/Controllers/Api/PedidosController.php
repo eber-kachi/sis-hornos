@@ -73,10 +73,13 @@ class PedidosController extends Controller
              $pedido->save();
 
 
+
             return $this->successResponse(
-                'Pedidos was successfully added.',
+                'Pedidos was successfully retrieved.',
                 $this->transform($pedido)
             );
+
+
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
@@ -85,36 +88,15 @@ class PedidosController extends Controller
     public function listarPedidosActivosPorProducto ($producto_id)
     {
         // Buscar los pedidos que tienen el producto_id y el estado activo en la tabla pivote
-        $pedidos = Pedido::where('estado', 'activo')->where('producto_id', $producto_id)->paginate(10);;
+        $pedidos = Pedido::where('estado', 'activo')->where('producto_id', $producto_id)->paginate(10);
 
          // Devolver con los pedidos
-         $data = $pedidos->transform(function ($pedidos) {
-             return $this->transform($pedidos);
-         });
+        return $this->successResponse(
+            'Pedidos was successfully retrieved.',
+            $this->transform($pedidos)
+        );
 
 
-         return $this->successResponse(
-             'Pedidos were successfully retrieved.',
-             $data,
-             [
-                 'links' => [
-                     'first' => $pedidos->url(1),
-                     'last' => $pedidos->url($pedidos->lastPage()),
-                     'prev' => $pedidos->previousPageUrl(),
-                     'next' => $pedidos->nextPageUrl(),
-                 ],
-                 'meta' =>
-                     [
-                         'current_page' => $pedidos->currentPage(),
-                         'from' => $pedidos->firstItem(),
-                         'last_page' => $pedidos->lastPage(),
-                         'path' => $pedidos->resolveCurrentPath(),
-                         'per_page' => $pedidos->perPage(),
-                         'to' => $pedidos->lastItem(),
-                         'total' => $pedidos->total(),
-                     ],
-             ]
-         );
 }
 
 
@@ -267,7 +249,6 @@ class PedidosController extends Controller
                 'total_precio' => $pedidos->total_precio,
                 'fecha_pedido' => $pedidos->fecha_pedido,
                 'cliente_id' => $pedidos->cliente_id,
-
                 // Obtener el objeto cliente completo
                 'cliente' => $pedidos->clientes,
                 'producto' => $pedidos->productos,
