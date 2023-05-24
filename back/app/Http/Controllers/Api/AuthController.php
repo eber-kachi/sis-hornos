@@ -80,6 +80,7 @@ class AuthController extends Controller
     return response()->json([
       'ok' => true,
       'user' => Auth::user(),
+    'roles' => Auth::user()->rol()->get(),
     //   'accessToken' => Auth::user()->token()->
     ]);
   }
