@@ -13,15 +13,33 @@ class ClientesController extends Controller
     {
 
 
-        $clientes = Cliente::orderBy('id', 'desc')->get();
+        $clientes = Cliente::orderBy('id', 'desc')->paginate(10);
 
         $data = $clientes->transform(function ($clientes) {
             return $this->transform($clientes);
         });
 
         return $this->successResponse(
-            'Clientes were successfully retrieved.',
-            $data
+            'Pedidos were successfully retrieved.',
+            $data,
+            [
+                'links' => [
+                    'first' => $clientes->url(1),
+                    'last' => $clientes->url($clientes->lastPage()),
+                    'prev' => $clientes->previousPageUrl(),
+                    'next' => $clientes->nextPageUrl(),
+                ],
+                'meta' =>
+                    [
+                        'current_page' => $clientes->currentPage(),
+                        'from' => $clientes->firstItem(),
+                        'last_page' => $clientes->lastPage(),
+                        'path' => $clientes->resolveCurrentPath(),
+                        'per_page' => $clientes->perPage(),
+                        'to' => $clientes->lastItem(),
+                        'total' => $clientes->total(),
+                    ],
+            ]
         );
 
     }
