@@ -31,7 +31,7 @@ class MaterialProductosController extends Controller
     public function indexProductoMaterial()
 {
     $data= Producto::with('materials')->get();
-    
+
 
     return $this->successResponse(
         'MaterialProductos were successfully retrieved.',
@@ -39,6 +39,18 @@ class MaterialProductosController extends Controller
        // $material_producto
     );
 }
+
+    public function materialProductoLotes($lote_produccion_id)
+    {
+        $data= Producto::with('materials')->get();
+
+
+        return $this->successResponse(
+            'MaterialProductos were successfully retrieved.',
+            $data
+        // $material_producto
+        );
+    }
 
 
 
@@ -192,7 +204,7 @@ class MaterialProductosController extends Controller
             'descripcion' => $material_producto->descripcion,
             'producto_id' => $material_producto->producto_id,
             'material_id' => $material_producto->material_id,
-            
+
 
         ];
     }
