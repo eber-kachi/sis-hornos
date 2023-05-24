@@ -87,7 +87,7 @@ Route::resource('/productos', ProductosController::class, ['update','destroy','s
 
 Route::resource('/materiales_productos', MaterialProductosController::class, ['update','destroy','show','index'.'store']);
 Route::get('/materiales_productos/index_producto_material',[MaterialProductosController::class,'indexProductoMaterial']);
-Route::get('/materiales_productos/lotes/{lote_produccion_id}',[MaterialProductosController::class,'materialProductoLotes']);
+Route::get('/materiales_productos/lote/{lote_produccion_id}',[MaterialProductosController::class,'materialProductoLotes']);
 
 
 Route::resource('/cliente', ClientesController::class, ['update','destroy','show','index'.'store']);
