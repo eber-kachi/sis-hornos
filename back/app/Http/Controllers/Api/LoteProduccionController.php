@@ -85,7 +85,7 @@ class LoteProduccionController extends Controller
                 // color
                 $color = $this->generarColorAleatorio();
                 $lote->fecha_registro = today();
-                $lote->estado = "activo";
+                $lote->estado = "Activo";
                 $lote->color = $color;
                 $lote->fecha_inicio = $fecha_inicio;
                 $lote->porcentaje_total = 0 ;
@@ -357,7 +357,7 @@ class LoteProduccionController extends Controller
             'cantidad' => $lote_produccion->cantidad,
             'fecha_inicio' => $lote_produccion->fecha_inicio,
             'fecha_final' => $lote_produccion->fecha_final,
-            'activo' => $lote_produccion->estado,
+            'Estado' => $lote_produccion->estado,
                 'color'=> $lote_produccion->color,
             'fecha_registro' => $lote_produccion->fecha_registro,
            // 'tiempo_dias' => round($this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad'],$request->id_producto)),
