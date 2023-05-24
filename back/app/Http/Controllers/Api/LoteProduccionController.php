@@ -374,10 +374,7 @@ class LoteProduccionController extends Controller
 
 
         ];
-
-
         $data = $request->validate($rules);
-
         return $data;
     }
 
@@ -419,14 +416,12 @@ class LoteProduccionController extends Controller
 
     protected function transform(LoteProduccion $lote_produccion)
     {
-
-
             return [
             'id' => $lote_produccion->id,
             'cantidad' => $lote_produccion->cantidad,
             'fecha_inicio' => $lote_produccion->fecha_inicio,
             'fecha_final' => $lote_produccion->fecha_final,
-            'Estado' => $lote_produccion->estado,
+            'estado' => $lote_produccion->estado,
                 'color'=> $lote_produccion->color,
             'fecha_registro' => $lote_produccion->fecha_registro,
            // 'tiempo_dias' => round($this->modelomatematico->tiempoProduccionLote($lote_produccion['cantidad'],$request->id_producto)),
