@@ -23,7 +23,7 @@ class LoteProduccionController extends Controller
 
     public function index()
     {
-        $lote_produccion = LoteProduccion::orderBy('id', 'desc')->get();
+        $lote_produccion = LoteProduccion::orderBy('id', 'desc')->paginate(10);
 
         $data = $lote_produccion->transform(function ($lote_produccion) {
             return $this->transform($lote_produccion);
@@ -31,7 +31,26 @@ class LoteProduccionController extends Controller
 
         return $this->successResponse(
             'Lote Produccion were successfully retrieved.',
-            $data
+
+             $data,
+            [
+                'links' => [
+                    'first' => $lote_produccion->url(1),
+                    'last' => $lote_produccion->url($lote_produccion->lastPage()),
+                    'prev' => $lote_produccion->previousPageUrl(),
+                    'next' => $lote_produccion->nextPageUrl(),
+                ],
+                'meta' =>
+                    [
+                        'current_page' => $lote_produccion->currentPage(),
+                        'from' => $lote_produccion->firstItem(),
+                        'last_page' => $lote_produccion->lastPage(),
+                        'path' => $lote_produccion->resolveCurrentPath(),
+                        'per_page' => $lote_produccion->perPage(),
+                        'to' => $lote_produccion->lastItem(),
+                        'total' => $lote_produccion->total(),
+                    ],
+            ]
         );
 
     }
@@ -112,10 +131,34 @@ class LoteProduccionController extends Controller
 
 
             DB::commit(); // Confirmar transacción
+
+            $data = $lote->transform(function ($lote) {
+                return $this->transform($lote);
+            });
+
             return $this->successResponse(
-                'Lote  Produccion was successfully added.',
-                $this->transform($lote)
+                'Lote Produccion were successfully retrieved.',
+                $data,
+                [
+                    'links' => [
+                        'first' => $lote->url(1),
+                        'last' => $lote->url($lote->lastPage()),
+                        'prev' => $lote->previousPageUrl(),
+                        'next' => $lote->nextPageUrl(),
+                    ],
+                    'meta' =>
+                        [
+                            'current_page' => $lote->currentPage(),
+                            'from' => $lote->firstItem(),
+                            'last_page' => $lote->lastPage(),
+                            'path' => $lote->resolveCurrentPath(),
+                            'per_page' => $lote->perPage(),
+                            'to' => $lote->lastItem(),
+                            'total' => $lote->total(),
+                        ],
+                ]
             );
+
             } catch (Exception $exception) {
 
             DB::rollBack(); // Deshacer transacción
@@ -259,11 +302,37 @@ class LoteProduccionController extends Controller
           // Eliminar el lote de producción
           $lote->delete();
 
-          return $this->successResponse(
-            'Lote  Produccion was successfully updated.',
-            $this->transform($lote)
+
+            $data = $lote->transform(function ($lote) {
+                return $this->transform($lote);
+            });
+
+            return $this->successResponse(
+                'Lote Produccion were successfully retrieved.',
+                $data,
+                [
+                    'links' => [
+                        'first' => $lote->url(1),
+                        'last' => $lote->url($lote->lastPage()),
+                        'prev' => $lote->previousPageUrl(),
+                        'next' => $lote->nextPageUrl(),
+                    ],
+                    'meta' =>
+                        [
+                            'current_page' => $lote->currentPage(),
+                            'from' => $lote->firstItem(),
+                            'last_page' => $lote->lastPage(),
+                            'path' => $lote->resolveCurrentPath(),
+                            'per_page' => $lote->perPage(),
+                            'to' => $lote->lastItem(),
+                            'total' => $lote->total(),
+                        ],
+                ]
             );
+
         } catch (Exception $exception) {
+
+            DB::rollBack(); // Deshacer transacción
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }

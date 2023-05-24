@@ -84,7 +84,10 @@ Route::get('/personal/lista/nojefe', [PersonalController::class,'personalsingrup
 
 Route::resource('/materiales', MaterialesController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/productos', ProductosController::class, ['update','destroy','show','index'.'store']);
+
 Route::resource('/materiales_productos', MaterialProductosController::class, ['update','destroy','show','index'.'store']);
+
+
 Route::get('/index_producto_material',[MaterialProductosController::class,'indexProductoMaterial']);
 Route::resource('/cliente', ClientesController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/departamentos', DepartamentosController::class, ['update','destroy','show','index'.'store']);
