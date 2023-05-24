@@ -74,7 +74,9 @@ export class AuthService {
 
                 // Store the user on the user service
                 this._userService.user = response.user;
-
+                this._userService.role = (response.roles && response.roles.length>=1 )
+                  ?response.roles[0]
+                  : null;
                 // Return a new observable with the response
                 return of(response);
                 // return response;
@@ -99,7 +101,7 @@ export class AuthService {
                         of(false)
                     ),
                     switchMap((response: any) => {
-                        console.log(response);
+                        // console.log('auth service=>', response);
 
                         // Replace the access token with the new one if it's available on
                         // the response object.
@@ -117,6 +119,9 @@ export class AuthService {
 
                         // Store the user on the user service
                         this._userService.user = response.user;
+                        this._userService.role = (response.roles && response.roles.length>=1 )
+                          ?response.roles[0]
+                          : null;
 
                         // Return true
                         return of(true);
