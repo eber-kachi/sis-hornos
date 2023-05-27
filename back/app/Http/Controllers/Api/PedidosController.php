@@ -114,11 +114,11 @@ class PedidosController extends Controller
      */
     public function show($id)
     {
-        $pedidos = Pedido::findOrFail($id);
+        $pedido = Pedido::findOrFail($id);
 
         return $this->successResponse(
             'Pedidos was successfully retrieved.',
-            $this->transform($pedidos)
+            $this->transform($pedido)
         );
     }
     /**
