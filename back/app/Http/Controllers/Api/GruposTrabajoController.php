@@ -253,7 +253,9 @@ class GruposTrabajoController extends Controller
             'nombre' => $gruposTrabajos->nombre,
             'cantidad_integrantes' => $gruposTrabajos->cantidad_integrantes,
             'tipo_grupo_id' => $gruposTrabajos->tipo_grupo_id,
-            'tipo_grupo_nombre'=> optional($gruposTrabajos->tipoGrupos)->nombre
+            'tipo_grupo_nombre'=> optional($gruposTrabajos->tipoGrupos)->nombre,
+            'producto'=> optional($gruposTrabajos->tipoGrupos)->Productos,
+
 
 
 
