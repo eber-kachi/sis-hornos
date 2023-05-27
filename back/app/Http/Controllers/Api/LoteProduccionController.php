@@ -384,7 +384,7 @@ class LoteProduccionController extends Controller
           'porcentaje_total' =>$lote_produccion->porcentaje_total,
             'fecha_registro' => $lote_produccion->fecha_registro,
             // // Transformar los grupos de trabajo
-            'producto'=> $id_producto,
+            'producto_id'=> $id_producto,
             'grupos_trabajo' => $lote_produccion->GruposTrabajos,
             // Transformar los pedidos con eager loading
             'pedidos' => $pedidos, ]; }
