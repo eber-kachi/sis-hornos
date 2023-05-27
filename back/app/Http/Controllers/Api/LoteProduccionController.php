@@ -368,8 +368,12 @@ class LoteProduccionController extends Controller
     protected function transform(LoteProduccion $lote_produccion)
     {
         // Obtener solo los pedidos que tienen el mismo lote_produccion_id que el lote
+
         $pedidos = Pedido::with('clientes')->whereHas('lotesProducion', function ($query) use ($lote_produccion)
         { $query->where('id', $lote_produccion->id); })->get();
+        foreach ($pedidos as $pedido) {$id_producto= $pedido->producto_id;
+        }
+
         return [
             'id' => $lote_produccion->id,
             'cantidad' => $lote_produccion->cantidad,
@@ -379,8 +383,8 @@ class LoteProduccionController extends Controller
             'color'=> $lote_produccion->color,
           'porcentaje_total' =>$lote_produccion->porcentaje_total,
             'fecha_registro' => $lote_produccion->fecha_registro,
-            // ‘tiempo_dias’ => round($this->modelomatematico->tiempoProduccionLote($lote_produccion[‘cantidad’],$request->id_producto)),
             // // Transformar los grupos de trabajo
+            'producto'=> $id_producto,
             'grupos_trabajo' => $lote_produccion->GruposTrabajos,
             // Transformar los pedidos con eager loading
             'pedidos' => $pedidos, ]; }
