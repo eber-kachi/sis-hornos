@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Grear Grupo</h1>
+<h1 mat-dialog-title>Crear Grupo</h1>
 <div mat-dialog-content>
     <form [formGroup]="formGroup" (change)="formChanged()">
         <div class="m-2">
@@ -55,10 +55,10 @@
             <mat-label>Ayudantes</mat-label>
             <mat-select formControlName="ayudantes" multiple>
                 <mat-option
-                    *ngFor="let personal of personales"
+                    *ngFor="let personal of ayudantes"
                     [value]="personal.id"
                 >
-                    {{ personal.nombre_completo }}  
+                    {{ personal.nombre_completo }}
                 </mat-option>
             </mat-select>
             <mat-error

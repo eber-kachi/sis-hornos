@@ -45,7 +45,7 @@
         <mat-label>Pedidos</mat-label>
         <mat-select formControlName="pedidos" multiple >
           <mat-option *ngFor="let p of pedidos" [value]="p.id">
-            {{ p.producto.caracteristicas }}
+            {{ p?.cliente?.nombres }} {{ p?.cliente?.apellidos }} - Cantidad => {{ p?.cantidad}} ud
           </mat-option>
         </mat-select>
         <mat-error *ngIf="formGroup.get('pedidos')?.hasError('required')">

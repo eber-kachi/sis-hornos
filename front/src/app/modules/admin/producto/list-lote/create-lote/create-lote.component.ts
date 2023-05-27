@@ -35,9 +35,25 @@ export class CreateLoteComponent {
     this.editing = dataEdit;
     console.log('data editing', this.editing);
     if (dataEdit != null) {
-      this.pedidoService.getById(dataEdit.id).subscribe((res) => {
+      this.loteProduccionService.getById(dataEdit.id)
+        .subscribe((res) => {
         console.log(res.data);
-        this.formGroup.patchValue(res.data);
+
+          let personales:any[] = res.data.pedidos.map(p => {
+            return p;
+          });
+
+
+          personales.forEach(p => {
+            this.pedidos.push(p);
+          });
+
+          const pedidos = res.data.pedidos.map(a => a.id);
+
+        this.formGroup.patchValue({
+          pedidos,
+          producto_id: res.data.producto_id
+        });
       });
     }
   }
@@ -68,7 +84,10 @@ export class CreateLoteComponent {
     }))
       .subscribe((pedido)=>{
         console.log('asas', pedido.data)
-        this.pedidos= pedido.data;
+        pedido.data.forEach(d=>{
+          this.pedidos.push(d);
+        })
+        // this.pedidos= pedido.data;
     })
   }
 
@@ -139,8 +158,10 @@ export class CreateLoteComponent {
 
   listProductos() {
     this.productoService.getAll().subscribe((res) => {
-      console.log(res);
-      this.productos = res.data;
+       res.data.forEach(p=>{
+         this.productos.push(p)
+      });
     });
+
   }
 }
