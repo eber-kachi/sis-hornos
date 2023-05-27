@@ -110,15 +110,10 @@ class GruposTrabajoController extends Controller
     {
         $gruposTrabajos = GruposTrabajo::findOrFail($id);
 
-        $personales= Personal::where('id_grupo_trabajo','=',$gruposTrabajos->id)->get();
-
         return $this->successResponse(
-		    'Grupos Trabajos was successfully retrieved.',
-		    [
-                "grupo_trabajo"=> $gruposTrabajos,
-                "personales"=> $personales,
-            ]
-		);
+            'Grupos de Trabajos was successfully deleted.',
+            $this->transform($gruposTrabajos)
+        );
     }
 
     /**
