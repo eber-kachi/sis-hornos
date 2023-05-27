@@ -256,6 +256,7 @@ class GruposTrabajoController extends Controller
             'tipo_grupo_nombre'=> optional($gruposTrabajos->tipoGrupos)->nombre
 
 
+
         ];
     }
 
@@ -264,7 +265,7 @@ class GruposTrabajoController extends Controller
         $jefe = Personal::join('users', 'personals.user_id', '=', 'users.id')
         ->where('users.rol_id', '=', 6)
         ->where('personals.id_grupo_trabajo', '=', $id_gruposTrabajos)
-        ->get();
+        ->firstOrFail();
 
         return $jefe ;
         }
