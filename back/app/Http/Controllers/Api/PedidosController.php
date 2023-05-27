@@ -91,9 +91,13 @@ class PedidosController extends Controller
         $pedidos = Pedido::where('estado', 'activo')->where('producto_id', $producto_id)->paginate(10);
 
          // Devolver con los pedidos
+
+        $data = $pedidos->transform(function ($pedido) {
+            return $this->transform($pedido);
+        });
         return $this->successResponse(
             'Pedidos was successfully retrieved.',
-            $this->transform($pedidos)
+            $data
         );
 
 
