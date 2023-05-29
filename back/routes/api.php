@@ -86,9 +86,9 @@ Route::resource('/materiales', MaterialesController::class, ['update','destroy',
 Route::resource('/productos', ProductosController::class, ['update','destroy','show','index'.'store']);
 
 Route::resource('/materiales_productos', MaterialProductosController::class, ['update','destroy','show','index'.'store']);
-Route::get('/materiales_productos/index_producto_material',[MaterialProductosController::class,'indexProductoMaterial']);
-Route::get('/materiales_productos/lote/{lote_produccion_id}',[MaterialProductosController::class,'materialProductoLotes']);
+Route::get('/materiales_productos/lista/{id_producto}',[MaterialProductosController::class,'indexProductoMaterial']);
 
+Route::get('/materiales_productos/lote/{lote_produccion_id}',[MaterialProductosController::class,'materialProductoLotes']);
 
 Route::resource('/cliente', ClientesController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/departamentos', DepartamentosController::class, ['update','destroy','show','index'.'store']);
@@ -100,8 +100,6 @@ Route::get('/pedidos/lista/activos/{producto_id}', [PedidosController::class,'li
 
 Route::resource('/medidas', MedidasController::class, ['update','destroy','show','index'.'store']);
 Route::get('/lote', [LoteProduccionController::class,'agregar']);
-
-
 //});
 
 

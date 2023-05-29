@@ -368,7 +368,7 @@ class LoteProduccionController extends Controller
     protected function transform(LoteProduccion $lote_produccion)
     {
         // Obtener solo los pedidos que tienen el mismo lote_produccion_id que el lote
-
+        $id_producto= null;
         $pedidos = Pedido::with('clientes')->whereHas('lotesProducion', function ($query) use ($lote_produccion)
         { $query->where('id', $lote_produccion->id); })->get();
         foreach ($pedidos as $pedido) {$id_producto= $pedido->producto_id;

@@ -50,11 +50,11 @@ class ProductosController extends Controller
                         'descripcion' => $material['descripcion'] ?? null
                     ];
                 }
-            
-               
+
+
                 // Sincronizar los materiales con los datos adicionales
                 $producto->materials()->sync($materiales);
-            
+
 
             return $this->successResponse(
                 'Produtos was successfully added.',
@@ -93,26 +93,26 @@ class ProductosController extends Controller
         try {
             // Buscar el producto por su id
             $producto = Producto::find($id);
-    
+
             // Comprobar si existe
             if (!$producto) {
                 return $this->errorResponse('Producto not found.');
             }
-    
+
             // Validar los datos del request
             $validator = $this->getValidator($request);
-    
+
             if ($validator->fails()) {
                 return $this->errorResponse($validator->errors()->all());
             }
-    
+
             // Actualizar los atributos del producto
             $producto->nombre = $request->nombre;
             $producto->precio_unitario = $request->precio_unitario;
             $producto->caracteristicas = $request->caracteristicas;
             $producto->costo = $request->costo;
             $producto->save();
-    
+
             // Preparar el array de materiales
             foreach ($request->materiales as $index => $material) {
                 $materiales[$material['material_id']] = [
@@ -120,10 +120,10 @@ class ProductosController extends Controller
                     'descripcion' => $material['descripcion'] ?? null
                 ];
             }
-    
+
             // Sincronizar los materiales con el producto
             $producto->materials()->sync($materiales);
-    
+
             // Devolver una respuesta de éxito con el producto y sus materiales
             return $this->successResponse(
                 'Producto was successfully updated.',
@@ -133,7 +133,7 @@ class ProductosController extends Controller
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
     }
-    
+
 
     /**
      * Remove the specified Productos from the storage.
@@ -146,8 +146,8 @@ class ProductosController extends Controller
     {
         try {
             $productos = Producto::findOrFail($id);
-            $productos->materials()->detach(); 
-            // eliminar los conceptos relacionados 
+            $productos->materials()->detach();
+            // eliminar los conceptos relacionados
             $productos->delete(); // eliminar el pedido
 
             return $this->successResponse(
@@ -176,7 +176,7 @@ class ProductosController extends Controller
             "materiales.*.cantidad" => "required|integer|min:1",
             "materiales.*.descripcion" => "nullable|string|max:255",
             "materiales.*.material_id" => "required"
-            
+
         ];
 
         return Validator::make($request->all(), $rules);
@@ -227,7 +227,7 @@ class ProductosController extends Controller
                 return [
                     'id' => $material->id,
                     'nombre' => $material->nombre,
-                    'cantidad' => $material->pivot->cantidad,
+                    'cantidad' => $material->pivot->cantidad ,
                     'descripcion' => $material->pivot->descripcion
                 ];
             }) ];

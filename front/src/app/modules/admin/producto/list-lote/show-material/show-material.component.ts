@@ -23,7 +23,7 @@ import {environment} from "@env/environment";
 export class ShowMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   // displayedColumns = ['id', 'name', 'status', 'gender', 'species'];
-  displayedColumns = ['id', 'nombre', 'cantidad', 'cantidad_total'];
+  displayedColumns = ['id', 'nombre', 'cantidad', 'cantidad_total','medida'];
   dataSource$ = new Observable<any[]>();
   pageTotal: number;
   pageSize: number = 3;

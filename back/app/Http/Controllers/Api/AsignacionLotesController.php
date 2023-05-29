@@ -147,7 +147,7 @@ class AsignacionLotesController extends Controller
             "lote_produccion_id" => "required",
             "grupos_trabajo_id" => "required",
             "cantidad_asignada" => "required",
-            'enabled' => 'boolean',
+
         ];
 
         return Validator::make($request->all(), $rules);
@@ -166,14 +166,12 @@ class AsignacionLotesController extends Controller
             "lote_produccion_id" => "required",
             "grupos_trabajo_id" => "required",
             "cantidad_asignada" => "required",
-            'enabled' => 'boolean',
+
         ];
 
 
         $data = $request->validate($rules);
 
-
-        $data['enabled'] = $request->has('enabled');
 
 
         return $data;

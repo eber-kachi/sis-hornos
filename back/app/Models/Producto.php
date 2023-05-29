@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Producto extends Model
 {
+    /**
+     * @var array|mixed|string|null
+     */
+
     protected $fillable = ['nombre', 'caracteristicas','precio_unitario','costo'];
     use HasFactory;
 

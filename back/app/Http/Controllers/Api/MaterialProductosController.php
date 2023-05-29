@@ -4,10 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Exception;
 use App\Http\Controllers\Api\Controller;
+use App\Models\LoteProduccion;
 use App\Models\MaterialProductos;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\App;
+
+
+
 
 
 class MaterialProductosController extends Controller
@@ -28,28 +33,104 @@ class MaterialProductosController extends Controller
 
     }
 
-    public function indexProductoMaterial()
-{
-    $data= Producto::with('materials')->get();
+    public function indexProductoMaterial($id_producto)
+    {
+        $descargar = request()->query('descargar');
+        $producto = Producto::find($id_producto);
+        if ($descargar == 'true') {
+            // generar el pdf
+
+            $data= $producto->materials->map(function ($material) {
+                return [
+                    'id' => $material->id,
+                    'nombre' => $material->nombre,
+                    'cantidad' => $material->pivot->cantidad,
+                    'descripcion' => $material->pivot->descripcion,
+                    'medida_nombre'=> optional($material->medidas)->nombre
+                ];
+            });
+            $fecha = date('d/m/Y');
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+            $pdf->loadView('reporte', ['datos' => $data, 'fecha' => $fecha,'producto' => $producto]); return $pdf->stream('reporte.pdf');
+
+        } else {
+            // mostrar la vista normal
 
 
-    return $this->successResponse(
-        'MaterialProductos were successfully retrieved.',
-        $data
-       // $material_producto
-    );
-}
+            $data= $producto->materials->map(function ($material) {
+                return [
+                    'id' => $material->id,
+                    'nombre' => $material->nombre,
+                    'cantidad' => $material->pivot->cantidad,
+                    'descripcion' => $material->pivot->descripcion,
+                    'medida_nombre'=> optional($material->medidas)->nombre
+                ];
+            });
+
+            return $this->successResponse(
+                'MaterialProductos were successfully retrieved.',
+                $data
+            // $material_producto
+            );
+
+        }
+
+
+
+    }
+
 
     public function materialProductoLotes($lote_produccion_id)
     {
-        $data= Producto::with('materials')->get();
+        $descargar = request()->query('descargar');
+        $lote = LoteProduccion::with('pedidos')->find($lote_produccion_id);
+        foreach ($lote->pedidos as $pedido) {
+            $id_productos= $pedido->producto_id;
+        }
+        $producto = Producto::find($id_productos); // Buscar el producto por su id
+
+      //  echo $lote;
+        if ($descargar == 'true') {
+            // generar el pdf
+            $data= $producto->materials->map(function ($material) use ($lote, $producto) {
+                return [
+                    'id' => $material->id,
+                    'nombre' => $material->nombre,
+                    'cantidad' => $material->pivot->cantidad,
+                    'descripcion' => $material->pivot->descripcion,
+                    'medida_nombre'=> optional($material->medidas)->nombre,
+                    'producto_lote' => $material->pivot->cantidad * $lote->cantidad
+                ];
+            });
+            $fecha = date('d/m/Y');
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+            $pdf->loadView('reporteLote', ['datos' => $data, 'fecha' => $fecha,'producto' => $producto ,'lote' => $lote]); return $pdf->stream('reporteLote.pdf');
+        } else {
+            // mostrar la vista normal
+        $data= $producto->materials->map(function ($material) use ($lote, $producto) {
+            return [
+                'id' => $material->id,
+                'nombre' => $material->nombre,
+                'cantidad' => $material->pivot->cantidad,
+                'descripcion' => $material->pivot->descripcion,
+                'medida_nombre'=> optional($material->medidas)->nombre,
+                'producto_lote' => $material->pivot->cantidad * $lote->cantidad
+            ];
+        });
 
 
-        return $this->successResponse(
-            'MaterialProductos were successfully retrieved.',
-            $data
-        // $material_producto
-        );
+
+
+            return $this->successResponse(
+                'MaterialProductos were successfully retrieved.',
+                $data
+            // $material_producto
+            );
+
+        }
+
     }
 
 

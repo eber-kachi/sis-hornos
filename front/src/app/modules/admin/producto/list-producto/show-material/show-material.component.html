@@ -20,22 +20,28 @@
         <ng-container matColumnDef="nombre">
           <mat-header-cell *matHeaderCellDef>Nombre Material</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            {{ row?.fecha_pedido }}
+            {{ row?.nombre }}
           </mat-cell>
         </ng-container>
         <ng-container matColumnDef="cantidad">
           <mat-header-cell *matHeaderCellDef>Cantidad</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            {{ row?.estado }}
+            {{ row?.cantidad }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="medida">
+          <mat-header-cell *matHeaderCellDef>Medida </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            {{ row?.medida_nombre }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="descripcion">
+          <mat-header-cell *matHeaderCellDef>Descripcion </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            {{ row?.descripcion }}
           </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="cantidad_total">
-          <mat-header-cell *matHeaderCellDef>Cantidad Total </mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            {{ row?.total_precio }}
-          </mat-cell>
-        </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>

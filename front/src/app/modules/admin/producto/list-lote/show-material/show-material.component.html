@@ -20,20 +20,26 @@
         <ng-container matColumnDef="nombre">
           <mat-header-cell *matHeaderCellDef>Nombre Material</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            {{ row?.fecha_pedido }}
+            {{ row?.nombre }}
           </mat-cell>
         </ng-container>
         <ng-container matColumnDef="cantidad">
-          <mat-header-cell *matHeaderCellDef>Cantidad</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>Cantidad producto</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            {{ row?.estado }}
+            {{ row?.cantidad }}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="cantidad_total">
-          <mat-header-cell *matHeaderCellDef>Cantidad Total </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>Cantidad para Lote </mat-header-cell>
           <mat-cell *matCellDef="let row">
-            {{ row?.total_precio }}
+            {{ row?.producto_lote }}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="medida">
+          <mat-header-cell *matHeaderCellDef>Medida </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            {{ row?.medida_nombre }}
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

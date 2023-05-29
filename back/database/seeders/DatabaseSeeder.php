@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
         $this->call(Medidas::class);
         $this->call(Departamento::class);
         $this->call(Roles::class);
+        $this->call(Material::class);
         $this->call(Producto::class);
         $this->call(Personal::class);
 

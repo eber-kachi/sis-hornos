@@ -14,7 +14,7 @@ import { Observable, Subject, of } from 'rxjs';
 export class ShowMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   // displayedColumns = ['id', 'name', 'status', 'gender', 'species'];
-  displayedColumns = ['id', 'nombre', 'cantidad', 'cantidad_total'];
+  displayedColumns = ['id', 'nombre', 'cantidad', 'medida', 'descripcion'];
   dataSource$ = new Observable<any[]>();
   pageTotal: number;
   pageSize: number = 3;
@@ -29,7 +29,7 @@ export class ShowMaterialComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialog: MatDialog
   ) {
 
-    this.url= environment.serverUrl+this.characterService.baseUrl+'/lote';
+    this.url= environment.serverUrl+this.characterService.baseUrl+'/lista';
     this.productoId= this.route.snapshot.paramMap.get('id');
     // console.log( 'Aqui',   this.route.snapshot.paramMap.get('id'))
   }
