@@ -75,8 +75,6 @@ class LoteProduccionController extends Controller
 
                 // Obtener la cantidad del producto desde el atributo pivot
                 $pedidos_cantidades[] = $pedido->cantidad;
-
-
             }
             // Sumar las cantidades usando array_sum()
             $suma = array_sum($pedidos_cantidades);

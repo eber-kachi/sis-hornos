@@ -60,7 +60,6 @@ class PedidosController extends Controller
             $producto = Producto::find($request->producto_id);
             // Calcular el precio total usando el método sum
             $precio = $producto->precio_unitario * $request->cantidad;
-
             $pedido = new Pedido();
             $pedido->total_precio = $precio;
             $pedido->cantidad = $request->cantidad;
@@ -72,14 +71,10 @@ class PedidosController extends Controller
 
              $pedido->save();
 
-
-
             return $this->successResponse(
                 'Pedidos was successfully retrieved.',
                 $this->transform($pedido)
             );
-
-
         } catch (Exception $exception) {
             return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }

@@ -98,7 +98,6 @@ class PersonalController extends Controller
             if ($validator->fails()) {
                 return $this->errorResponse($validator->errors()->all());
             }
-
             $data = $this->getData($request);
             $user = new User([
                 'email' => $request->username."@gmail.com",
@@ -110,12 +109,7 @@ class PersonalController extends Controller
               ]);
 
               $user->save();
-
-
-
             // $personal = Personal::create($data);
-
-
             $personal = new Personal();
             $personal->nombres= $request->nombres;
             $personal->apellidos= $request->apellidos;

@@ -52,11 +52,6 @@ class GruposTrabajoController extends Controller
                 "productos_id"=> $request->productos_id,
 
             ]);
-
-
-            // $data = $this->getData($request);
-
-            // $gruposTrabajos = GruposTrabajo::create($data);
             $gruposTrabajos = GruposTrabajo::create([
                 "nombre"=> $request->nombre,
                 "tipo_grupo_id"=> $tipoGrupo->id,

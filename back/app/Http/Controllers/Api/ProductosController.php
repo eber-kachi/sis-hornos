@@ -35,7 +35,6 @@ class ProductosController extends Controller
             if ($validator->fails()) {
                 return $this->errorResponse($validator->errors()->all());
             }
-
                 // Crear el producto
                 $producto = new Producto();
                 $producto->nombre = $request->nombre;
@@ -50,12 +49,8 @@ class ProductosController extends Controller
                         'descripcion' => $material['descripcion'] ?? null
                     ];
                 }
-
-
                 // Sincronizar los materiales con los datos adicionales
                 $producto->materials()->sync($materiales);
-
-
             return $this->successResponse(
                 'Produtos was successfully added.',
                 $this->transform($producto)
