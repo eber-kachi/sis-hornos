@@ -9,18 +9,31 @@ use Illuminate\Support\Facades\Validator;
 
 class ClientesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-
-
-        $clientes = Cliente::orderBy('id', 'desc')->paginate(10);
+        // Obtener el término de búsqueda del request
+        $search= $request->q;
+        // Si hay un término de búsqueda, filtrar los clientes que coincidan con él
+        if ($search) {
+            $clientes = Cliente::where('nombres', 'like', "%$search%")
+                ->orWhere('apellidos', 'like', "%$search%")
+                ->orWhere('carnet_identidad', 'like', "%$search%")
+                ->orWhere('provincia', 'like', "%$search%")
+                ->orWhereHas('Departamento', function ($query) use ($search) {
+                    $query->where('nombre', 'like', "%$search%");
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(10);
+        } else {
+            // Si no hay un término de búsqueda, obtener todos los clientes
+            $clientes = Cliente::orderBy('id', 'desc')->paginate(10);
+        }
 
         $data = $clientes->transform(function ($clientes) {
             return $this->transform($clientes);
         });
-
         return $this->successResponse(
-            'Pedidos were successfully retrieved.',
+            'Clientes were successfully retrieved.',
             $data,
             [
                 'links' => [
@@ -152,6 +165,7 @@ class ClientesController extends Controller
             'apellidos' => 'string|min:1|max:255',
             'carnet_identidad' => 'required|string|min:1|max:255',
             'provincia' => 'required|string|min:1|max:255',
+            'fecha_nacimiento' => 'required|date|before:18 years ago',
             'departamento_id' => 'required',
             'celular' =>'required|numeric|min:0',
         ];
@@ -175,6 +189,7 @@ class ClientesController extends Controller
             'carnet_identidad' => 'required|string|min:1|max:255',
             'provincia' => 'required|string|min:1|max:255',
             'departamento_id' => 'required',
+            'fecha_nacimiento' => 'required|date|before:18 years ago',
             'celular' =>'required|numeric|min:0',
         ];
 

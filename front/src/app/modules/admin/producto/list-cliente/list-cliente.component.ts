@@ -129,7 +129,7 @@ export class ListClienteComponent implements OnInit, AfterViewInit, OnDestroy {
   delete(id: string | number | ArrayBufferView | ArrayBuffer) {
     const dialogRef = this.dialog.open(AlertDialogComponent, {
       data: {
-        message: 'Estas seguro que seas eliminar?',
+        message: 'Estas seguro que deseas eliminar?',
         buttonText: {
           ok: 'Si',
           cancel: 'Cancelar',
