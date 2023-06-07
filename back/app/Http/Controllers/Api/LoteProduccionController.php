@@ -78,8 +78,19 @@ class LoteProduccionController extends Controller
             }
             // Sumar las cantidades usando array_sum()
             $suma = array_sum($pedidos_cantidades);
-            $ultimo_lote = LoteProduccion::latest()->first();
+            //$ultimo_lote = LoteProduccion::latest()->first();
             // Si hay un último lote, usar su fecha final más un día como fecha de inicio
+            // Obtener el último lote con el id_producto que recibes
+
+            $ultimo_lote = LoteProduccion::join('pedidos', 'lotes_produccion.id', '=', 'pedidos.lote_produccion_id')
+                ->where('pedidos.producto_id', $request->producto_id)
+                ->where('lotes_produccion.created_at', function ($query) use ($request) {
+                    $query->from('lotes_produccion')
+                        ->join('pedidos', 'lotes_produccion.id', '=', 'pedidos.lote_produccion_id')
+                        ->selectRaw('MAX(lotes_produccion.created_at)')
+                        ->where('pedidos.producto_id', $request->producto_id);
+                })->first();
+
 
             if ($ultimo_lote) {
                 $fecha_inicio = Carbon::parse($ultimo_lote->fecha_final)->addDay();

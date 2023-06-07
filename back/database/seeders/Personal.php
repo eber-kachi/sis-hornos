@@ -10,9 +10,6 @@ use Illuminate\Support\Str;
 
 class Personal extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
 
