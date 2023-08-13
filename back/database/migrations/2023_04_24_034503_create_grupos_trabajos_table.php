@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->integer('cantidad_integrantes');
+            $table->json('muestras');
             $table->foreignId('tipo_grupo_id')
                   ->nullable()
                   ->constrained('tipo_grupos')
                   ->cascadeOnDelete()
                   ->cascadeOnUpdate();
-                  
+
             $table->timestamps();
         });
     }

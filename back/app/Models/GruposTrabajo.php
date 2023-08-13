@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class GruposTrabajo extends Model
 {
     use HasFactory;
-    protected $fillable = ['nombre', 'cantidad_integrantes','tipo_grupo_id'];
+    protected $fillable = ['nombre', 'cantidad_integrantes','tipo_grupo_id','muestras'];
 
     public function TipoGrupos(){
         return $this->belongsTo(TipoGrupo::class,'tipo_grupo_id','id');

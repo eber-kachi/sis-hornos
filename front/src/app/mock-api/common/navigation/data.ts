@@ -20,16 +20,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
     roles: ['admin']
     
   },
- 
-
-  {
-    id: 'list-grupo-personal',
-    title: 'Grupo Personal',
-    type: 'basic',
-    icon: 'heroicons_outline:user-group',
-    link: '/lista-grupo',
-    roles: ['admin']
-  },
   {
     id: 'lista-personal',
     title: 'Personal',
@@ -39,21 +29,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
     roles: ['admin', 'jefe contratos']
   },
   {
-    id: 'lista-pedidos',
-    title: 'Pedidos',
+    id: 'list-grupo-personal',
+    title: 'Grupo Personal',
     type: 'basic',
-    icon: 'heroicons_outline:shopping-bag',
-    link: '/lista-pedidos',
+    icon: 'heroicons_outline:user-group',
+    link: '/lista-grupo',
     roles: ['admin']
   },
-  {
-    id: 'lista-lote',
-    title: 'Lotes Produccion',
-    type: 'basic',
-    icon: 'heroicons_outline:view-boards',
-    link: '/lista-lote',
-    roles: ['admin', 'jefe contratos']
-  },
+
   {
     id: 'lista-material',
     title: 'Materiales',
@@ -78,6 +61,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     link: '/lista-departamento',
     roles: ['admin']
   },
+  
   {
     id: 'lista-cliente',
     title: 'Clientes',
@@ -85,6 +69,23 @@ export const defaultNavigation: FuseNavigationItem[] = [
     icon: 'heroicons_outline:identification',
     link: '/lista-cliente',
     roles: ['admin']
+  },
+  
+  {
+    id: 'lista-pedidos',
+    title: 'Pedidos',
+    type: 'basic',
+    icon: 'heroicons_outline:shopping-bag',
+    link: '/lista-pedidos',
+    roles: ['admin']
+  },
+  {
+    id: 'lista-lote',
+    title: 'Lotes de Produccion',
+    type: 'basic',
+    icon: 'heroicons_outline:view-boards',
+    link: '/lista-lote',
+    roles: ['admin', 'jefe contratos']
   },
   {
     id: 'calendario',

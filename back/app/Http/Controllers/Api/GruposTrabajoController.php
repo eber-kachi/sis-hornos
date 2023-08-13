@@ -9,6 +9,7 @@ use App\Models\Personal;
 use App\Models\TipoGrupo ;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 
 
 class GruposTrabajoController extends Controller
@@ -52,11 +53,21 @@ class GruposTrabajoController extends Controller
                 "productos_id"=> $request->productos_id,
 
             ]);
+            $coleccion = new Collection($request->produccion_diarias);
+
+            // Convertir la colección en una cadena JSON
+            $json = $coleccion->toJson();
+
+            // Mostrar el resultado
+            echo $json;
+
             $gruposTrabajos = GruposTrabajo::create([
                 "nombre"=> $request->nombre,
                 "tipo_grupo_id"=> $tipoGrupo->id,
                 "cantidad_integrantes"=> 0,
+                "muestras" => $json,
             ]);
+
 
             $count=0;
             $personal= Personal::findOrFail($request->jefe_id);
@@ -72,14 +83,19 @@ class GruposTrabajoController extends Controller
             }
             $gruposTrabajos = GruposTrabajo::findOrFail($gruposTrabajos->id);
 
+
+
+            // Convertir la colección en una cadena JSON
             $gruposTrabajos->update([
                 "cantidad_integrantes" =>  $count
+
             ]);
             $nombre =optional($tipoGrupo->Productos)->nombre;
 
             $tipoGrupo->update([
                 "nombre" => "Grupo" . "$count" . "$nombre",
-                "cantidad_produccion_diaria" => $this->modelomatematico->cantidad_produccion_diaria($request->produccion_diarias),
+                "cantidad_produccion_diaria" => $this->modelomatematico->cantidad_produccion_diaria($request->produccion_diarias
+                ),
 
             ]);
             DB::commit(); // Confirmar transacción
