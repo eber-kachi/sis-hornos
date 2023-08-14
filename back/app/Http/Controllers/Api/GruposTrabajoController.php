@@ -59,7 +59,7 @@ class GruposTrabajoController extends Controller
             $json = $coleccion->toJson();
 
             // Mostrar el resultado
-            echo $json;
+            //echo $json;
 
             $gruposTrabajos = GruposTrabajo::create([
                 "nombre"=> $request->nombre,
@@ -266,7 +266,7 @@ class GruposTrabajoController extends Controller
             'tipo_grupo_id' => $gruposTrabajos->tipo_grupo_id,
             'tipo_grupo_nombre'=> optional($gruposTrabajos->tipoGrupos)->nombre,
             'producto'=> optional($gruposTrabajos->tipoGrupos)->Productos,
-
+            'produccion_diarias'=>$gruposTrabajos->muestras,
 
 
 

@@ -39,7 +39,7 @@ export class CreateGrupoComponent implements OnInit {
     private personalService: PersonalService,
     private productoService: ProductoService,
   ) {
-    console.log('data editing', dataEdit);
+  //  console.log('data editing', dataEdit);
     this.editing = dataEdit;
     if (dataEdit != null) {
       this.grupoTrabajoService.getById(dataEdit.id)
@@ -71,14 +71,20 @@ export class CreateGrupoComponent implements OnInit {
           //   this.personales.push(p);
           // });
           const ayudantes = res.data.ayudantes.map(a => a.id);
-
+          this.materiales.clear();
+          const produccion_diarias= JSON.parse( res.data.produccion_diarias);
+          produccion_diarias.forEach((p )=>{ 
+          this.AddMaterial();
+          } )
           this.formGroup.patchValue({
             nombre: res.data.nombre,
             jefe_id: res.data.jefe.id,
             ayudantes: ayudantes,
             productos_id: res.data.producto.id,
-            produccion_diarias: ''
+            produccion_diarias: produccion_diarias,
+
           });
+
 
           // this.formGroup.patchValue({'personales': personales.map(p => p.id)});
         });
