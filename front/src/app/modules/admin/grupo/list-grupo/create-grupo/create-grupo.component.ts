@@ -15,7 +15,6 @@ interface Personal {
   id: string | number;
   nombre_completo: string,
 }
-
 @Component({
   selector: 'app-create-grupo',
   templateUrl: './create-grupo.component.html',

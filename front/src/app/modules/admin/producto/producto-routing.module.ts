@@ -10,6 +10,8 @@ import {ListPedidoComponent} from "@app/modules/admin/producto/list-pedido/list-
 import {ListLoteComponent} from "@app/modules/admin/producto/list-lote/list-lote.component";
 import {ShowMaterialComponent} from "@app/modules/admin/producto/list-lote/show-material/show-material.component";
 import {ShowMaterialComponent as ShowMaterialProductoComponent} from "@app/modules/admin/producto/list-producto/show-material/show-material.component";
+import { ListProcesoComponent } from './list-proceso/list-proceso.component';
+import { ListAsignacionComponent } from './list-asignacion/list-asignacion.component';
 
 const routes: Routes = [
     {
@@ -39,6 +41,14 @@ const routes: Routes = [
     {
       path: 'lista-lote',
       component: ListLoteComponent,
+    },
+    {
+      path: 'lista-proceso',
+      component: ListProcesoComponent,
+    },
+    {
+      path: 'lista-asignacion_lote',
+      component: ListAsignacionComponent,
     },
     {
       path: 'lista-lote/:id/materiales',
