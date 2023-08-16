@@ -26,20 +26,20 @@ class AsignacionLotesController extends Controller
         );
 
     }
+    public function asignacionlote($id_lote)
+    {
+        $asignaciones = AsignacionLote::where('lote_produccion_id', $id_lote)->get();
+       // Esto te devolverá una colección de objetos de tipo AsignacionLote que puedes recorrer con un bucle2.
 
-    public function indexProductoMaterial()
-{
-    $data= LoteProduccion::with('gruposTrabajos')->get();
+        $data = $asignaciones->transform(function ($asignaciones) {
+            return $this->transform($asignaciones);
+        });
+        return $this->successResponse(
+            'AsignacionLote ',
+            $data,
+        );
 
-
-    return $this->successResponse(
-        'AsignacionLote were successfully retrieved.',
-        $data
-       // $asignacion_lote
-    );
-}
-
-
+    }
 
     public function store(Request $request)
     {

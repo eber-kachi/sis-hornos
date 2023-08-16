@@ -10,6 +10,6 @@ export class AsignacionService extends BaseAPIClass {
 
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
-    this.baseUrl = '/asignacion_lotes';
+    this.baseUrl = '/asignacion';
   }
 }
