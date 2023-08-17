@@ -29,8 +29,6 @@ class ProcesosController extends Controller
 
     }
 
-
-
     public function store(Request $request)
     {
         try {
@@ -187,15 +185,16 @@ class ProcesosController extends Controller
     {
 
         return [
+            
                 'id' => $proceso->id,
-                "Marcado de planchas" =>   $proceso->marcado_planchas,
-                "Cortado planchas" =>  $proceso->cortado_planchas,
-                "Plegado planchas" =>  $proceso->plegado_planchas,
-                "Soldadura" =>  $proceso->soldadura,
-                "Prueba conductos" =>  $proceso->prueba_conductos,
-                "Armado cuerpo" =>  $proceso->armado_cuerpo,
-                "Pintado" =>  $proceso->pintado,
-                "Armado accesorios" =>  $proceso->armado_accesorios,
+                "marcado_planchas" =>   $proceso->marcado_planchas,
+                "cortado_planchas" =>  $proceso->cortado_planchas,
+                "plegado_planchas" =>  $proceso->plegado_planchas,
+                "soldadura" =>  $proceso->soldadura,
+                "prueba_conductos" =>  $proceso->prueba_conductos,
+                "armado_cuerpo" =>  $proceso->armado_cuerpo,
+                "pintado" =>  $proceso->pintado,
+                "armado_accesorios" =>  $proceso->armado_accesorios,
 
         ];
     }

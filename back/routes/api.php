@@ -98,6 +98,7 @@ Route::resource('/asignacion', AsignacionLotesController::class, ['update','dest
 Route::get('/asignacion/lote/{id_lote}', [AsignacionLotesController::class, 'asignacionlote']);
 
 Route::resource('/procesos',      ProcesosController::class, ['update','destroy','show','index'.'store']);
+
 Route::resource('/lotes_produccion', LoteProduccionController::class, ['update','destroy','show','index'.'store']);
 
 Route::resource('/pedidos', PedidosController::class, ['update','destroy','show','index'.'store']);
