@@ -101,7 +101,7 @@ class PersonalController extends Controller
             $data = $this->getData($request);
             $user = new User([
                 'email' => $request->username."@gmail.com",
-                'name' => $request->nombres,
+                'name' => $request->nombres.' '.$request->apellidos,
                 'username' => $request->username,
                 'enabled' => 1,
                 'password' => bcrypt($request->password),
