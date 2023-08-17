@@ -32,6 +32,7 @@ import { ListProcesoComponent } from './list-proceso/list-proceso.component';
 import { ListAsignacionComponent } from './list-asignacion/list-asignacion.component';
 import { ListAsignacionLoteComponent } from './list-asignacion-lote/list-asignacion-lote.component';
 
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
     declarations: [
@@ -56,6 +57,7 @@ import { ListAsignacionLoteComponent } from './list-asignacion-lote/list-asignac
     imports: [
         CommonModule,
         ProductoRoutingModule,
+        MatListModule,
 
         MatTableModule,
         MatButtonModule,

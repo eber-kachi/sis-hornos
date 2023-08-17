@@ -7,13 +7,13 @@ use App\Http\Controllers\Api\Controller;
 use App\Models\Proceso;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 class ProcesosController extends Controller
 {
 
-
-
-
+'user' => Auth::user(),
+'roles' => Auth::user()->rol()->get(),
     public function index()
     {
         $procesos = Proceso::orderBy('id', 'desc')->get();
@@ -185,7 +185,7 @@ class ProcesosController extends Controller
     {
 
         return [
-            
+
                 'id' => $proceso->id,
                 "marcado_planchas" =>   $proceso->marcado_planchas,
                 "cortado_planchas" =>  $proceso->cortado_planchas,
