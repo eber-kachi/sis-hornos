@@ -1,1 +1,69 @@
-<p>list-proceso works!</p>
+<div class="flex flex-col flex-auto min-w-0">
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+        <!-- CONTENT GOES HERE -->
+        <div
+            class="h-400 min-h-400 max-h-400 border-dashed border-gray-300 rounded-2xl"
+        >
+            <div
+                class="m-4 flex flex-row flex-wrap justify-between items-center content-center"
+            >
+                <h3 class="float-left h-4 font-bold">Lista de Procesos</h3>
+               
+            </div>
+          
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+             
+                <ng-container matColumnDef="id">
+                         <th mat-header-cell *matHeaderCellDef>id</th> 
+                         <td mat-cell *matCellDef="let element">{{ element.id }}</td> 
+                </ng-container>
+                <ng-container matColumnDef="marcado_planchas">
+                         <th mat-header-cell *matHeaderCellDef>marcado_planchas</th> 
+                         <td mat-cell *matCellDef="let element">{{ element.marcado_planchas }}</td> 
+                </ng-container>
+                <ng-container matColumnDef="cortado_planchas">
+                    <th mat-header-cell *matHeaderCellDef>cortado_planchas</th> 
+                    <td mat-cell *matCellDef="let element">{{ element.cortado_planchas }}</td> 
+                </ng-container>
+                <ng-container matColumnDef="plegado_planchas">
+                    <th mat-header-cell *matHeaderCellDef>plegado_planchas</th> 
+                    <td mat-cell *matCellDef="let element">{{ element.plegado_planchas }}</td> 
+                </ng-container>
+                <ng-container matColumnDef="soldadura">
+                            <th mat-header-cell *matHeaderCellDef>soldadura</th> 
+                            <td mat-cell *matCellDef="let element">{{ element.soldadura }}</td> 
+                </ng-container>
+                <ng-container matColumnDef="prueba_conductos">
+                    <th mat-header-cell *matHeaderCellDef>prueba_conductos</th> 
+                    <td mat-cell *matCellDef="let element">{{ element.prueba_conductos }}</td> 
+                </ng-container>
+                <ng-container matColumnDef="armado_cuerpo">
+                    <th mat-header-cell *matHeaderCellDef>armado_cuerpo</th> 
+                    <td mat-cell *matCellDef="let element">{{ element.armado_cuerpo }}</td> 
+                </ng-container>
+                <ng-container matColumnDef="pintado">
+                    <th mat-header-cell *matHeaderCellDef>pintado</th> 
+                    <td mat-cell *matCellDef="let element">{{ element.pintado }}</td> 
+                </ng-container>
+                <ng-container matColumnDef="armado_accesorios">
+                    <th mat-header-cell *matHeaderCellDef>armado_accesorios</th> 
+                    <td mat-cell *matCellDef="let element">{{ element.armado_accesorios }}</td> 
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr> 
+
+                
+            </table>
+          
+
+
+           
+              
+        </div>
+    </div>
+</div>
+

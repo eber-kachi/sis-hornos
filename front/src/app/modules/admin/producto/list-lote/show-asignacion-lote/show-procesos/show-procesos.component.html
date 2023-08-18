@@ -1,0 +1,10 @@
+<p>show-procesos works!</p>
+<mat-selection-list #shoes [(ngModel)]="selectedRights" (selectionChange)="selectionChange($event)" >
+    <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
+      {{shoe}}
+    </mat-list-option>
+  </mat-selection-list>
+  
+  <p>
+    Options selected: {{shoes.selectedOptions.selected}}
+  </p>

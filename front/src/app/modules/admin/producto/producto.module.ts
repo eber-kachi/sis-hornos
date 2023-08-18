@@ -30,9 +30,9 @@ import { ShowMaterialComponent } from './list-lote/show-material/show-material.c
 import {ShowMaterialComponent as ShowMaterialProductoComponent} from "@app/modules/admin/producto/list-producto/show-material/show-material.component";
 import { ListProcesoComponent } from './list-proceso/list-proceso.component';
 import { ListAsignacionComponent } from './list-asignacion/list-asignacion.component';
-import { ListAsignacionLoteComponent } from './list-asignacion-lote/list-asignacion-lote.component';
-
 import {MatListModule} from '@angular/material/list';
+import { ShowAsignacionLoteComponent } from './list-lote/show-asignacion-lote/show-asignacion-lote.component';
+import { ShowProcesosComponent } from './list-lote/show-asignacion-lote/show-procesos/show-procesos.component';
 
 @NgModule({
     declarations: [
@@ -52,7 +52,8 @@ import {MatListModule} from '@angular/material/list';
         ShowMaterialProductoComponent,
         ListProcesoComponent,
         ListAsignacionComponent,
-        ListAsignacionLoteComponent
+        ShowAsignacionLoteComponent,
+        ShowProcesosComponent
     ],
     imports: [
         CommonModule,

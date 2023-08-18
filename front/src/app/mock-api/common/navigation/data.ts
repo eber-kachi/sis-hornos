@@ -88,7 +88,15 @@ export const defaultNavigation: FuseNavigationItem[] = [
     title: 'Asignacion',
     type: 'basic',
     icon: 'heroicons_outline:view-boards',
-    link: '/lista-asignacion_lote',
+    link: '/lista-asignacion',
+    roles: ['admin', 'jefe contratos']
+  },
+  {
+    id: 'lista-proceso',
+    title: 'Procesos',
+    type: 'basic',
+    icon: 'heroicons_outline:view-boards',
+    link: 'lista-proceso',
     roles: ['admin', 'jefe contratos']
   },
   {

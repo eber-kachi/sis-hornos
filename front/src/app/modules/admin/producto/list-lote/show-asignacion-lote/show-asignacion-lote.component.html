@@ -8,11 +8,11 @@
             <div
                 class="m-4 flex flex-row flex-wrap justify-between items-center content-center"
             >
-                <h3 class="float-left h-4 font-bold">Lista de Asignacion</h3>
+                <h3 class="float-left h-4 font-bold">Lista de Asignacion del Lote : {{loteId}} </h3>
                
             </div>
 
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource$" class="mat-elevation-z8">
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef>No.</th>
                     <td mat-cell *matCellDef="let element">

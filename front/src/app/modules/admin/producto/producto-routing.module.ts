@@ -12,7 +12,8 @@ import {ShowMaterialComponent} from "@app/modules/admin/producto/list-lote/show-
 import {ShowMaterialComponent as ShowMaterialProductoComponent} from "@app/modules/admin/producto/list-producto/show-material/show-material.component";
 import { ListProcesoComponent } from './list-proceso/list-proceso.component';
 import { ListAsignacionComponent } from './list-asignacion/list-asignacion.component';
-import { ListAsignacionLoteComponent } from './list-asignacion-lote/list-asignacion-lote.component';
+import { ShowAsignacionLoteComponent } from './list-lote/show-asignacion-lote/show-asignacion-lote.component';
+import { ShowProcesosComponent } from './list-lote/show-asignacion-lote/show-procesos/show-procesos.component';
 
 const routes: Routes = [
     {
@@ -43,21 +44,26 @@ const routes: Routes = [
       path: 'lista-lote',
       component: ListLoteComponent,
     },
-    {
-      path: 'lista-proceso',
-      component: ListProcesoComponent,
-    },
-    {
-      path: 'lista-asignacion_lote',
-      component: ListAsignacionComponent,
-    },
+   
     {
       path: 'lista-lote/:id/materiales',
       component: ShowMaterialComponent,
     },
     {
-      path: 'lista-asignacion_lote/:id/procesos',
-      component: ListAsignacionLoteComponent,
+      path: 'lista-asignacion',
+      component: ListAsignacionComponent,
+    },
+    {
+      path: 'lista-proceso',
+      component: ListProcesoComponent,
+    },
+    {
+      path: 'lista-asignacion/:id/procesos',
+      component: ShowProcesosComponent,
+    },
+    {
+      path: 'lista-lote/:id/asignacion',
+      component: ShowAsignacionLoteComponent,
     },
 ];
 
