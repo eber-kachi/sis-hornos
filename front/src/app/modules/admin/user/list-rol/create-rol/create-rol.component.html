@@ -10,10 +10,14 @@
                         matInput
                         placeholder="Nombre"
                         formControlName="display_name"
+                   
+                         (input)="formGroup.controls.display_name.setValue(capitalize(formGroup.controls.display_name.value))"
                     />
+                    <mat-error  *ngIf="formGroup.controls.display_name.hasError('text')">
+                         Nombre debe contener solo texto </mat-error> 
+
                     <mat-error
-                        *ngIf="formGroup.controls.display_name.hasError('required')"
-                    >
+                        *ngIf="formGroup.controls.display_name.hasError('required')">
                         nombre es requerido
                     </mat-error>
                 </mat-form-field>
@@ -42,3 +46,4 @@
         Cancelar
     </button>
 </div>
+

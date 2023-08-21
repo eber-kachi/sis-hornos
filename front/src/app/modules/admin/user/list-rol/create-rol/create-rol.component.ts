@@ -1,8 +1,9 @@
 import {Component, Inject} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators,FormControl} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DepartamentoService} from "@core/service/api/departamento.service";
 import {RolService} from "@core/service/rol.service";
+
 
 @Component({
   selector: 'app-create-rol',
@@ -28,13 +29,15 @@ export class CreateRolComponent {
 
     public ngOnInit(): void {
         this.formGroup = this.fb.group({
-            display_name: ['', [Validators.required]],
+            display_name: ['', [Validators.required, this.textValidator]],
+            
             // name: ['', [Validators.required]],
 
             // username: [{value: '', disabled: true}, [Validators.required]],
             // password: ['megahornoroja', [Validators.required]],
         });
     }
+
 
     closeDialog() {
         this.dialog.close(false);
@@ -75,4 +78,22 @@ export class CreateRolComponent {
     }
 
     formChanged() {}
+
+
+    // Esta función valida que el input solo contenga letras y espacios export 
+ textValidator(control: FormControl) {
+     let value = control.value; 
+     let regex = /^[a-zA-Z\s]*$/; 
+     // Expresión regular para letras y espacios 
+     if (regex.test(value)) { return null;
+         // El valor es válido 
+        } else { return { text: true };
+         // El valor no es válido 
+        } }
+
+// Esta función transforma el input en formato oración export function 
+capitalize(value: string) { if (value) 
+    { return value.replace(/\w\S*/g, (txt) => { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); }); }
+     return value; }
+
 }
