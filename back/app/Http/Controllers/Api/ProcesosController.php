@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Validator;
 class ProcesosController extends Controller
 {
 
-'user' => Auth::user(),
-'roles' => Auth::user()->rol()->get(),
     public function index()
     {
         $procesos = Proceso::orderBy('id', 'desc')->get();
@@ -28,6 +26,7 @@ class ProcesosController extends Controller
         );
 
     }
+
 
     public function store(Request $request)
     {
@@ -60,13 +59,26 @@ class ProcesosController extends Controller
      */
     public function show($id)
     {
-        $proceso = Proceso::findOrFail($id);
+        // Obtener el modelo Proceso por su id y convertirlo en un array
+        $proceso = Proceso::findOrFail($id)->toArray();
 
+        // Filtrar el array por los valores que son "Terminado"
+        $filtered = array_filter($proceso, function ($value, $key) { return $value == "Terminado"; }, ARRAY_FILTER_USE_BOTH);
+
+        // Obtener las claves del array filtrado
+        $selectedRights = array_keys($filtered);
+
+        // Crear un array asociativo con el nombre de clave selectedRights y el valor del array de selectedRights
+        $data = ['selectedRights' => $selectedRights];
+
+        // Devolver una respuesta de éxito con el array asociativo
         return $this->successResponse(
-            'procesos was successfully retrieved.',
-            $this->transform($proceso)
+            'Proceso was successfully retrieved.',
+            $data
         );
     }
+
+
 
     /**
      * Update the specified $proceso in the storage.
@@ -85,11 +97,18 @@ class ProcesosController extends Controller
                 return $this->errorResponse($validator->errors()->all());
             }
 
-            $data = $this->getData($request);
 
-            $proceso = Proceso::findOrFail($id);
-            $proceso->update($data);
+          //  $data = $this->getData($request);
 
+                // Obtener el modelo Proceso por su id
+                $proceso = Proceso::findOrFail($id);
+
+                // Recorrer el array selectedRights $request
+            foreach ($request->selectedRights as $right) {
+                // Actualizar el valor del campo correspondiente a “Terminado”
+                $proceso->update([$right => "Terminado"]);
+            }
+                // Devolver una respuesta de éxito
             return $this->successResponse(
                 'Grupos Trabajos was successfully updated.',
                 $this->transform($proceso)
@@ -131,16 +150,7 @@ class ProcesosController extends Controller
     protected function getValidator(Request $request)
     {
         $rules = [
-
-            "marcado_planchas" => "required|string",
-            "cortado_planchas" => "required|string",
-            "plegado_planchas" => "required|string",
-            "soldadura" => "required|string",
-            "prueba_conductos" => "required|string",
-            "armado_cuerpo" => "required|string",
-            "pintado" => "required|string",
-            "armado_accesorios" => "required|string",
-
+            "selectedRights" => "required",
         ];
 
         return Validator::make($request->all(), $rules);
