@@ -28,7 +28,11 @@ import { ListLoteComponent } from './list-lote/list-lote.component';
 import { CreateLoteComponent } from './list-lote/create-lote/create-lote.component';
 import { ShowMaterialComponent } from './list-lote/show-material/show-material.component';
 import {ShowMaterialComponent as ShowMaterialProductoComponent} from "@app/modules/admin/producto/list-producto/show-material/show-material.component";
-
+import { ListProcesoComponent } from './list-proceso/list-proceso.component';
+import { ListAsignacionComponent } from './list-asignacion/list-asignacion.component';
+import {MatListModule} from '@angular/material/list';
+import { ShowAsignacionLoteComponent } from './list-lote/show-asignacion-lote/show-asignacion-lote.component';
+import { ShowProcesosComponent } from './list-lote/show-asignacion-lote/show-procesos/show-procesos.component';
 
 @NgModule({
     declarations: [
@@ -45,11 +49,16 @@ import {ShowMaterialComponent as ShowMaterialProductoComponent} from "@app/modul
         ListLoteComponent,
         CreateLoteComponent,
         ShowMaterialComponent,
-        ShowMaterialProductoComponent
+        ShowMaterialProductoComponent,
+        ListProcesoComponent,
+        ListAsignacionComponent,
+        ShowAsignacionLoteComponent,
+        ShowProcesosComponent
     ],
     imports: [
         CommonModule,
         ProductoRoutingModule,
+        MatListModule,
 
         MatTableModule,
         MatButtonModule,

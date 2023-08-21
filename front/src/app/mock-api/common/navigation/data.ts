@@ -18,7 +18,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
     icon: 'heroicons_outline:clipboard-list',
     link: '/lista-rol',
     roles: ['admin']
-    
   },
   {
     id: 'lista-personal',
@@ -36,7 +35,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
     link: '/lista-grupo',
     roles: ['admin']
   },
-
   {
     id: 'lista-material',
     title: 'Materiales',
@@ -60,8 +58,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     icon: 'heroicons_outline:filter',
     link: '/lista-departamento',
     roles: ['admin']
-  },
-  
+  },  
   {
     id: 'lista-cliente',
     title: 'Clientes',
@@ -70,7 +67,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
     link: '/lista-cliente',
     roles: ['admin']
   },
-  
   {
     id: 'lista-pedidos',
     title: 'Pedidos',
@@ -88,6 +84,22 @@ export const defaultNavigation: FuseNavigationItem[] = [
     roles: ['admin', 'jefe contratos']
   },
   {
+    id: 'lista-proceso',
+    title: 'Asignacion',
+    type: 'basic',
+    icon: 'heroicons_outline:view-boards',
+    link: '/lista-asignacion',
+    roles: ['admin', 'jefe contratos']
+  },
+  {
+    id: 'lista-proceso',
+    title: 'Procesos',
+    type: 'basic',
+    icon: 'heroicons_outline:view-boards',
+    link: 'lista-proceso',
+    roles: ['admin', 'jefe contratos']
+  },
+  {
     id: 'calendario',
     title: 'Cronograma',
     type: 'basic',
@@ -95,7 +107,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
     link: '/cronograma',
     roles: ['admin','ayudante', 'ayudante experto', 'jefe contratos' ]
   },
-
 ];
 
 

@@ -23,7 +23,6 @@ export class ListMaterialComponent implements OnInit {
         public dialog: MatDialog
     ) {}
     ngOnInit(): void {
-        // this.usuario$ = this.usuarioService.getAll();
 
         this.list();
     }

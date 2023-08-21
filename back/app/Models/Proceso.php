@@ -15,4 +15,8 @@ class Proceso extends Model
     public function asignacion_lotes(){
         return $this->hasMany(AsignacionLote::class);
     }
+
+    public function  EnEspera($query) {
+        return $query->where("estado", "En espera");
+    }
 }

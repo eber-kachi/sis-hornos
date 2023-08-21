@@ -4,6 +4,7 @@
 use App\Http\Controllers\Api\AsignacionLotesController;
 use App\Http\Controllers\Api\ClientesController;
 use App\Http\Controllers\Api\DepartamentosController;
+use App\Http\Controllers\Api\ProcesosController;
 use App\Http\Controllers\Api\ProductosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -95,7 +96,12 @@ Route::get('/materiales_productos/lote/{lote_produccion_id}',[MaterialProductosC
 
 Route::resource('/cliente', ClientesController::class, ['update','destroy','show','index'.'store']);
 Route::resource('/departamentos', DepartamentosController::class, ['update','destroy','show','index'.'store']);
-Route::resource('/asignacion_lotes', AsignacionLotesController::class, ['update','destroy','show','index'.'store']);
+
+Route::resource('/asignacion', AsignacionLotesController::class, ['update','destroy','show','index'.'store']);
+Route::get('/asignacion/lote/{id_lote}', [AsignacionLotesController::class, 'asignacionlote']);
+
+Route::resource('/procesos',      ProcesosController::class, ['update','destroy','show','index'.'store']);
+
 Route::resource('/lotes_produccion', LoteProduccionController::class, ['update','destroy','show','index'.'store']);
 
 Route::resource('/pedidos', PedidosController::class, ['update','destroy','show','index'.'store']);

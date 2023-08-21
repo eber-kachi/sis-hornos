@@ -59,7 +59,7 @@ class GruposTrabajoController extends Controller
             $json = $coleccion->toJson();
 
             // Mostrar el resultado
-            echo $json;
+            //echo $json;
 
             $gruposTrabajos = GruposTrabajo::create([
                 "nombre"=> $request->nombre,
@@ -164,10 +164,16 @@ class GruposTrabajoController extends Controller
                 $count++;
             }
             $gruposTrabajos = GruposTrabajo::findOrFail($gruposTrabajos->id);
+            $coleccion = new Collection($request->produccion_diarias);
+            // Convertir la colección en una cadena JSON
+            $json = $coleccion->toJson();
 
+            // Mostrar el resultado
+            //echo $json;
             $gruposTrabajos->update([
                 "nombre"=> $request->nombre,
-                "cantidad_integrantes" =>  $count
+                "cantidad_integrantes" =>  $count,
+                "muestras" => $json,
             ]);
             $nombre =optional($tipoGrupo->Productos)->nombre;
 
@@ -266,7 +272,7 @@ class GruposTrabajoController extends Controller
             'tipo_grupo_id' => $gruposTrabajos->tipo_grupo_id,
             'tipo_grupo_nombre'=> optional($gruposTrabajos->tipoGrupos)->nombre,
             'producto'=> optional($gruposTrabajos->tipoGrupos)->Productos,
-
+            'produccion_diarias'=>$gruposTrabajos->muestras,
 
 
 

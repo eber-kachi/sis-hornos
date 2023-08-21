@@ -60,23 +60,31 @@
           <mat-cell *matCellDef="let row">
             <!--            {{ row.grupos_trabajo }}-->
             <!--            <ul class="font-light text-xs" *ngFor="let g of row.grupos_trabajo">-->
-            <ul class="font-light text-sm" *ngFor="let g of row.grupos_trabajo">
-              <li>{{ g?.nombre }} - {{ g?.pivot?.cantidad_asignada }}</li>
+            <ul class="font-light text-xs" >
+              <li *ngFor="let g of row.grupos_trabajo">
+                Nombre:
+                {{ g?.nombre }}    
+                Cantidad Asignada: 
+                {{ g?.pivot?.cantidad_asignada }}
+              </li>
             </ul>
+       
           </mat-cell>
+          
         </ng-container>
 
         <ng-container matColumnDef="pedido">
           <mat-header-cell *matHeaderCellDef>Pedido Detalle</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            <ul class="font-light text-sm" *ngFor="let g of row.pedidos">
-              <li class="flex flex-wrap bg-slate-200 p-2">
-                <div class="pl-1"><strong>C: </strong> {{ g?.cantidad }}</div>
+            <ul class="font-light text-sm" >
+              <li class="flex flex-wrap bg-slate-200 p-2" *ngFor="let g of row.pedidos">
                 <div class="pl-1">
-                  <strong>T.P: </strong> {{ g?.total_precio }}
+                  <strong>Cantidad: </strong> {{ g?.cantidad }}</div>
+                <div class="pl-1">
+                  <strong>Total Precio: </strong> {{ g?.total_precio }}
                 </div>
                 <div class="pl-1">
-                  <strong>N: </strong> {{ g?.clientes?.nombres }}
+                  <strong>Clientes: </strong> {{ g?.clientes?.nombres }}
                   {{ g?.clientes?.apellidos }}
                 </div>
               </li>
@@ -84,46 +92,46 @@
           </mat-cell>
         </ng-container>
 
-        <!-- <ng-container matColumnDef="detalle">
-          <mat-header-cell *matHeaderCellDef>Detalle</mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            <div class="flex flex-nowrap items-start flex-col">
-              <p class="text-xs">
-                Nombre Producto: {{ row?.producto?.nombre }}
-              </p>
-              <p class="text-xs">
-                Precio Unitario:
-                {{ row?.producto?.precio_unitario }}
-              </p>
-              <p class="text-xs">Costo: {{ row?.producto?.costo }}</p>
-              <p class="text-xs">
-                Caracteristicas:
-                {{ row?.producto?.caracteristicas }}
-              </p>
-            </div>
-          </mat-cell>
-        </ng-container> -->
-
         <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <a
-              mat-flat-button
-              class="text-lime-600"
-              [routerLink]="['/lista-lote/' + element.id + '/materiales']"
-              >Materiales</a
-            >
+            <ul class="font-light text-sm">
+              <li>
+                <a
+                  mat-flat-button
+                  class="text-lime-600"
+                  [routerLink]="['/lista-lote/' + element.id + '/materiales']"
+                  >Materiales</a
+                >
+               </li> 
+               <li>
+                <a
+                mat-flat-button
+                class="text-lime-600"
+                [routerLink]="['/lista-lote/' + element.id + '/asignacion' ]"
+                >Asignacion</a
+              >
+    
+               </li>
+               <li>
+                <button mat-icon-button (click)="edit(element.id)">
+                  <mat-icon>launch</mat-icon>
+                </button>
+                <button mat-icon-button (click)="delete(element.id)">
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+
+               </li>
+
+            </ul>
+          
             <!--            <button mat-icon-button (click)="edit(element.id)">-->
             <!--              <mat-icon>launch</mat-icon>-->
             <!--            </button>-->
-            <button mat-icon-button (click)="edit(element.id)">
-              <mat-icon>launch</mat-icon>
-            </button>
-            <button mat-icon-button (click)="delete(element.id)">
-              <mat-icon color="warn">delete</mat-icon>
-            </button>
+            
           </mat-cell>
         </ng-container>
+        
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
