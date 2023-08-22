@@ -55,27 +55,48 @@ export class ListPersonalComponent implements OnInit {
     }
 
     delete(id: string | number | ArrayBufferView | ArrayBuffer) {
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-                message: 'Estas seguro que seas eliminar?',
-                buttonText: {
-                    ok: 'Si',
-                    cancel: 'Canselar',
-                },
-            },
-        });
-        dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-            if (confirmed) {
-                console.log('borrando');
-                this.personalService.delete(id as string).subscribe((res) => {
-                    console.log(res);
-                    this.list();
-                });
-            }
-        });
+        // primero buscamos el elemento de la lista que corresponde al id
+        let element = this.dataSource.find(e => e.id === id);
+        // luego verificamos si el elemento tiene grupo asignado
+        if (element.grupo_trabajo_nombre) {
 
+            const dialogRefe = this.dialog.open(AlertDialogComponent, {
+                data: {
+                    message: 'No se puede eliminar el personal porque tiene grupo asignado?',
+                    buttonText: {
+                        ok: 'ok'
+                        
+                    },
+                },
+            });
+ } else {
+
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                    message: 'Estas seguro que deseas eliminar?',
+                    buttonText: {
+                        ok: 'Si',
+                        cancel: 'Canselar',
+                    },
+                },
+            });
+            dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+                if (confirmed) {
+                    console.log('borrando');
+                    this.personalService.delete(id as string).subscribe((res) => {
+                        console.log(res);
+                        this.list();
+                    });
+                }
+            });
+   
+        }
+
+        
+      
         console.log(id);
-    }
+      }
+      
 
     createNew() {
         const dialogRef = this.dialog.open(CreatePersonalComponent, {

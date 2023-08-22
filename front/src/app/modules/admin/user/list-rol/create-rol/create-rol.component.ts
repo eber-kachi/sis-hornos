@@ -31,10 +31,6 @@ export class CreateRolComponent {
         this.formGroup = this.fb.group({
             display_name: ['', [Validators.required, this.textValidator]],
             
-            // name: ['', [Validators.required]],
-
-            // username: [{value: '', disabled: true}, [Validators.required]],
-            // password: ['megahornoroja', [Validators.required]],
         });
     }
 

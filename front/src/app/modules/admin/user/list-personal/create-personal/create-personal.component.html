@@ -5,22 +5,33 @@
             <div class="">
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Nombres</mat-label>
-                    <input matInput placeholder="Nombre" formControlName="nombres"/>
+                    <input matInput placeholder="Nombre"
+                     formControlName="nombres"
+                     (input)="formGroup.controls.nombres.setValue(capitalize(formGroup.controls.nombres.value))"
+                     />
+                     <mat-error  *ngIf="formGroup.controls.nombres.hasError('text')">
+                        Los nombres debe contener solo texto </mat-error> 
+
                     <mat-error
                         *ngIf="formGroup.controls.nombres.hasError('required')"
                     >
-                        nombre es requerido
+                         El nombre es requerido
                     </mat-error>
+
                 </mat-form-field>
             </div>
             <div class="">
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Apellidos</mat-label>
-                    <input matInput placeholder="" formControlName="apellidos"/>
+                    <input matInput placeholder="" formControlName="apellidos"
+                    (input)="formGroup.controls.apellidos.setValue(capitalize(formGroup.controls.apellidos.value))"
+                    />
+                    <mat-error  *ngIf="formGroup.controls.apellidos.hasError('text')">
+                       Los apellidos debe contener solo texto </mat-error> />
                     <mat-error
                         *ngIf="formGroup.controls.apellidos.hasError('required')"
                     >
-                        Apellidos es requerido
+                        Los apellidos son requeridos
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -39,14 +50,6 @@
                 </mat-form-field>
             </div>
             <div class="">
-<!--                <mat-form-field appearance="fill" class="w-full">-->
-<!--                    <mat-label>Fecha Nacimento</mat-label>-->
-<!--                    <input matInput [matDatepicker]="picker"  formControlName="fecha_nacimiento"  (dateChange)="setDate($event.value)">-->
-<!--                    <mat-hint>MM/DD/YYYY</mat-hint>-->
-<!--                    <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>-->
-<!--                    <mat-datepicker #picker ></mat-datepicker>-->
-
-<!--                    <input matInput placeholder="" formControlName="fecha_nacimiento"/>-->
 
                     <input type="date" formControlName="fecha_nacimiento">
                     <mat-error
@@ -54,6 +57,8 @@
                     >
                         Fecha Nacimento es requerido
                     </mat-error>
+                    <mat-error *ngIf="formGroup.controls.fecha_nacimiento.hasError('menor')">
+                         Debes ser mayor de 18 años para registrarte </mat-error>
 <!--                </mat-form-field>-->
             </div>
         </div>
@@ -97,10 +102,10 @@
                 <mat-label>Roles</mat-label>
                 <mat-select formControlName="rol_id">
                     <mat-option
-                        *ngFor="let tGrupo of roles"
-                        [value]="tGrupo.id"
+                        *ngFor="let rol of roles"
+                        [value]="rol.id"
                     >
-                        {{ tGrupo.display_name }}
+                        {{ rol.display_name }}
                     </mat-option>
                 </mat-select>
                 <mat-error
@@ -108,7 +113,7 @@
                         formGroup.controls.rol_id.hasError('required')
                     "
                 >
-                    tipo grupo es requerido
+                    El rol  es requerido
                 </mat-error>
             </mat-form-field>
         </div>

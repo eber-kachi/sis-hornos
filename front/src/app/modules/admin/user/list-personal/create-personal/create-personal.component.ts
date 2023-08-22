@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -60,14 +60,14 @@ export class CreatePersonalComponent {
 
     public ngOnInit(): void {
         this.formGroup = this.fb.group({
-            nombres: ['', [Validators.required]],
-            apellidos: ['', [Validators.required]],
+            nombres: ['', [Validators.required , this.textValidator]],
+            apellidos: ['', [Validators.required , this.textValidator]],
             carnet_identidad: ['', [Validators.required]],
-            fecha_nacimiento: ['', [Validators.required]],
+            fecha_nacimiento: ['', [Validators.required, this.mayorDeEdad]],
             direccion: ['', [Validators.required]],
             rol_id: ['', [Validators.required]],
             username: [{ value: '', disabled: true }, [Validators.required]],
-            password: ['megahornoroja'],
+            password: ['megahornorojas'],
         });
 
         // this.formGroup.valueChanges.subscribe((res) => {
@@ -151,4 +151,33 @@ export class CreatePersonalComponent {
             this.roles = res.data;
         });
     }
+
+    // Esta función valida que el input solo contenga letras y espacios export 
+ textValidator(control: FormControl) {
+    let value = control.value; 
+    let regex = /^[a-zA-Z\s]*$/; 
+    // Expresión regular para letras y espacios 
+    if (regex.test(value)) { return null;
+        // El valor es válido 
+       } else { return { text: true };
+        // El valor no es válido 
+       } }
+
+// Esta función transforma el input en formato oración export function 
+capitalize(value: string) { if (value) 
+   { return value.replace(/\w\S*/g, (txt) => { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); }); }
+    return value; }
+
+    mayorDeEdad (control: AbstractControl): {[key: string]: any} | null {
+         // Obtener el valor del control como una fecha 
+         let fecha = new Date (control.value); 
+         // Obtener la fecha actual 
+         let hoy = new Date (); 
+         // Calcular la diferencia en milisegundos 
+         let diferencia = hoy.getTime () - fecha.getTime (); 
+         // Convertir la diferencia a años 
+         let edad = Math.floor (diferencia / (1000 * 60 * 60 * 24 * 365));
+          // Si la edad es menor de 18, devolver el objeto con el error 
+          if (edad < 18) { return {menor: true}; }  
+         {return null;}}
 }
