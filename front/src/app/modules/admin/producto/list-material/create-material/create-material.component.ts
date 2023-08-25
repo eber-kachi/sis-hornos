@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -108,4 +108,10 @@ export class CreateMaterialComponent {
             }
         })
     }
+
+
+// Esta función transforma el input en formato oración export function 
+capitalize(value: string) { if (value) 
+   { return value.replace(/\w\S*/g, (txt) => { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); }); }
+    return value; }
 }

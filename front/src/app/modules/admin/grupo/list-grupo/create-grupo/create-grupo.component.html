@@ -4,35 +4,18 @@
         <div class="m-2">
             <mat-form-field appearance="fill" class="w-full">
                 <mat-label>Nombre</mat-label>
-                <input matInput placeholder="Nombre" formControlName="nombre"/>
+                <input matInput placeholder="Nombre" 
+                formControlName="nombre"
+                
+                (input)="formGroup.controls.nombre.setValue(capitalize(formGroup.controls.nombre.value))"
+                />
                 <mat-error
                     *ngIf="formGroup.controls.nombre.hasError('required')"
                 >
-                    nombre es requerido
+                    El nombre  es requerido
                 </mat-error>
             </mat-form-field>
         </div>
-
-<!--        <div class="m-2">-->
-<!--            <mat-form-field appearance="fill" class="w-full">-->
-<!--                <mat-label>Tipo grupo</mat-label>-->
-<!--                <mat-select formControlName="tipo_grupo_id">-->
-<!--                    <mat-option-->
-<!--                        *ngFor="let tGrupo of tipoGrupos"-->
-<!--                        [value]="tGrupo.id"-->
-<!--                    >-->
-<!--                        {{ tGrupo.nombre }}-->
-<!--                    </mat-option>-->
-<!--                </mat-select>-->
-<!--                <mat-error-->
-<!--                    *ngIf="-->
-<!--                        formGroup.controls.tipo_grupo_id.hasError('required')-->
-<!--                    "-->
-<!--                >-->
-<!--                    tipo grupo es requerido-->
-<!--                </mat-error>-->
-<!--            </mat-form-field>-->
-<!--        </div>-->
 
         <mat-form-field appearance="fill" class="w-full">
             <mat-label>Jefe de contrato</mat-label>
@@ -47,7 +30,7 @@
             <mat-error
                 *ngIf="formGroup.get('jefe_id')?.hasError('required')"
             >
-                Seleccione Jefe
+                Seleccione un Jefe
             </mat-error>
         </mat-form-field>
 
@@ -64,7 +47,7 @@
             <mat-error
                 *ngIf="formGroup.get('ayudantes')?.hasError('required')"
             >
-                Seleccione Ayudantes
+                Seleccione el o los Ayudantes
             </mat-error>
         </mat-form-field>
 
@@ -81,17 +64,13 @@
             <mat-error
                 *ngIf="formGroup.get('productos_id')?.hasError('required')"
             >
-                Seleccione Productos
+                Seleccione un Producto
             </mat-error>
         </mat-form-field>
 
-
-        <!--        <mat-form-field appearance="fill" class="w-full">-->
-<!--            <mat-label>Muestras de cantidad de productos  diarios</mat-label>-->
-<!--        </mat-form-field>-->
         <h4>Muestras de cantidad de productos  diarios</h4>
         <div formArrayName="produccion_diarias" class="w-[100%]">
-            <table class="table-auto table-fixed">
+            <table class="table-auto">
                 <thead>
                 <tr>
                     <th>N°</th>

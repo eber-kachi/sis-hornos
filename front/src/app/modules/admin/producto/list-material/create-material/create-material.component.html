@@ -5,37 +5,27 @@
       <div class="w-[70%]">
         <mat-form-field appearance="fill" class="w-full">
           <mat-label>Nombre</mat-label>
-          <input matInput placeholder="Nombre" formControlName="nombre" />
+          <input matInput placeholder="Nombre" 
+          formControlName="nombre"
+          (input)="formGroup.controls.nombre.setValue(capitalize(formGroup.controls.nombre.value))"
+          />
           <mat-error *ngIf="formGroup.controls.nombre.hasError('required')">
-            nombre es requerido
+            El nombre es requerido
           </mat-error>
         </mat-form-field>
       </div>
       <div class="w-[30%]">
         <mat-form-field appearance="fill" class="w-full">
-          <!--                    <mat-label>Roles</mat-label>-->
-          <!--                    <mat-select formControlName="rol_id">-->
-          <!--                        <mat-option-->
-          <!--                            *ngFor="let tGrupo of roles"-->
-          <!--                            [value]="tGrupo.id"-->
-          <!--                        >-->
-          <!--                            {{ tGrupo.display_name }}-->
-          <!--                        </mat-option>-->
-          <!--                    </mat-select>-->
+     
           <mat-label>Medída</mat-label>
-          <!--                    <input-->
-          <!--                        type="number"-->
-          <!--                        matInput-->
-          <!--                        placeholder=""-->
-          <!--                        formControlName="kg"-->
-          <!--                    />-->
+         
           <mat-select matNativeControl formControlName="medida_id" required>
             <mat-option *ngFor="let item of medidas" [value]="item.id">
               {{ item.nombre }}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="formGroup.controls.medida_id.hasError('required')">
-            Medidas es requerido
+            La medidas es requerida
           </mat-error>
         </mat-form-field>
       </div>
@@ -50,11 +40,13 @@
             matInput
             placeholder=""
             formControlName="caracteristica"
+            (input)="formGroup.controls.caracteristica.setValue(capitalize(formGroup.controls.caracteristica.value))"
+         
           />
           <mat-error
             *ngIf="formGroup.controls.caracteristica.hasError('required')"
           >
-            Largo es requerido
+           Las caracteristica son  requeridas para un mejor control 
           </mat-error>
         </mat-form-field>
       </div>

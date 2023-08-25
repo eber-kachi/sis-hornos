@@ -90,63 +90,6 @@ export class CreateGrupoComponent implements OnInit {
     }
   }
 
-  /**
-   * {
-    "id": 2,
-    "jefe": [
-        {
-            "id": 2,
-            "nombres": "Carlos Ferbando",
-            "apellidos": "Calle Rocha",
-            "carnet_identidad": "12461-23",
-            "fecha_nacimiento": "1987-12-12",
-            "direccion": "San Martin 342",
-            "fecha_registro": "2023-05-12",
-            "id_grupo_trabajo": 2,
-            "user_id": 2,
-            "created_at": null,
-            "updated_at": null,
-            "name": "Carlos",
-            "username": "12461-23",
-            "email": "carlos@gmail.com",
-            "email_verified_at": null,
-            "password": "$2y$10$TeZWv98xnted1eNyBelsROT/J/I5.YudZ9cHSadx5kIXjLVW934ku",
-            "enabled": 1,
-            "rol_id": 6,
-            "remember_token": "b5V356brOz"
-        }
-    ],
-    "ayudantes": [
-        {
-            "id": 5,
-            "nombres": "Franco",
-            "apellidos": "Mamani Rocha",
-            "carnet_identidad": "12461-23",
-            "fecha_nacimiento": "1987-12-12",
-            "direccion": "San Martin 342",
-            "fecha_registro": "2023-05-12",
-            "id_grupo_trabajo": 2,
-            "user_id": 5,
-            "created_at": null,
-            "updated_at": null,
-            "name": "Fernando",
-            "username": "12461-23",
-            "email": "fernando@gmail.com",
-            "email_verified_at": null,
-            "password": "$2y$10$qIxGpQaDzvCAryCLYiHAyuOgMQFAur8hYNjwBQ1G6d.vrtTKQ6ci6",
-            "enabled": 1,
-            "rol_id": 8,
-            "remember_token": "JH5nF99GNq"
-        }
-    ],
-    "nombre": "grupo bueno",
-    "cantidad_integrantes": 2,
-    "tipo_grupo_id": 2,
-    "tipo_grupo_nombre": "Grupo2Horno Grande"
-}
-   *
-   */
-
   public ngOnInit(): void {
     this.formGroup = this.fb.group({
       nombre: ['', [Validators.required]],
@@ -268,4 +211,9 @@ export class CreateGrupoComponent implements OnInit {
       // this.jefes = res.data;
     });
   }
+// Esta función transforma el input en formato oración export function 
+capitalize(value: string) { if (value) 
+  { return value.replace(/\w\S*/g, (txt) => { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); }); }
+   return value; }
+
 }
