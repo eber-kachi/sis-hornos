@@ -14,15 +14,15 @@ class Personal extends Seeder
     {
 
         $usuarios = [
-            ['id'=>2,'name' => 'Carlos', 'email' => 'carlos@gmail.com', 'username' => '12461-23',
-                'enabled'=> 1,'password'=>Hash::make('123456789'),'remember_token'=>Str::random(10),'rol_id'=>6 ],
-            ['id'=>3,'name' => 'Pedro', 'email' => 'pedro@gmail.com', 'username' => '12461-23',
-                'enabled'=> 1,'password'=>Hash::make('123456789'),'remember_token'=>Str::random(10),'rol_id'=>7 ],
-            ['id'=>4,'name' => 'Franco', 'email' => 'franco@gmail.com', 'username' => '12461-23',
-                'enabled'=> 1,'password'=>Hash::make('123456789'),'remember_token'=>Str::random(10),'rol_id'=>8 ],
+            ['id'=>1,'name' => 'Fernando', 'email' => 'Fernando@megahornosrojas.com', 'username' => '12461-23',
+                'enabled'=> 1,'password'=>Hash::make('megahornosrojas'),'remember_token'=>Str::random(10),'rol_id'=>5 ],
+            ['id'=>2,'name' => 'Carlos', 'email' => 'carlos@megahornosrojas.com', 'username' => '12461-23',
+                'enabled'=> 1,'password'=>Hash::make('megahornosrojas'),'remember_token'=>Str::random(10),'rol_id'=>6 ],
+            ['id'=>3,'name' => 'Pedro', 'email' => 'pedro@megahornosrojas.com', 'username' => '12461-23',
+                'enabled'=> 1,'password'=>Hash::make('megahornosrojas'),'remember_token'=>Str::random(10),'rol_id'=>7 ],
+            ['id'=>4,'name' => 'Franco', 'email' => 'franco@megahornosrojas.com', 'username' => '12461-23',
+                'enabled'=> 1,'password'=>Hash::make('megahornosrojas'),'remember_token'=>Str::random(10),'rol_id'=>8 ],
 
-            ['id'=>5,'name' => 'Fernando', 'email' => 'fernando@gmail.com', 'username' => '12461-23',
-                'enabled'=> 1,'password'=>Hash::make('123456789'),'remember_token'=>Str::random(10),'rol_id'=>8 ],
             // Agrega más tipos aquí
         ];
         // Bucle para insertar cada personals de grupo en la tabla
@@ -33,14 +33,14 @@ class Personal extends Seeder
 
         // Array con los datos de los personals de grupo
         $personales = [
-            ['nombres' => 'Carlos Ferbando', 'apellidos' => 'Calle Rocha', 'carnet_identidad' => '12461-23',
-                'fecha_nacimiento'=> '1987-12-12','fecha_registro'=> '2023-05-12','direccion'=> 'San Martin 342','user_id'=>2 ],
+            ['nombres' => 'Fernando  ', 'apellidos' => 'Rojas  Medrano', 'carnet_identidad' => '12461-23',
+                'fecha_nacimiento'=> '1987-12-12','fecha_registro'=> '2023-05-12','direccion'=> 'San Martin 342','user_id'=>1 ],
             ['nombres' => 'Pedro Ferbando', 'apellidos' => 'Pelaes Rocha', 'carnet_identidad' => '124231-15',
-                'fecha_nacimiento'=> '1987-05-23','fecha_registro'=> '2023-05-12','direccion'=> 'San Martin 342','user_id'=>3 ],
+                'fecha_nacimiento'=> '1987-05-23','fecha_registro'=> '2023-05-12','direccion'=> 'San Martin 342','user_id'=>2 ],
             ['nombres' => 'Fernando', 'apellidos' => 'Escobar Condori', 'carnet_identidad' => '12461-23',
-                'fecha_nacimiento'=> '1987-12-12','fecha_registro'=> '2023-05-12','direccion'=> 'San Martin 342','user_id'=>4 ],
+                'fecha_nacimiento'=> '1987-12-12','fecha_registro'=> '2023-05-12','direccion'=> 'San Martin 342','user_id'=>3 ],
             ['nombres' => 'Franco', 'apellidos' => 'Mamani Rocha', 'carnet_identidad' => '12461-23',
-                'fecha_nacimiento'=> '1987-12-12','fecha_registro'=> '2023-05-12','direccion'=> 'San Martin 342','user_id'=>5 ]
+                'fecha_nacimiento'=> '1987-12-12','fecha_registro'=> '2023-05-12','direccion'=> 'San Martin 342','user_id'=>4 ]
             // Agrega más tipos aquí
         ];
 

@@ -28,7 +28,7 @@ class GruposTrabajoController extends Controller
 
 
         return $this->successResponse(
-            'gruposTrabajoss were successfully retrieved.',
+            'grupos de Trabajos were successfully retrieved.',
             $gruposTrabajos
         );
 
@@ -139,7 +139,7 @@ class GruposTrabajoController extends Controller
     {
         try {
 
-
+            DB::beginTransaction(); // Iniciar transacción
             $gruposTrabajos = GruposTrabajo::findOrFail($id);
             // $gruposTrabajos->update($data);
 
@@ -205,17 +205,25 @@ class GruposTrabajoController extends Controller
     public function destroy($id)
     {
         try {
+            DB::beginTransaction(); // Iniciar transacción
             $this->updatePersonal($id);
             $gruposTrabajos = GruposTrabajo::findOrFail($id);
             $gruposTrabajos->delete();
+            DB::commit(); // Confirmar transacción
 
             return $this->successResponse(
 			    'Grupos de Trabajos was successfully deleted.',
 			    $this->transform($gruposTrabajos)
 			);
-        } catch (Exception $exception) {
-            return $this->errorResponse('Unexpected error occurred while trying to process your request.');
+        }catch (Exception $exception) {
+            DB::rollBack(); // Deshacer transacción
+            // Modificar el mensaje de la excepción
+            $exception->withMessage('El grupo tiene asignaciones. No se puede eliminar.');
+            // Devolver el mensaje modificado
+            return $exception->getMessage();
+            //return $this->errorResponse('Unexpected error occurred while trying to process your request.');
         }
+
     }
 
     /**

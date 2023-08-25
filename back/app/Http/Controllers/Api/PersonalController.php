@@ -70,7 +70,7 @@ class PersonalController extends Controller
         {
         // Obtener el personal con id_grupo_trabajo null y que no tienen el rol jefe de Contratos
         $personal = Personal::whereNull('id_grupo_trabajo')->whereDoesntHave('user', function ($query) {
-            $query->where('rol_id', 6);
+            $query->whereIn('rol_id', [5,6]);
         })->get();
 
         // Devolver el personal
@@ -99,8 +99,11 @@ class PersonalController extends Controller
                 return $this->errorResponse($validator->errors()->all());
             }
             $data = $this->getData($request);
+            $nombre_completo = $request->nombres; // "Guery Orlando"
+            $primer_nombre = strtok($nombre_completo, " "); // "Guery"
+
             $user = new User([
-                'email' => $request->username."@gmail.com",
+                'email' => $primer_nombre."@megahornosrojas.com",
                 'name' => $request->nombres.' '.$request->apellidos,
                 'username' => $request->username,
                 'enabled' => 1,
@@ -193,6 +196,9 @@ class PersonalController extends Controller
         try {
             $personal = Personal::findOrFail($id);
             $personal->delete();
+            // Aquí agregas la línea para eliminar al usuario relacionado
+            $personal->user()->delete();
+
 
             return $this->successResponse(
                 'Personal was successfully deleted.',

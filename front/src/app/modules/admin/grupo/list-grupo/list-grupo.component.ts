@@ -69,9 +69,10 @@ export class ListGrupoComponent {
                     .delete(id as string)
                     .subscribe((res) => {
                         console.log(res);
-                        this.list();
+                        
                     });
             }
+            this.list();
         });
 
         console.log(id);

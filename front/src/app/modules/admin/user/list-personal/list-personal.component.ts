@@ -84,10 +84,11 @@ export class ListPersonalComponent implements OnInit {
                 if (confirmed) {
                     console.log('borrando');
                     this.personalService.delete(id as string).subscribe((res) => {
-                        console.log(res);
-                        this.list();
+                      //  console.log(res);
+                        
                     });
                 }
+                this.list();
             });
    
         }

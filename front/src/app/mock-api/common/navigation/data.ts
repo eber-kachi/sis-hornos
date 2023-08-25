@@ -9,7 +9,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:chart-pie',
     link: '/example',
-    roles: ['admin','ayudante', 'ayudante experto', 'jefe contratos' ]
+    roles: ['administrador','ayudante', 'ayudante experto', 'jefe de contratos' ]
   }, */
   {
     id: 'lista-rol',
@@ -17,7 +17,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:clipboard-list',
     link: '/lista-rol',
-    roles: ['admin']
+    roles: ['administrador']
   },
   {
     id: 'lista-personal',
@@ -25,7 +25,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:users',
     link: '/lista-personal',
-    roles: ['admin', 'jefe contratos']
+    roles: ['administrador', 'jefe de contratos']
   },
   {
     id: 'list-grupo-personal',
@@ -33,7 +33,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:user-group',
     link: '/lista-grupo',
-    roles: ['admin']
+    roles: ['administrador']
   },
   {
     id: 'lista-material',
@@ -41,7 +41,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:view-grid-add',
     link: '/lista-material',
-    roles: ['admin']
+    roles: ['administrador']
   },
   {
     id: 'lista-pruducto',
@@ -49,7 +49,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:cube-transparent',
     link: '/lista-producto',
-    roles: ['admin', 'jefe contratos']
+    roles: ['administrador', 'jefe de contratos']
   },
   {
     id: 'lista-departamento',
@@ -57,7 +57,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:filter',
     link: '/lista-departamento',
-    roles: ['admin']
+    roles: ['administrador']
   },  
   {
     id: 'lista-cliente',
@@ -65,7 +65,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:identification',
     link: '/lista-cliente',
-    roles: ['admin']
+    roles: ['administrador']
   },
   {
     id: 'lista-pedidos',
@@ -73,7 +73,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:shopping-bag',
     link: '/lista-pedidos',
-    roles: ['admin']
+    roles: ['administrador']
   },
   {
     id: 'lista-lote',
@@ -81,7 +81,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:view-boards',
     link: '/lista-lote',
-    roles: ['admin', 'jefe contratos']
+    roles: ['administrador', 'jefe de contratos']
   },
   {
     id: 'lista-proceso',
@@ -89,7 +89,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:view-boards',
     link: '/lista-asignacion',
-    roles: ['admin', 'jefe contratos']
+    roles: ['administrador', 'jefe de contratos']
   },
   {
     id: 'lista-proceso',
@@ -97,7 +97,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:view-boards',
     link: 'lista-proceso',
-    roles: ['admin', 'jefe contratos']
+    roles: ['administrador', 'jefe de contratos']
   },
   {
     id: 'calendario',
@@ -105,7 +105,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:calendar',
     link: '/cronograma',
-    roles: ['admin','ayudante', 'ayudante experto', 'jefe contratos' ]
+    roles: ['administrador','ayudante', 'ayudante experto', 'jefe de contratos' ]
   },
 ];
 
