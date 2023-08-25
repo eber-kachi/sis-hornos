@@ -1,11 +1,18 @@
-<h1 mat-dialog-title>Crear Personal</h1>
+<h1 mat-dialog-title>Crear Cliente </h1>
 <div mat-dialog-content>
     <form [formGroup]="formGroup" (change)="formChanged()">
         <div class="grid grid-cols-1 gap-2 md:grid-cols-2 ">
             <div class="">
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Nombres</mat-label>
-                    <input matInput placeholder="Nombre" formControlName="nombres"/>
+                    <input matInput placeholder="Nombres" 
+                    formControlName="nombres"
+                    (input)="formGroup.controls.nombres.setValue(capitalize(formGroup.controls.nombres.value))"
+                   
+                    />
+                    <mat-error  *ngIf="formGroup.controls.nombres.hasError('text')">
+                        Nombres debe contener solo texto </mat-error> 
+
                     <mat-error
                         *ngIf="formGroup.controls.nombres.hasError('required')"
                     >
@@ -16,7 +23,13 @@
             <div class="">
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Apellidos</mat-label>
-                    <input matInput placeholder="" formControlName="apellidos"/>
+                    <input matInput placeholder=""
+                     formControlName="apellidos"
+                     (input)="formGroup.controls.apellidos.setValue(capitalize(formGroup.controls.apellidos.value))"
+                     />
+                     <mat-error  *ngIf="formGroup.controls.apellidos.hasError('text')">
+                        Los Apellidos debe contener solo texto </mat-error> 
+ 
                     <mat-error
                         *ngIf="formGroup.controls.apellidos.hasError('required')"
                     >
@@ -39,16 +52,7 @@
                 </mat-form-field>
             </div>
             <div class="">
-                <!--                <mat-form-field appearance="fill" class="w-full">-->
-                <!--                    <mat-label>Fecha Nacimento</mat-label>-->
-                <!--                    <input matInput [matDatepicker]="picker"  formControlName="fecha_nacimiento"  (dateChange)="setDate($event.value)">-->
-                <!--                    <mat-hint>MM/DD/YYYY</mat-hint>-->
-                <!--                    <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>-->
-                <!--                    <mat-datepicker #picker ></mat-datepicker>-->
-
-                <!--                    <input matInput placeholder="" formControlName="fecha_nacimiento"/>-->
-
-                <input type="date" formControlName="fecha_nacimiento">
+              <input type="date" formControlName="fecha_nacimiento">
                 <mat-error
                     *ngIf="formGroup.controls.fecha_nacimiento.hasError('required')"
                 >
@@ -72,14 +76,20 @@
             </div>
             <div>
 
-
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Provincia</mat-label>
-                    <input matInput placeholder="" formControlName="provincia"/>
+                    <input matInput placeholder="" 
+                    formControlName="provincia"
+                      
+                    (input)="formGroup.controls.provincia.setValue(capitalize(formGroup.controls.provincia.value))"
+                    />
+                    <mat-error  *ngIf="formGroup.controls.provincia.hasError('text')">
+                        Provincia debe contener solo texto </mat-error> 
+
                     <mat-error
                         *ngIf="formGroup.controls.provincia.hasError('required')"
                     >
-                        Direccion es requerido
+                    Provincia es requerido
                     </mat-error>
                 </mat-form-field>
             </div>

@@ -25,8 +25,6 @@ class GruposTrabajoController extends Controller
     {
         $gruposTrabajos = GruposTrabajo::with(["tipoGrupos","personales"])->get();
 
-
-
         return $this->successResponse(
             'grupos de Trabajos were successfully retrieved.',
             $gruposTrabajos

@@ -8,11 +8,13 @@
                     matInput
                     placeholder="Nombre"
                     formControlName="nombre"
+                    (input)="formGroup.controls.nombre.setValue(capitalize(formGroup.controls.nombre.value))"
+                 
                 />
                 <mat-error
                     *ngIf="formGroup.controls.nombre.hasError('required')"
                 >
-                    nombre es requerido
+                  El nombre es requerido
                 </mat-error>
             </mat-form-field>
         </div>
@@ -24,11 +26,13 @@
                     matInput
                     placeholder=""
                     formControlName="caracteristicas"
+                    (input)="formGroup.controls.caracteristicas.setValue(capitalize(formGroup.controls.caracteristicas.value))"
+                 
                 />
                 <mat-error
                     *ngIf="formGroup.controls.caracteristicas.hasError('required')"
                 >
-                    Caracteristicas es requerido
+                    Las caracteristicas son requeridas
                 </mat-error>
             </mat-form-field>
         </div>
@@ -45,7 +49,7 @@
                     <mat-error
                         *ngIf="formGroup.controls.costo.hasError('required')"
                     >
-                        Precio es requerido
+                     El  Precio es requerido
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -61,7 +65,7 @@
                     <mat-error
                         *ngIf="formGroup.controls.precio_unitario.hasError('required')"
                     >
-                        Precio Unitario es requerido
+                       El  Precio Unitario es requerido
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -70,7 +74,7 @@
 
         <div formArrayName="materiales" class="w-[100%]">
 
-            <table class="table-auto table-fixed">
+            <table class="table-auto">
                 <thead>
                 <tr>
                     <th>Material</th>
@@ -116,64 +120,6 @@
                 </tbody>
             </table>
 
-
-            <!--            <mat-table [dataSource]="formArray.controls">-->
-
-            <!--                &lt;!&ndash;                <ng-container matColumnDef="id">&ndash;&gt;-->
-            <!--                &lt;!&ndash;                    <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>&ndash;&gt;-->
-            <!--                &lt;!&ndash;                    <mat-cell *matCellDef="let element"> {{element.get('id').value}}. </mat-cell>&ndash;&gt;-->
-            <!--                &lt;!&ndash;                </ng-container>&ndash;&gt;-->
-
-            <!--                &lt;!&ndash; User Column &ndash;&gt;-->
-            <!--                <ng-container matColumnDef="material_id">-->
-            <!--                    <mat-header-cell *matHeaderCellDef>Material</mat-header-cell>-->
-            <!--                    <mat-cell class="w-[5rem]" *matCellDef="let element" [formGroup]="element">-->
-            <!--                        <mat-form-field floatLabel="never">-->
-            <!--                            <mat-select formControlName="material_id" (selectionChange)="onUserChange($event, element)">-->
-            <!--                                <mat-option *ngFor="let user of materialesData" [value]="user.id">-->
-            <!--                                    {{ user.nombre }}-->
-            <!--                                </mat-option>-->
-            <!--                            </mat-select>-->
-            <!--                        </mat-form-field>-->
-            <!--                    </mat-cell>-->
-            <!--                </ng-container>-->
-
-            <!--                &lt;!&ndash; Title Column &ndash;&gt;-->
-            <!--                <ng-container matColumnDef="cantidad">-->
-            <!--                    <mat-header-cell *matHeaderCellDef>Cantidad</mat-header-cell>-->
-            <!--                    <mat-cell *matCellDef="let element;" [formGroup]="element">-->
-            <!--                        <mat-form-field floatLabel="never">-->
-            <!--                            <input type="number" matInput placeholder="Cantidad" formControlName="cantidad">-->
-            <!--                        </mat-form-field>-->
-            <!--                    </mat-cell>-->
-            <!--                </ng-container>-->
-
-            <!--                &lt;!&ndash; Title Column &ndash;&gt;-->
-            <!--                <ng-container matColumnDef="descripcion">-->
-            <!--                    <mat-header-cell *matHeaderCellDef>Descripcion</mat-header-cell>-->
-            <!--                    <mat-cell *matCellDef="let element;" [formGroup]="element">-->
-            <!--                        <mat-form-field floatLabel="never">-->
-            <!--                            <input matInput placeholder="Desc.." formControlName="descripcion">-->
-            <!--                        </mat-form-field>-->
-            <!--                    </mat-cell>-->
-            <!--                </ng-container>-->
-
-            <!--                <ng-container matColumnDef="actions">-->
-            <!--                    <th mat-header-cell *matHeaderCellDef>Acciones</th>-->
-
-            <!--                    <td mat-cell *matCellDef="let element">-->
-            <!--                        <button type="button" title="" mat-icon-button (click)="AddMaterial()">-->
-            <!--                            <mat-icon>launch</mat-icon>-->
-            <!--                        </button>-->
-            <!--                        <button type="button" mat-icon-button (click)="removeMaterial(element.id)">-->
-            <!--                            <mat-icon color="warn">delete</mat-icon>-->
-            <!--                        </button>-->
-            <!--                    </td>-->
-            <!--                </ng-container>-->
-
-            <!--                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>-->
-            <!--                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>-->
-            <!--            </mat-table>-->
         </div>
 
     </form>

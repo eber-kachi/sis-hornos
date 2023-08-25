@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {TipoGrupoService} from "@core/service/api/tipo-grupo.service";
 import {PersonalService} from "@core/service/api/personal.service";
@@ -38,12 +38,13 @@ export class CreateClienteComponent {
 
     public ngOnInit(): void {
         this.formGroup = this.fb.group({
-            nombres: ['', [Validators.required]],
-            apellidos: ['', [Validators.required]],
-            carnet_identidad: ['', [Validators.required]],
+            nombres: ['', [Validators.required, this.textValidator]],
+            apellidos: ['', [Validators.required, this.textValidator]],
+            carnet_identidad: ['', [Validators.required
+            ]],
             fecha_nacimiento: ['', [Validators.required]],
             celular: ['', [Validators.required]],
-            provincia: ['', [Validators.required]],
+            provincia: ['', [Validators.required,this.textValidator]],
             departamento_id: ['', [Validators.required]],
 
         });
@@ -114,4 +115,21 @@ export class CreateClienteComponent {
             this.departamento=res.data;
         })
     }
+
+        // Esta función valida que el input solo contenga letras y espacios export 
+ textValidator(control: FormControl) {
+    let value = control.value; 
+    let regex = /^[a-zA-Z\s]*$/; 
+    // Expresión regular para letras y espacios 
+    if (regex.test(value)) { return null;
+        // El valor es válido 
+       } else { return { text: true };
+        // El valor no es válido 
+       } }
+
+// Esta función transforma el input en formato oración export function 
+capitalize(value: string) { if (value) 
+   { return value.replace(/\w\S*/g, (txt) => { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); }); }
+    return value; }
+
 }

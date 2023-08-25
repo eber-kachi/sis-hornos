@@ -14,7 +14,7 @@
                          (input)="formGroup.controls.display_name.setValue(capitalize(formGroup.controls.display_name.value))"
                     />
                     <mat-error  *ngIf="formGroup.controls.display_name.hasError('text')">
-                         Nombre debe contener solo texto </mat-error> 
+                         Nombre del rol debe contener solo texto </mat-error> 
 
                     <mat-error
                         *ngIf="formGroup.controls.display_name.hasError('required')">
