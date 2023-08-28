@@ -1,6 +1,6 @@
 export const environment = {
-    env: 'DEV',
-    production: false,
-    // serverBaseUrl: 'http://development.com',
-    serverUrl: 'http://localhost:8000/api',
+  env: 'DEV',
+  production: false,
+  // serverBaseUrl: 'http://development.com',
+  serverUrl: 'https://api.megahornosrojas.com/api',
 };
