@@ -1,33 +1,30 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
-import { finalize } from 'rxjs';
-import { fuseAnimations } from '@fuse/animations';
-import { FuseAlertType } from '@fuse/components/alert';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { finalize, Subject, takeUntil, takeWhile, tap, timer } from 'rxjs';
 import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
     selector     : 'auth-forgot-password',
     templateUrl  : './forgot-password.component.html',
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    
 })
-export class AuthForgotPasswordComponent implements OnInit
-{
-    @ViewChild('forgotPasswordNgForm') forgotPasswordNgForm: NgForm;
+export class AuthForgotPasswordComponent implements OnInit, OnDestroy
 
-    alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
-        message: ''
+{
+    countdown: number = 5;
+    countdownMapping: any = {
+        '=1'   : '# second',
+        'other': '# seconds'
     };
-    forgotPasswordForm: UntypedFormGroup;
-    showAlert: boolean = false;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
      */
     constructor(
         private _authService: AuthService,
-        private _formBuilder: UntypedFormBuilder
+        private _router: Router
     )
     {
     }
@@ -41,65 +38,29 @@ export class AuthForgotPasswordComponent implements OnInit
      */
     ngOnInit(): void
     {
-        // Create the form
-        this.forgotPasswordForm = this._formBuilder.group({
-            email: ['', [Validators.required, Validators.email]]
-        });
-    }
+        // Sign out
+        this._authService.signOut();
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Send the reset link
-     */
-    sendResetLink(): void
-    {
-        // Return if the form is invalid
-        if ( this.forgotPasswordForm.invalid )
-        {
-            return;
-        }
-
-        // Disable the form
-        this.forgotPasswordForm.disable();
-
-        // Hide the alert
-        this.showAlert = false;
-
-        // Forgot password
-        this._authService.forgotPassword(this.forgotPasswordForm.get('email').value)
+        // Redirect after the countdown
+        timer(1000, 1000)
             .pipe(
                 finalize(() => {
-
-                    // Re-enable the form
-                    this.forgotPasswordForm.enable();
-
-                    // Reset the form
-                    this.forgotPasswordNgForm.resetForm();
-
-                    // Show the alert
-                    this.showAlert = true;
-                })
+                    this._router.navigate(['sign-in']);
+                }),
+                takeWhile(() => this.countdown > 0),
+                takeUntil(this._unsubscribeAll),
+                tap(() => this.countdown--)
             )
-            .subscribe(
-                (response) => {
+            .subscribe();
+    }
 
-                    // Set the alert
-                    this.alert = {
-                        type   : 'success',
-                        message: 'Password reset sent! You\'ll receive an email if you are registered on our system.'
-                    };
-                },
-                (response) => {
-
-                    // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Email does not found! Are you sure you are already a member?'
-                    };
-                }
-            );
+    /**
+     * On destroy
+     */
+    ngOnDestroy(): void
+    {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next(null);
+        this._unsubscribeAll.complete();
     }
 }
