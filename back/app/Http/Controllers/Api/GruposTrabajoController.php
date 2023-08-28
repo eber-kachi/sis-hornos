@@ -15,10 +15,10 @@ use Illuminate\Support\Collection;
 class GruposTrabajoController extends Controller
 {
 
-    private Modelomatematico $modelomatematico;
+    private ModeloMatematico $modelomatematico;
     public function __construct()
     {
-        $this->modelomatematico = new Modelomatematico();
+        $this->modelomatematico = new ModeloMatematico();
     }
 
     public function index()

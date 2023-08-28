@@ -11,15 +11,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+// use App\Http\Controllers\Api\Modelomatematico;
 
 class LoteProduccionController extends Controller
 {
 
-    private Modelomatematico $modelomatematico;
+    private ModeloMatematico $modelomatematico;
 
     public function __construct()
     {
-        $this->modelomatematico = new Modelomatematico();
+        $this->modelomatematico = new ModeloMatematico();
     }
 
     public function index()
