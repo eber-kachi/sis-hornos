@@ -21,10 +21,13 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import { ListRolComponent } from './list-rol/list-rol.component';
 import { CreateRolComponent } from './list-rol/create-rol/create-rol.component';
+import {AppModule} from "@app/app.module";
 
+  import {HasPermissionDirective} from "@app/has.permission.directive";
 
 @NgModule({
   declarations: [
+    HasPermissionDirective,
     ListUserComponent,
     CreateUserComponent,
     ListPersonalComponent,
@@ -32,24 +35,27 @@ import { CreateRolComponent } from './list-rol/create-rol/create-rol.component';
     ListRolComponent,
     CreateRolComponent
   ],
+  exports: [
+    HasPermissionDirective
+  ],
   imports: [
     CommonModule,
     UserRoutingModule,
-      MatTableModule,
-      MatButtonModule,
-      MatIconModule,
-      MatDialogModule,
-      MatCardModule,
-      MatFormFieldModule,
-      FormsModule,
-      ReactiveFormsModule,
-      MatSelectModule,
-      MatRadioModule,
-      MatGridListModule,
-      // MatFormFieldControl,
-      MatInputModule,
-      MatDatepickerModule,
-      MatNativeDateModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatCardModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatGridListModule,
+    // MatFormFieldControl,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ]
 })
 export class UserModule { }

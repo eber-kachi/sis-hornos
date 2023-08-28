@@ -58,7 +58,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     icon: 'heroicons_outline:filter',
     link: '/lista-departamento',
     roles: ['administrador']
-  },  
+  },
   {
     id: 'lista-cliente',
     title: 'Clientes',
@@ -84,7 +84,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     roles: ['administrador', 'jefe de contratos']
   },
   {
-    id: 'lista-proceso',
+    id: 'lista-Asignacion',
     title: 'Asignacion',
     type: 'basic',
     icon: 'heroicons_outline:view-boards',
@@ -97,7 +97,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     type: 'basic',
     icon: 'heroicons_outline:view-boards',
     link: 'lista-proceso',
-    roles: ['administrador', 'jefe de contratos']
+    roles: ['administrador']
   },
   {
     id: 'calendario',

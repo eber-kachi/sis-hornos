@@ -63,14 +63,14 @@
             <ul class="font-light text-xs" >
               <li *ngFor="let g of row.grupos_trabajo">
                 Nombre:
-                {{ g?.nombre }}    
-                Cantidad Asignada: 
+                {{ g?.nombre }}
+                Cantidad Asignada:
                 {{ g?.pivot?.cantidad_asignada }}
               </li>
             </ul>
-       
+
           </mat-cell>
-          
+
         </ng-container>
 
         <ng-container matColumnDef="pedido">
@@ -103,7 +103,7 @@
                   [routerLink]="['/lista-lote/' + element.id + '/materiales']"
                   >Materiales</a
                 >
-               </li> 
+               </li>
                <li>
                 <a
                 mat-flat-button
@@ -111,27 +111,27 @@
                 [routerLink]="['/lista-lote/' + element.id + '/asignacion' ]"
                 >Asignacion</a
               >
-    
+
                </li>
                <li>
                 <button mat-icon-button (click)="edit(element.id)">
                   <mat-icon>launch</mat-icon>
                 </button>
-                <button mat-icon-button (click)="delete(element.id)">
+                <button mat-icon-button *hasPermission="['administrador']" (click)="delete(element.id)">
                   <mat-icon color="warn">delete</mat-icon>
                 </button>
 
                </li>
 
             </ul>
-          
+
             <!--            <button mat-icon-button (click)="edit(element.id)">-->
             <!--              <mat-icon>launch</mat-icon>-->
             <!--            </button>-->
-            
+
           </mat-cell>
         </ng-container>
-        
+
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>

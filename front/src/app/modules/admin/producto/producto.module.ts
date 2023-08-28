@@ -33,6 +33,7 @@ import { ListAsignacionComponent } from './list-asignacion/list-asignacion.compo
 import {MatListModule} from '@angular/material/list';
 import { ShowAsignacionLoteComponent } from './list-lote/show-asignacion-lote/show-asignacion-lote.component';
 import { ShowProcesosComponent } from './list-lote/show-asignacion-lote/show-procesos/show-procesos.component';
+import {UserModule} from "@app/modules/admin/user/user.module";
 
 @NgModule({
     declarations: [
@@ -55,26 +56,27 @@ import { ShowProcesosComponent } from './list-lote/show-asignacion-lote/show-pro
         ShowAsignacionLoteComponent,
         ShowProcesosComponent
     ],
-    imports: [
-        CommonModule,
-        ProductoRoutingModule,
-        MatListModule,
+  imports: [
+    CommonModule,
+    ProductoRoutingModule,
+    MatListModule,
 
-        MatTableModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCardModule,
-        MatFormFieldModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatGridListModule,
-        // MatFormFieldControl,
-        MatInputModule,
-        MatPaginatorModule
-    ]
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatCardModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatGridListModule,
+    // MatFormFieldControl,
+    MatInputModule,
+    MatPaginatorModule,
+    UserModule
+  ]
 })
 export class ProductoModule {
 }
