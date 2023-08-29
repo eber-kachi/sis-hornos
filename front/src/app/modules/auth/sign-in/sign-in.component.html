@@ -20,18 +20,6 @@
             </div>
           
 
-            <!-- Alert -->
-            <!-- <fuse-alert
-                class="mt-8"
-                [appearance]="'outline'"
-                [showIcon]="false"
-                [type]="'info'"
-            >
-                You are browsing <strong>Fuse Demo</strong>. Click on the "Sign
-                in" button to access the Demo and Documentation.
-            </fuse-alert> -->
-
-            <!-- Alert -->
             <fuse-alert
                 class="mt-8"
                 *ngIf="showAlert"
@@ -99,13 +87,6 @@
                 <div
                     class="inline-flex items-center justify-between w-full mt-1.5"
                 >
-                    <mat-checkbox
-                        class="-ml-2"
-                        [color]="'primary'"
-                        [formControlName]="'rememberMe'"
-                    >
-                        Recuérdame
-                    </mat-checkbox>
                     <a
                         class="text-md font-medium text-primary-500 hover:underline"
                         [routerLink]="['/forgot-password']"

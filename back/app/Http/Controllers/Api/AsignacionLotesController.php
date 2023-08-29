@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AsignacionLotesController extends Controller
 {
-    public function index()
+   /* public function index()
     {
         $asignacion_lote = AsignacionLote::orderBy('id', 'desc')->get();
 
@@ -23,6 +23,27 @@ class AsignacionLotesController extends Controller
             'AsignacionLote were successfully retrieved.',
             $data
            // $asignacion_lote
+        );
+
+    }  */
+
+    public function index() {
+        $rol = auth()->user()->rol->name; // Obtener el nombre del rol del usuario autenticado
+        $grupo = auth()->user()->personales->first()->GruposTrabajo; // Obtener el grupo de trabajo del usuario autenticado
+        $asignacion_lote = AsignacionLote::when(in_array($rol, ['jefe de contratos', 'ayudante  experto', 'ayudante']),
+        function ($query) use ($grupo) {
+            return $query->whereHas('GruposTrabajo', function ($query) use ($grupo) {
+                $query->where('id', $grupo->id);
+            }); })->orderBy('id', 'desc')->get(); // Obtener la asignación que cumple la condición
+
+        $data = $asignacion_lote->transform(function ($asignacion_lote) {
+            return $this->transform($asignacion_lote);
+        });
+
+        return $this->successResponse(
+            'AsignacionLote were successfully retrieved.',
+            $data
+        // $asignacion_lote
         );
 
     }

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PersonalController extends Controller
 {
-    public function index()
+   /* public function index()
     {
             $personal = Personal::with("GruposTrabajo")->get();
 
@@ -25,6 +25,29 @@ class PersonalController extends Controller
             );
 
      }
+*/
+
+    public function index() {
+        $rol = auth()->user()->rol->name; // Obtener el nombre del rol del usuario autenticado
+        $grupo = auth()->user()->personales->first()->GruposTrabajo; // Obtener el grupo de trabajo del usuario autenticado
+
+        $personal = Personal::when($rol == 'jefe de contratos', function ($query) use ($grupo) {
+            return $query->whereHas('GruposTrabajo', function ($query) use ($grupo) {
+                $query->where('id', $grupo->id); }); })->get();
+
+
+                    $data = $personal->transform(function ($personal) {
+                        return $this->transform($personal);
+                    });
+
+                    return $this->successResponse(
+                            'Personalss were successfully retrieved.',
+                            $data
+                    );
+}
+
+
+
 
     public function singrupo()
     {
