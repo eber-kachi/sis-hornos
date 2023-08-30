@@ -134,6 +134,18 @@ class PedidosController extends Controller
             if (!$pedido) {
                 return $this->errorResponse('Pedido not found.');
             }
+            // Obtener el lote de producción asociado al pedido
+            $lote = $pedido->lotesProducion;
+
+            // Verificar si el nuevo estado es Terminado
+            if ($request->estado == 'Entregado') {
+                // Actualizar solo el estado del pedido
+                $pedido->estado = 'Entregado';
+                $pedido->save();
+                // Verificar el estado del lote
+                $lote->verificarEstado();
+            } else {
+
             // Validar los datos del request
             $validator = $this->getValidator($request);
             if ($validator->fails()) {
@@ -148,8 +160,9 @@ class PedidosController extends Controller
                 $pedido->producto_id = $request->producto_id;
                 $pedido->fecha_pedido = now();
                 $pedido->clientes()->associate($request->cliente_id);
-                $pedido->estado="Activo";
+                $pedido->estado=$request->estado;
                 $pedido->save();
+            }
                 return $this->successResponse(
                     'Pedidos was successfully added.',
                     $this->transform($pedido)

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {BaseAPIClass} from "@app/core";
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,4 +21,17 @@ export class PedidoService extends BaseAPIClass {
       })
     );
   }
+
+  // Añade este método
+   updateEstado(id: number, estado: string): Observable <any> { 
+    // Construye la URL del pedido con el id 
+    const url = `${this.baseUrl}/${id}`; 
+    // Crea el objeto con el nuevo estado
+
+     const data ={ ["estado"]: estado }; 
+     console.log (data);
+    // Retorna el observable de la petición HTTP PUT 
+    return this.httpClient.put(url, data); }
+
+  
 }

@@ -24,4 +24,14 @@ class LoteProduccion extends Model
                     ->withPivot('cantidad_asignada','porcentaje_avance','id_procesos')
                     ->withTimestamps();
     }
+
+    public function verificarEstado() {
+        // Obtener todos los pedidos del lote
+        $pedidos = $this->Pedidos()->get();
+        // Contar cuántos pedidos están entregados
+        $entregados = $pedidos->where('estado', 'Entregado')->count();
+        // Si todos los pedidos están entregados, cambiar el estado del lote a Terminado
+        if ($entregados == $pedidos->count())
+        { $this->estado = 'Terminado'; $this->save(); }
+    }
 }
