@@ -178,6 +178,8 @@ class GruposTrabajoController extends Controller
             $tipoGrupo->update([
                 "nombre" => "Grupo" . "$count" . "$nombre",
                 "cantidad_produccion_diaria" => $this->modelomatematico->cantidad_produccion_diaria($request->produccion_diarias),
+                "productos_id"=> $request->productos_id,
+
 
             ]);
             DB::commit(); // Confirmar transacción

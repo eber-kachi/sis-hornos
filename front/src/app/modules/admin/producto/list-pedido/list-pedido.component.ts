@@ -138,7 +138,15 @@ export class ListPedidoComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // handlerChangePage(event: PageEvent) {
-  //   console.log(event);
-  // }
+  UpdateEstado(id: number) { 
+    // Llama al método del servicio para actualizar el estado 
+    console.log('Pedido actualizado correctamente');
+    this.characterService.updateEstado(id, 'Entregado').subscribe( (res) => {
+       // Muestra un mensaje de éxito 
+       console.log('Pedido actualizado correctamente');
+        // Recarga los datos de la tabla 
+        this.getDataFromApi(); }, (err) => { 
+          // Muestra un mensaje de error 
+          console.error('Error al actualizar el pedido', err); } ); 
+        }
 }

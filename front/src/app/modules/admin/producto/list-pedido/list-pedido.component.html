@@ -73,12 +73,31 @@
         <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <button mat-icon-button (click)="edit(element.id)">
-              <mat-icon>launch</mat-icon>
-            </button>
-            <button mat-icon-button (click)="delete(element.id)">
-              <mat-icon color="warn">delete</mat-icon>
-            </button>
+          <lu class="font-light text-xs">
+            <li class="flex flex-wrap bg-slate-200 p-2">
+               <button mat-raised-button color="primary" (click)="UpdateEstado(element.id)" 
+               [disabled]="element.estado === 'Entregado'">
+
+              Entregado
+              
+              </button>
+             </li>
+            <li class="flex flex-wrap bg-slate-200 p-2">
+              <button mat-icon-button (click)="edit(element.id)">
+                <mat-icon>launch</mat-icon>
+              </button>
+              
+            </li>
+            <li class="flex flex-wrap bg-slate-200 p-2">
+              <button mat-icon-button (click)="delete(element.id)">
+                <mat-icon color="warn">delete</mat-icon>
+              </button>
+              
+            </li>
+            
+          </lu>
+        
+        
           </mat-cell>
         </ng-container>
 

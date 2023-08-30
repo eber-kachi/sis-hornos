@@ -57,6 +57,9 @@ class LoteProduccionController extends Controller
 
     }
 
+
+
+
     public function store(Request $request)
     {
 
